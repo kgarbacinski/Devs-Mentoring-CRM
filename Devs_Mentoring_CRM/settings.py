@@ -38,11 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'Account_management',
-    'Exercises_checker',
-    'Files_organizer',
-    'Meetings_calendar',
-    'Rest_API',
+    'Account_management.apps.AccountManagementConfig',
+    'Exercises_checker.apps.ExercisesCheckerConfig',
+    'Files_organizer.apps.FilesOrganizerConfig',
+    'Meetings_calendar.apps.MeetingsCalendarConfig',
+    'Rest_API.apps.RestApiConfig',
 ]
 
 MIDDLEWARE = [
