@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'Account_management',
+    'Exercises_checker',
+    'Files_organizer',
+    'Meetings_calendar',
+    'Rest_API',
 ]
 
 MIDDLEWARE = [
