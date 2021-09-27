@@ -3,8 +3,8 @@ from django.views.generic import View
 
 
 # Create your views here.
-class Index(View):
-    template_name = 'Meetings_calendar/index.html'
+class Calendar(View):
+    template_name = 'Meetings_calendar/calendar.html'
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)

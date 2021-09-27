@@ -1,0 +1,380 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  font-size: 62, 5%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Spartan', sans-serif;
+}
+
+.left-column {
+  position: relative;
+  height: 100vh;
+}
+
+.left-column .header-text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 200px 20px 0;
+}
+
+.left-column .header-text h1 {
+  font-weight: bold;
+}
+
+.left-column .header-text h1 span {
+  font-weight: normal;
+  font-size: 1.5rem;
+  color: #dbc110;
+}
+
+.left-column .header-text p {
+  font-size: 0.9rem;
+}
+
+.left-column .bg-logo--one, .left-column .bg-logo--two {
+  position: absolute;
+  display: block;
+  opacity: 0.13;
+  z-index: -5;
+}
+
+.left-column .bg-logo--one {
+  top: 14%;
+  left: 75%;
+  width: 15%;
+  -webkit-animation: rotate-left 55s infinite linear;
+          animation: rotate-left 55s infinite linear;
+}
+
+.left-column .bg-logo--two {
+  top: 55%;
+  left: 32%;
+  width: 35%;
+  -webkit-animation: rotate-right 95s infinite linear;
+          animation: rotate-right 95s infinite linear;
+}
+
+.left-column .arrow-down {
+  position: absolute;
+  bottom: 30px;
+  left: calc(50% - 30px);
+}
+
+.left-column .arrow-down .bi-chevron-down {
+  display: block;
+  font-size: 60px;
+  color: #000;
+  -webkit-transition: color .3s, -webkit-transform .3s;
+  transition: color .3s, -webkit-transform .3s;
+  transition: transform .3s, color .3s;
+  transition: transform .3s, color .3s, -webkit-transform .3s;
+}
+
+.left-column .arrow-down .bi-chevron-down:hover {
+  color: #dbc110;
+  -webkit-transform: scale(1.2);
+          transform: scale(1.2);
+}
+
+.right-column {
+  background-color: #f7f7f7;
+  min-height: 100vh;
+}
+
+.authentication-panel {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.authentication-panel p.sign-in-title {
+  margin: 80px 0px 20px;
+  width: 100%;
+  height: 50px;
+  border: 1px solid #dbc110;
+  background-color: #dbc110;
+  line-height: 50px;
+  font-weight: bold;
+  text-align: center;
+  -webkit-transition: background .3s, color .3s, border .3s;
+  transition: background .3s, color .3s, border .3s;
+}
+
+.authentication-panel .sign-in-form {
+  margin-top: 60px;
+  width: 80%;
+  position: relative;
+}
+
+.authentication-panel .sign-in-form label {
+  width: 100%;
+  font-size: 1.1rem;
+}
+
+.authentication-panel .sign-in-form input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.authentication-panel .sign-in-form button {
+  padding: 10px 20px;
+  width: 150px;
+  border: 1px solid #dbc110;
+  background: #dbc110;
+  border-radius: 25px;
+  text-transform: uppercase;
+  font-weight: bold;
+  -webkit-transition: color .3s, background-color .3s, border .3s;
+  transition: color .3s, background-color .3s, border .3s;
+  margin: 15px 0 30px;
+}
+
+.authentication-panel .sign-in-form button:hover {
+  color: #fff;
+  background-color: #000;
+  border: 1px solid #000;
+}
+
+.authentication-panel .sign-in-form .control-button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.authentication-panel .sign-in-form .text-error {
+  visibility: hidden;
+  color: #c0503c;
+}
+
+.authentication-panel .sign-in-form .reset-area {
+  margin-top: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+}
+
+.authentication-panel .sign-in-form .reset-area .reset-link {
+  font-size: .8rem;
+  color: #000;
+  border-bottom: 1px solid #dbc110;
+  cursor: pointer;
+  -webkit-transition: color .3s;
+  transition: color .3s;
+}
+
+.authentication-panel .sign-in-form .reset-area .reset-success {
+  display: none;
+  font-size: 0.8rem;
+}
+
+.authentication-panel .sign-in-form .reset-link:hover {
+  color: #dbc110;
+}
+
+.authentication-panel .sign-in-form .popup {
+  position: absolute;
+  top: 0;
+  display: none;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 30px 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  -webkit-box-shadow: 2px 2px 5px #666;
+          box-shadow: 2px 2px 5px #666;
+}
+
+.authentication-panel .sign-in-form .popup p {
+  margin-bottom: 30px;
+}
+
+.authentication-panel .sign-in-form .popup .text-error {
+  visibility: hidden;
+  margin-bottom: 0;
+}
+
+.authentication-panel .sign-in-form .popup .control-buttons {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  margin: 5px 0 15px;
+}
+
+.authentication-panel .sign-in-form .popup .control-buttons .reset,
+.authentication-panel .sign-in-form .popup .control-buttons .cancel {
+  width: 120px;
+  margin-bottom: 5px;
+}
+
+.authentication-panel .sign-in-form .popup .control-buttons .cancel {
+  background-color: #ccc;
+  border: 1px solid #ccc;
+}
+
+.authentication-panel .sign-in-form .popup .control-buttons .cancel:hover {
+  background-color: #000;
+  border: 1px solid #000;
+}
+
+@-webkit-keyframes rotate-right {
+  from {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate-right {
+  from {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes rotate-left {
+  from {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(-360deg);
+            transform: rotate(-360deg);
+  }
+}
+
+@keyframes rotate-left {
+  from {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(-360deg);
+            transform: rotate(-360deg);
+  }
+}
+
+@media (min-width: 768px) {
+  .left-column .arrow-down {
+    display: none;
+  }
+}
+
+@media (min-width: 992px) {
+  .left-column .header-text {
+    margin: 200px 40px 0;
+  }
+  .left-column .bg-logo--two {
+    top: 45%;
+  }
+  .authentication-panel .sign-in-form {
+    width: 60%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .left-column .header-text {
+    margin: 250px 80px 0;
+  }
+  .left-column .header-text h1 span {
+    font-size: 2rem;
+  }
+  .authentication-panel .sign-in-form {
+    width: 40%;
+  }
+}
+
+@media (min-width: 2000px) {
+  .left-column .header-text {
+    margin: 250px 100px 0;
+  }
+  .left-column .header-text h1 {
+    font-size: 3rem;
+  }
+  .left-column .header-text h1 span {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 2500px) {
+  .left-column .header-text {
+    margin: 300px 120px 0;
+  }
+  .left-column .header-text h1 {
+    font-size: 3rem;
+  }
+  .left-column .header-text h1 span {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 3000px) {
+  .left-column .header-text {
+    margin: 350px 150px 0;
+  }
+  .left-column .header-text h1 {
+    font-size: 4rem;
+  }
+  .left-column .header-text h1 span {
+    font-size: 2.8rem;
+  }
+}
+/*# sourceMappingURL=sign-in-style.css.map */
