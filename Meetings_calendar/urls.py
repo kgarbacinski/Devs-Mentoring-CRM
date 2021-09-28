@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import Index
+from .views import Calendar
 
 
 urlpatterns = [
-    path('', Index.as_view(), name='index')
+    path('', Calendar.as_view(), name='calendar')
 ]

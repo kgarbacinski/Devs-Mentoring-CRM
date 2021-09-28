@@ -1,0 +1,350 @@
+$gold-color: #dbc110;
+$bg-gray: #f7f7f7;
+$shadow: #666;
+$border-gray: #ccc;
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    font-size: 62, 5%;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Spartan', sans-serif;
+}
+
+.left-column {
+    position: relative;
+    height: 100vh;
+
+    .header-text {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+        margin: 200px 20px 0;
+
+        h1 {
+            font-weight: bold;
+
+            span {
+                font-weight: normal;
+                font-size: 1.5rem;
+                color: $gold-color;
+            }
+        }
+
+        p {
+            font-size: 0.9rem;
+        }
+    }
+
+    .bg-logo {
+
+        &--one,
+        &--two {
+            position: absolute;
+            display: block;
+            opacity: 0.13;
+            z-index: -5;
+        }
+
+        &--one {
+            top: 14%;
+            left: 75%;
+            width: 15%;
+            animation: rotate-left 55s infinite linear;
+        }
+
+        &--two {
+            top: 55%;
+            left: 32%;
+            width: 35%;
+            animation: rotate-right 95s infinite linear;
+        }
+    }
+
+    .arrow-down {
+        position: absolute;
+        bottom: 30px;
+        left: calc(50% - 30px);
+
+        .bi-chevron-down {
+            display: block;
+            font-size: 60px;
+            color: #000;
+            transition: transform .3s, color .3s;
+        }
+
+        .bi-chevron-down:hover {
+            color: $gold-color;
+            transform: scale(1.2);
+        }
+    }
+}
+
+.right-column {
+    background-color: $bg-gray;
+    min-height: 100vh;
+}
+
+.authentication-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    p.sign-in-title {
+        margin: 80px 0px 20px;
+        width: 100%;
+        height: 50px;
+        border: 1px solid $gold-color;
+        background-color: $gold-color;
+        line-height: 50px;
+        font-weight: bold;
+        text-align: center;
+        transition: background .3s, color .3s, border .3s;
+    }
+
+    .sign-in-form {
+        margin-top: 60px;
+        width: 80%;
+        position: relative;
+
+        label {
+            width: 100%;
+            font-size: 1.1rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid $border-gray;
+            border-radius: 5px
+        }
+
+        button {
+            padding: 10px 20px;
+            width: 150px;
+            border: 1px solid $gold-color;
+            background: $gold-color;
+            border-radius: 25px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: color .3s, background-color .3s, border .3s;
+            margin: 15px 0 30px;
+        }
+
+        button:hover {
+            color: #fff;
+            background-color: #000;
+            border: 1px solid #000;
+        }
+
+        .control-button {
+            display: flex;
+            justify-content: center;
+        }
+
+        .text-error {
+            visibility: hidden;
+            color: rgb(192, 80, 60);
+        }
+
+
+
+        .reset-area {
+            margin-top: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+
+            .reset-link {
+                font-size: .8rem;
+                color: #000;
+                border-bottom: 1px solid $gold-color;
+                cursor: pointer;
+                transition: color .3s;
+            }
+
+            .reset-success {
+                display: none;
+                font-size: 0.8rem;
+            }
+        }
+
+        .reset-link:hover {
+            color: $gold-color;
+        }
+
+        .popup {
+            position: absolute;
+            top: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 30px 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px $shadow;
+
+            p {
+                margin-bottom: 30px;
+            }
+
+            .text-error {
+                visibility: hidden;
+                margin-bottom: 0;
+            }
+
+            .control-buttons {
+                width: 100%;
+                display: flex;
+                justify-content: space-evenly;
+                // align-items: center;
+                margin: 5px 0 15px;
+
+                .reset,
+                .cancel {
+                    width: 120px;
+                    margin-bottom: 5px;
+                }
+
+                .cancel {
+                    background-color: $border-gray;
+                    border: 1px solid $border-gray;
+                }
+
+                .cancel:hover {
+                    background-color: #000;
+                    border: 1px solid #000;
+                }
+            }
+
+
+        }
+    }
+}
+
+@keyframes rotate-right {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotate-left {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(-360deg);
+    }
+}
+
+@media(min-width: 768px) {
+    .left-column {
+        .arrow-down {
+            display: none;
+        }
+    }
+}
+
+@media(min-width: 992px) {
+    .left-column {
+        .header-text {
+            margin: 200px 40px 0
+        }
+
+        .bg-logo {
+            &--two {
+                top: 45%;
+            }
+        }
+    }
+
+    .authentication-panel {
+        .sign-in-form {
+            width: 60%;
+        }
+    }
+
+}
+
+@media(min-width: 1400px) {
+    .left-column {
+        .header-text {
+            margin: 250px 80px 0;
+
+            h1 {
+                span {
+                    font-size: 2rem;
+                }
+            }
+        }
+    }
+
+    .authentication-panel {
+        .sign-in-form {
+            width: 40%;
+        }
+    }
+}
+
+@media(min-width: 2000px) {
+    .left-column {
+        .header-text {
+            margin: 250px 100px 0;
+
+            h1 {
+                font-size: 3rem;
+
+                span {
+                    font-size: 2rem;
+                }
+            }
+        }
+    }
+}
+
+@media(min-width: 2500px) {
+    .left-column {
+        .header-text {
+            margin: 300px 120px 0;
+
+            h1 {
+                font-size: 3rem;
+
+                span {
+                    font-size: 2rem;
+                }
+            }
+        }
+    }
+}
+
+@media(min-width: 3000px) {
+    .left-column {
+        .header-text {
+            margin: 350px 150px 0;
+
+            h1 {
+                font-size: 4rem;
+
+                span {
+                    font-size: 2.8rem;
+                }
+            }
+        }
+    }
+}
