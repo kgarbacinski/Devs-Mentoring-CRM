@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect
 from django.views.generic import View, FormView
 from .forms import LoginForm
 
-# Create your views here.
 
 class LoginView(FormView):
     template_name = 'Account_management/login.html'
@@ -18,19 +17,13 @@ class LoginView(FormView):
 
     def form_valid(self, form):
         """Authenticate needs username"""
-
-        # TODO form errors
         user = form.save(commit=False)
         username = User.objects.get(email=user.email)
-        user = authenticate(username=username, password=user.password)
-        if user is not None:
-            return redirect('index')
-        else:
-            return render(self.request, template_name='test.html')
+        authenticate(username=username, password=user.password)
+        return redirect('index')
 
 
 class Index(View):
     template_name = 'Account_management/index.html'
-
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)

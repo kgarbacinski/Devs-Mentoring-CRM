@@ -41,18 +41,18 @@
 
                     <form method="POST" action=''>
                         {% csrf_token %}
-
-
                         {{ form.email.label_tag }}
+
                         <div class="form-box">
                             {{ form.email }}
-
-                            <p class="text-error">error</p>
+                            {{ form.email.errors }}
+                            {#                            <p class="text-error">error</p>#}
                         </div>
                         {{ form.password.label_tag }}
                         <div class="form-box">
                             {{ form.password }}
-{#TODO ADD FIELD ERRORS#}
+
+
                             <div class="reset-area">
                                 <span class="reset-link" id="reset-link">Reset your password</span>
                                 <span class="reset-success text-success"
