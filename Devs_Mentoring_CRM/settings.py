@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'Files_organizer.apps.FilesOrganizerConfig',
     'Meetings_calendar.apps.MeetingsCalendarConfig',
     'Rest_API.apps.RestApiConfig',
+    "crispy_forms"
 ]
 
 MIDDLEWARE = [
@@ -125,6 +126,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 LOGOUT_REDIRECT_URL = 'login'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

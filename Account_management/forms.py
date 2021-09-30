@@ -1,3 +1,4 @@
+from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User
 from django import forms
 from Account_management.exceptions import WrongPassword
@@ -17,6 +18,7 @@ class LoginForm(forms.ModelForm):
         super().clean()
         email = self.cleaned_data.get("email")
         try:
+
             user = User.objects.get(email=email)
             self.validate_password(user)
 
@@ -28,3 +30,19 @@ class LoginForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['email', 'password']
+
+
+class ResetRequestForm(PasswordResetForm):
+    email = forms.CharField(widget=forms.EmailInput(), label='E-mail')
+
+    def clean(self):
+        super().clean()
+        email = self.cleaned_data.get("email")
+        try:
+            User.objects.get(email=email)
+
+        except (User.DoesNotExist) as e:
+            self._errors["email"] = self.error_class(["Email doesn't exist"])
+
+        return self.cleaned_data
+
