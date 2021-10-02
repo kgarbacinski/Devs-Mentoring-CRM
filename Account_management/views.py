@@ -1,9 +1,8 @@
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.contrib.auth.views import  PasswordResetView
 from django.shortcuts import render, redirect
-from django.views.generic import View, FormView
+from django.views.generic import View
 from .forms import LoginForm, ResetRequestForm
 
 
@@ -36,7 +35,6 @@ class LoginView(PasswordResetView):
             reset_form = ResetRequestForm(request.POST)
 
             if reset_form.is_valid():
-                self.from_email = reset_form.cleaned_data.get('email')
                 opts = {
                     'use_https': self.request.is_secure(),
                     'token_generator': self.token_generator,
@@ -48,7 +46,6 @@ class LoginView(PasswordResetView):
                     'extra_email_context': self.extra_email_context,
                 }
                 reset_form.save(**opts)
-
 
 
         return render(request, self.template_name,
