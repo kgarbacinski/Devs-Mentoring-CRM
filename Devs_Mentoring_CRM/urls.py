@@ -14,8 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth.forms import SetPasswordForm
 from django.urls import path, include, reverse_lazy
 from django.contrib.auth import views as auth_views
+# from Account_management.forms import ResetPasswordForm
+from Account_management.forms import ResetPasswordForm
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,7 +30,8 @@ urlpatterns = [
     path('password-reset-confirm/<uidb64>/<token>/',
          auth_views.PasswordResetConfirmView.as_view(
              success_url=reverse_lazy('login'),
-             template_name="Account_management/password_reset_confirm.html"
+             template_name="Account_management/password_reset_confirm.html",
+             form_class = ResetPasswordForm
          ), name='password_reset_confirm',
 
          ),

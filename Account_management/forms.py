@@ -1,6 +1,8 @@
-from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django import forms
+from django.forms.utils import ErrorList
+
 from Account_management.exceptions import WrongPassword
 
 
@@ -25,6 +27,7 @@ class LoginForm(forms.ModelForm):
             self.validate_password(user)
 
         except (User.DoesNotExist, WrongPassword) as e:
+
             self._errors["email"] = self.error_messages['email']
 
         return self.cleaned_data
@@ -49,3 +52,5 @@ class ResetRequestForm(PasswordResetForm):
             self._errors["email"] = self.error_messages['email']
         return self.cleaned_data
 
+class ResetPasswordForm(SetPasswordForm):
+    error_css_class = 'text-error'

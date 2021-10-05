@@ -1,7 +1,8 @@
 from django.contrib.auth import login
 from django.contrib.auth.models import User
-from django.contrib.auth.views import  PasswordResetView
+from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views.generic import View
 from .forms import LoginForm, ResetRequestForm
 
@@ -27,11 +28,14 @@ class LoginView(PasswordResetView):
 
     def post(self, request, *args, **kwargs):
         if 'sing_in' in request.POST:
+            print('login')
             user = LoginForm(request.POST)
             if user.is_valid():
                 return self.authenticate_user(user)
 
         elif 'send_reset' in request.POST:
+            print('reset')
+
             reset_form = ResetRequestForm(request.POST)
 
             if reset_form.is_valid():
@@ -48,6 +52,7 @@ class LoginView(PasswordResetView):
                 reset_form.save(**opts)
 
 
+
         return render(request, self.template_name,
                       {'login_form': LoginForm(request.POST), "reset_form": ResetRequestForm(request.POST)})
 
@@ -57,3 +62,10 @@ class Index(View):
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
+
+
+
+
+
+
+
