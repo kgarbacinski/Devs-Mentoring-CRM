@@ -45,7 +45,7 @@
                         {{ login_form.email.label_tag }}
                         <div class="form-box">
                             {{ login_form.email }}
-                            {{ login_form.email.errors }}
+                            <p>{{ login_form.email.errors}}</p>
 
                         </div>
                         {{ login_form.password.label_tag }}
@@ -70,7 +70,7 @@
                                 reset your password will be sent.</p>
                             {{ reset_form.email.label_tag }}
                             {{ reset_form.email }}
-                            {{ reset_form.email.errors }}
+                            <p>{{ reset_form.email.errors }}</p>
 
                             <div class="control-buttons">
                                 <button class="cancel" type="reset">Cancel</button>

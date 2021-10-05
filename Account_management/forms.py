@@ -5,8 +5,9 @@ from Account_management.exceptions import WrongPassword
 
 
 class LoginForm(forms.ModelForm):
-    email = forms.CharField(widget=forms.EmailInput(), label='E-mail')
-    password = forms.CharField(widget=forms.PasswordInput(), label='Password')
+    email = forms.CharField(widget=forms.EmailInput(attrs={'id': 'login-email'}), label='E-mail')
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'login-passoword'}), label='Password')
+    error_messages = {'email': ' Wrong email or password'}
 
     def validate_password(self, user):
         password = self.cleaned_data.get('password')
@@ -14,9 +15,9 @@ class LoginForm(forms.ModelForm):
         if not validator:
             raise WrongPassword
 
-
     def clean(self):
         super().clean()
+
         email = self.cleaned_data.get("email")
         try:
 
@@ -24,7 +25,7 @@ class LoginForm(forms.ModelForm):
             self.validate_password(user)
 
         except (User.DoesNotExist, WrongPassword) as e:
-            self._errors["email"] = self.error_class(["Wrong email or password"])
+            self._errors["email"] = self.error_messages['email']
 
         return self.cleaned_data
 
@@ -35,7 +36,8 @@ class LoginForm(forms.ModelForm):
 
 
 class ResetRequestForm(PasswordResetForm):
-    email = forms.CharField(widget=forms.EmailInput(), label='E-mail')
+    email = forms.CharField(widget=forms.EmailInput(attrs={'id': 'reset-email'}), label='E-mail')
+    error_messages = {'email': "Email doesn't exists"}
 
     def clean(self):
         super().clean()
@@ -43,8 +45,7 @@ class ResetRequestForm(PasswordResetForm):
         try:
             User.objects.get(email=email)
 
-        except (User.DoesNotExist) as e:
-            self._errors["email"] = self.error_class(["Email doesn't exist"])
-
+        except User.DoesNotExist as e:
+            self._errors["email"] = self.error_messages['email']
         return self.cleaned_data
 

@@ -45,7 +45,7 @@ class LoginView(PasswordResetView):
                     'html_email_template_name': self.html_email_template_name,
                     'extra_email_context': self.extra_email_context,
                 }
-                return reset_form.save(**opts)
+                reset_form.save(**opts)
 
 
         return render(request, self.template_name,
