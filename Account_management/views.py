@@ -19,7 +19,6 @@ class LoginView(PasswordResetView):
             return redirect(next_page)
         return redirect('index')
 
-
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('index')
@@ -52,12 +51,11 @@ class LoginView(PasswordResetView):
                 reset_form.save(**opts)
 
 
-
         return render(request, self.template_name,
                       {'login_form': LoginForm(request.POST), "reset_form": ResetRequestForm(request.POST)})
 
 
-class Index(View):
+class IndexView(View):
     template_name = 'Account_management/index.html'
 
     def get(self, request, *args, **kwargs):

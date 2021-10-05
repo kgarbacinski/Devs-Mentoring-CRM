@@ -11,6 +11,7 @@ class LoginForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'login-passoword'}), label='Password')
     error_messages = {'email': ' Wrong email or password'}
 
+
     def validate_password(self, user):
         password = self.cleaned_data.get('password')
         validator = user.check_password(password)
@@ -37,10 +38,10 @@ class LoginForm(forms.ModelForm):
         fields = ['email', 'password']
 
 
-
 class ResetRequestForm(PasswordResetForm):
     email = forms.CharField(widget=forms.EmailInput(attrs={'id': 'reset-email'}), label='E-mail')
     error_messages = {'email': "Email doesn't exists"}
+
 
     def clean(self):
         super().clean()
