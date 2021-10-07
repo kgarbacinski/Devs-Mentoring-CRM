@@ -176,7 +176,7 @@ body {
 }
 
 .authentication-panel .sign-in-form .text-error {
-  visibility: hidden;
+  /*visibility: hidden;*/
   color: #c0503c;
 }
 
@@ -237,7 +237,7 @@ body {
 }
 
 .authentication-panel .sign-in-form .popup .text-error {
-  visibility: hidden;
+  /*visibility: hidden;*/
   margin-bottom: 0;
 }
 
@@ -323,7 +323,7 @@ body {
     margin: 200px 40px 0;
   }
   .left-column .bg-logo--two {
-    top: 45%;
+    top: 50%;
   }
   .authentication-panel .sign-in-form {
     width: 60%;

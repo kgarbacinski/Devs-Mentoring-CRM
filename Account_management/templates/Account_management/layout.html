@@ -86,9 +86,8 @@
         <div class="main-content">
 
             <header>
-                <button class="log-out" title="log-out"><i class="bi bi-power"></i> <a href= '{% url 'logout' %}'></a> </button>
-
-                <p class="username m-0">{% if user.is_authenticated %}{{ user.username }}{% endif %}</p>
+                <a class="log-out " title="log-out" href= '{% url 'logout' %}'><i class="bi bi-power"></i></a>
+                <p class="username m-0">{% if user.is_authenticated %}{{ user.first_name }} {{ user.last_name }}{% endif %}</p>
                 <div class="avatar"><img id="user-avatar" src="{% static 'Account_management/img/avatar.jpg' %}" alt="User avatar"></div>
             </header>
 

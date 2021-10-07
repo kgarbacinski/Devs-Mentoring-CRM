@@ -123,8 +123,7 @@ function showCalendar(month, year) {
             }
         }
     }
-    console.log('test')
-     get_all_meetings([year, month + 1])
+    get_all_meetings([year, month + 1])
 }
 
 
@@ -147,13 +146,38 @@ function get_base_url(path) {
 
 // view events
 function viewEvents(data, args) {
-    console.log(data[0])
-    let li = document.querySelectorAll('#days > li > div')
+    // console.log(data[0])
+    let where = document.querySelectorAll('#days > li > div')
     let date = 1;
-    li.forEach(elem => {
+    where.forEach(elem => {
+        if(sessionStorage.getItem('isMentor') === 'true'){
+            elem.innerHTML = `<span>${date}</span><button type="button" class="add-event-btn" data-bs-toggle="modal" data-bs-target="#addEventModal"><i class="bi bi-calendar-plus"></i></button>`
+        }else {
+            elem.innerHTML = `<span>${date}</span>`
+        }
 
+        data.forEach(meeting => {
+            let whole_ddate = meeting.date.split('-'),
+                year = parseInt(whole_ddate[2]),
+                month = parseInt(whole_ddate[1]),
+                day = parseInt(whole_ddate[0]);
 
-        date ++
+            if (year === args[0] && month === args[1] && day === date) {
+                console.log(elem.parentElement)
+                let event = createElement("div", elem.parentElement, {className: "ev", id: meeting.id}),
+                    eventDesc = createElement("div", event, {className: "ev-desc"});
+                // eventDesc.innerHTML = `<span class="hour">${item.content}</span><a href="${item.source}">Student Name</a>
+                // `;
+                // MU: zakomentowałam żebyście widzieli jak było oryginalnie - można wykorzystać ${item.source} żeby umieszczać coś, może do notatki, tylko ona nie moze byc widoczna na widoku głównym - dopiero po kliknięciu chyba niech sie zaczytuje do modala edycyjnego?...
+                eventDesc.innerHTML = `<span class="hour">${meeting.hour}</span><span>${meeting.person}</span>
+                `;
+                // event.onclick = () => alert(eventDesc.textContent);
+                event.setAttribute("data-bs-toggle", "modal")
+                event.setAttribute("data-bs-target", "#editEventModal")
+                event.setAttribute("type", "button")
+            }
+        })
+          date ++
     })
 
     // if(sessionStorage.getItem('isMentor') === 'true'){
@@ -167,13 +191,7 @@ function viewEvents(data, args) {
     //     date ++
     // })
     // }
-    // data.forEach(meeting => {
-    //     let date = meeting.date.split('-'),
-    //         year = parseInt(date[2]),
-    //         month = parseInt(date[1]),
-    //         day = parseInt(date[0]);
-    //
-    // })
+
 
     // return (
     //     data &&
@@ -188,19 +206,7 @@ function viewEvents(data, args) {
             // console.log(item)
 
 
-            // if (year === args[0] && month === args[1] && day === args[2]) {
-            //     let event = createElement("div", where, {className: "ev", id: item.id}),
-            //         eventDesc = createElement("div", event, {className: "ev-desc"});
-            //     // eventDesc.innerHTML = `<span class="hour">${item.content}</span><a href="${item.source}">Student Name</a>
-            //     // `;
-            //     // MU: zakomentowałam żebyście widzieli jak było oryginalnie - można wykorzystać ${item.source} żeby umieszczać coś, może do notatki, tylko ona nie moze byc widoczna na widoku głównym - dopiero po kliknięciu chyba niech sie zaczytuje do modala edycyjnego?...
-            //     eventDesc.innerHTML = `<span class="hour">${item.hour}</span><span>${item.person}</span>
-            //     `;
-            //     // event.onclick = () => alert(eventDesc.textContent);
-            //     event.setAttribute("data-bs-toggle", "modal")
-            //     event.setAttribute("data-bs-target", "#editEventModal")
-            //     event.setAttribute("type", "button")
-            // }
+
     //     })
     // );
 }
@@ -226,10 +232,10 @@ function daysInMonth(iMonth, iYear) {
 }
 
 // --- Create element
-function createElement(element, where, args) {
+function createElement(element, elem, args) {
     let d = document.createElement(element);
     if (args) for (const [k, v] of Object.entries(args)) d[k] = v;
-    where.appendChild(d);
+    elem.appendChild(d);
     return d;
 }
 

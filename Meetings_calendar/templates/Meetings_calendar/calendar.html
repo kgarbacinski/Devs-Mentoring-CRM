@@ -1,12 +1,126 @@
 {% extends 'Account_management/layout.html' %}
+{% load auth_extras %}
 {% load static %}
 
 {% block style %}
+    <link rel="stylesheet" href="{% static 'Meetings_calendar/css/calendar-style.css' %}">
 {% endblock style %}
 
 {% block main_content %}
-    Calendar View
+    <img class="icon-title" src="{% static 'Account_management/img/icon-wing.svg' %}" alt="">
+    <h2 class="page-title">Meeting calendar</h2>
+    <hr>
+    <div id="root"></div>
+
+    <!-- MU: start: add event modal -->
+    <div class="modal fade add-event" id="addEventModal" data-backdrop="static" data-keyboard="false"
+         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Add new event:</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="selection-area">
+                            <label for="date">Day:</label>
+                            <input type="date" id="date" min="">
+                            <label for="time">Hour:</label>
+                            <input type="time" name="" id="time">
+                            <label for="student">Student:</label>
+                            <select id="student">
+                                <option id="0" selected disabled>-- choose --</option>
+                                <option id="1">Test Testowy</option>
+                                <option id="2">Teścior Teściewicz</option>
+                                <option id="3">Testówka Testująca</option>
+                            </select>
+                        </div>
+                        <div class="note-area">
+                            <div class="note">
+                                <label for="note">Note:</label>
+                                <textarea id="note" cols="" rows="5"></textarea>
+                            </div>
+                            <button class="save-event-btn" id="save-event-btn">Add</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- stop: add event modal -->
+
+    <!-- MU: start: edit and delete event modal -->
+    <div class="modal fade edit-event" id="editEventModal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Edit event:</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="preview-event">
+                        <span class="view-time" id="test-12">11:00</span><span class="viwe-student">Student Name</span>
+                        <p class="view-note">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio
+                            hic quod tenetur. Quia, fuga eius? Sequi assumenda dolor dolore culpa
+                            consectetur deleniti maxime ab eveniet non minus fugit, sed iusto?</p>
+                        <button class="edit-event-btn">Edit</button>
+                    </div>
+
+
+                    <form class="editing-form">
+                        <div class="selection-area">
+                            <label for="date">Day:</label>
+                            <input type="date" id="date" min="">
+                            <label for="time">Hour:</label>
+                            <input type="time" name="" id="time">
+                            <label for="student">Student:</label>
+                            <select id="student">
+                                <option id="0" selected disabled>-- choose --</option>
+                                <option id="1">Test Testowy</option>
+                                <option id="2">Teścior Teściewicz</option>
+                                <option id="3">Testówka Testująca</option>
+                            </select>
+                        </div>
+                        <div class="note-area">
+                            <div class="note">
+                                <label for="note">Note:</label>
+                                <textarea id="note" cols="" rows="5"></textarea>
+                            </div>
+                            <div class="control-buttons">
+                                <button class="edit-cancel-event-btn" id="edit-cancel-event-btn" data-dismiss="modal">
+                                    Cancel
+                                </button>
+                                <button class="edit-save-event-btn" id="edit-save-event-btn">Save</button>
+                            </div>
+
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <span>Delete event:</span>
+                    <button type="button" class="delete-event-btn" id="delete-event-btn"><i
+                            class="bi bi-trash-fill"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock main_content %}
 
 {% block script %}
+    <script src="{% static 'Meetings_calendar/js/calendar.js' %}"></script>
+    <script src="{% static 'Meetings_calendar/js/calendar-generator.js' %}"></script>
+    {% if request.user|has_group:"Mentor" %}
+        <script>sessionStorage.setItem("isMentor", 'true');</script>
+    {% else %}
+        <script>sessionStorage.setItem("isMentor", 'false');</script>
+    {% endif %}
 {% endblock script %}
