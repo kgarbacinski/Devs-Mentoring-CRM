@@ -39,20 +39,19 @@
                 <p class="sign-in-title">SIGN IN</p>
                 <div class="sign-in-form">
 
-                    <form method="POST" action=''>
+                    <form id="login_form" method="POST" action=''>
                         {% csrf_token %}
 
-
-                        {{ form.email.label_tag }}
+                        {{ login_form.email.label_tag }}
                         <div class="form-box">
-                            {{ form.email }}
+                            {{ login_form.email }}
+                            <p>{{ login_form.email.errors}}</p>
 
-                            <p class="text-error">error</p>
                         </div>
-                        {{ form.password.label_tag }}
+                        {{ login_form.password.label_tag }}
                         <div class="form-box">
-                            {{ form.password }}
-{#TODO ADD FIELD ERRORS#}
+                            {{ login_form.password }}
+
                             <div class="reset-area">
                                 <span class="reset-link" id="reset-link">Reset your password</span>
                                 <span class="reset-success text-success"
@@ -60,24 +59,24 @@
                             </div>
                             <p class="text-error">error</p>
                         </div>
-
+                        <div class="control-button">
+                            <button class="sign-in-btn" type="submit" name="sing_in" form="login_form">Sign in</button>
+                        </div>
+                    </form>
+                    <form id="reset_form" method="POST" action="">
+                        {% csrf_token %}
                         <div class="popup">
                             <p>Enter your e-mail address and click "send". If your email is registered, a link to
                                 reset your password will be sent.</p>
-                            <label for="email2">E-mail:</label>
-                            <input type="email" id="email2">
-                            <p class="text-error">error</p>
-                            {#                            #TODO!!!!!!#}
-                            {#                            <div class="control-buttons">#}
-                            {#                                <button class="cancel">Cancel</button>#}
-                            {#                                <button class="reset">Send</button>#}
-                            {#                            </div>#}
-                        </div>
+                            {{ reset_form.email.label_tag }}
+                            {{ reset_form.email }}
+                            <p>{{ reset_form.email.errors }}</p>
 
-                        <div class="control-button">
-                            <button class="sign-in-btn" type="submit" value="submit">Sign in</button>
+                            <div class="control-buttons">
+                                <button class="cancel" type="reset">Cancel</button>
+                                <button name= 'send_reset' class="reset" type="submit" form="reset_form">Send</button>
+                            </div>
                         </div>
-                    </form>
                 </div>
             </section>
         </div>

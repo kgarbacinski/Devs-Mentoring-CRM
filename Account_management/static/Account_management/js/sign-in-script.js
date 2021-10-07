@@ -1,4 +1,3 @@
-const signInBtn = document.querySelector('.sign-in-btn')
 const resetLink = document.querySelector('.reset-link')
 const popup = document.querySelector('.popup')
 const resetBtn = document.querySelector('.reset')
