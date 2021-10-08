@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import ListNotes, ListMeetings
+from .views import ListNotes, ListMeetings, ListStudents
 from rest_framework.routers import DefaultRouter
 #
 # router = DefaultRouter()
@@ -12,4 +12,5 @@ urlpatterns = [
 
     path('meetings/', ListMeetings.as_view(), name='meetings'),
     path('notes/', ListNotes.as_view(), name='notes'),
+    path('students/', ListStudents.as_view(), name='students'),
 ]

@@ -5,11 +5,11 @@ from rest_framework.viewsets import ModelViewSet, generics
 from Meetings_calendar.models import Meeting, Note
 from Account_management.models import Mentor, Student
 from .permissions import MentorAllowAllStudentAllowPartial
-from .serializers import NoteSerializer, MeetingsStudentSerializer, MeetingsMentorSerializer
+from .serializers import NoteSerializer, MeetingsStudentSerializer, MeetingsMentorSerializer, StudentsSerializer
 
 
 # Create your views here.
-class ListMeetings (generics.ListAPIView):
+class ListMeetings(generics.ListAPIView):
 
     def get_serializer_class(self):
         user = self.request.user
@@ -26,12 +26,18 @@ class ListMeetings (generics.ListAPIView):
         return Meeting.objects.filter(mentor__user=user).filter(date__month=month)
 
 
-class ListNotes(generics.UpdateAPIView):
+class ListNotes(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
 
     def get_queryset(self):
+        meeting = self.request.GET.get('id')
         user = self.request.user
-        qs = Note.objects.filter(author_id=user)
-        # me = Meeting.objects.filter(student__user=user).filter(meeting__id=qs.meeting)
-        print(qs)
-        return Note.objects.filter(author_id=user)
+        return Note.objects.filter(author_id=user).filter(meeting_id=meeting)
+
+
+class ListStudents(generics.ListAPIView):
+    serializer_class = StudentsSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Student.objects.filter(mentor__user__username=user)

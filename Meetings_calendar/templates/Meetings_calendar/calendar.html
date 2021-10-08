@@ -26,12 +26,12 @@
                 <div class="modal-body">
                     <form>
                         <div class="selection-area">
-                            <label for="date">Day:</label>
-                            <input type="date" id="date" min="">
-                            <label for="time">Hour:</label>
-                            <input type="time" name="" id="time">
-                            <label for="student">Student:</label>
-                            <select id="student">
+                            <label for="add-event-date">Day:</label>
+                            <input type="date" id="add-event-date" min="">
+                            <label for="add-event-time">Hour:</label>
+                            <input type="time" name="" id="add-event-time">
+                            <label for="add-event-student">Student:</label>
+                            <select id="add-event-student">
                                 <option id="0" selected disabled>-- choose --</option>
                                 <option id="1">Test Testowy</option>
                                 <option id="2">Teścior Teściewicz</option>
@@ -67,35 +67,35 @@
                 </div>
                 <div class="modal-body">
                     <div class="preview-event">
-                        <span class="view-time" id="test-12">11:00</span><span class="viwe-student">Student Name</span>
-                        <p class="view-note">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio
-                            hic quod tenetur. Quia, fuga eius? Sequi assumenda dolor dolore culpa
-                            consectetur deleniti maxime ab eveniet non minus fugit, sed iusto?</p>
-                        <button class="edit-event-btn">Edit</button>
+                        <span class="view-time" id="note-hour"></span><span class="view-student">{% if user.is_authenticated %}{{ user.first_name }} {{ user.last_name }}{% endif %}</span>
+                        <textarea class="view-note" id="view-note" rows="5" disabled="disabled"></textarea>
+                        <button onclick="editNote(this.id)" class="edit-event-btn">Edit</button>
                     </div>
 
 
                     <form class="editing-form">
+                        {% if request.user|has_group:"Mentor" %}
                         <div class="selection-area">
-                            <label for="date">Day:</label>
-                            <input type="date" id="date" min="">
-                            <label for="time">Hour:</label>
-                            <input type="time" name="" id="time">
-                            <label for="student">Student:</label>
-                            <select id="student">
+                            <label for="edit-event-date">Day:</label>
+                            <input type="date" id="edit-event-date" min="">
+                            <label for="edit-event-time">Hour:</label>
+                            <input type="time" name="" id="edit-event-time">
+                            <label for="edit-event-student">Student:</label>
+                            <select id="edit-event-student">
                                 <option id="0" selected disabled>-- choose --</option>
-                                <option id="1">Test Testowy</option>
-                                <option id="2">Teścior Teściewicz</option>
-                                <option id="3">Testówka Testująca</option>
+{#                                <option id="1">Test Testowy</option>#}
+{#                                <option id="2">Teścior Teściewicz</option>#}
+{#                                <option id="3">Testówka Testująca</option>#}
                             </select>
                         </div>
+                        {% endif %}
                         <div class="note-area">
                             <div class="note">
                                 <label for="note">Note:</label>
-                                <textarea id="note" cols="" rows="5"></textarea>
+                                <textarea id="edit-note" cols="" rows="5"></textarea>
                             </div>
                             <div class="control-buttons">
-                                <button class="edit-cancel-event-btn" id="edit-cancel-event-btn" data-dismiss="modal">
+                                <button class="edit-cancel-event-btn" id="edit-cancel-event-btn" data-bs-dismiss="modal">
                                     Cancel
                                 </button>
                                 <button class="edit-save-event-btn" id="edit-save-event-btn">Save</button>
@@ -104,6 +104,7 @@
                         </div>
 
                     </form>
+
                 </div>
                 <div class="modal-footer">
                     <span>Delete event:</span>

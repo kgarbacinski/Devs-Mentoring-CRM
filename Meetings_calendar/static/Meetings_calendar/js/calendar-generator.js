@@ -21,7 +21,6 @@
 // ];
 
 
-
 let today = new Date(),
     currentMonth = today.getMonth(),
     currentYear = today.getFullYear();
@@ -128,7 +127,7 @@ function showCalendar(month, year) {
 
 
 function get_all_meetings(args) {
-    // console.log(get_base_url('/api/meetings/?date=' + (currentMonth + 1)))
+    console.log(get_base_url('/api/meetings/?date=' + (currentMonth + 1)))
     fetch(get_base_url('/api/meetings/?date=' + (currentMonth + 1)))
         .then(resp => {
             return resp.json()
@@ -150,9 +149,9 @@ function viewEvents(data, args) {
     let where = document.querySelectorAll('#days > li > div')
     let date = 1;
     where.forEach(elem => {
-        if(sessionStorage.getItem('isMentor') === 'true'){
+        if (sessionStorage.getItem('isMentor') === 'true') {
             elem.innerHTML = `<span>${date}</span><button type="button" class="add-event-btn" data-bs-toggle="modal" data-bs-target="#addEventModal"><i class="bi bi-calendar-plus"></i></button>`
-        }else {
+        } else {
             elem.innerHTML = `<span>${date}</span>`
         }
 
@@ -163,52 +162,18 @@ function viewEvents(data, args) {
                 day = parseInt(whole_ddate[0]);
 
             if (year === args[0] && month === args[1] && day === date) {
-                console.log(elem.parentElement)
-                let event = createElement("div", elem.parentElement, {className: "ev", id: meeting.id}),
-                    eventDesc = createElement("div", event, {className: "ev-desc"});
-                // eventDesc.innerHTML = `<span class="hour">${item.content}</span><a href="${item.source}">Student Name</a>
-                // `;
-                // MU: zakomentowałam żebyście widzieli jak było oryginalnie - można wykorzystać ${item.source} żeby umieszczać coś, może do notatki, tylko ona nie moze byc widoczna na widoku głównym - dopiero po kliknięciu chyba niech sie zaczytuje do modala edycyjnego?...
-                eventDesc.innerHTML = `<span class="hour">${meeting.hour}</span><span>${meeting.person}</span>
-                `;
-                // event.onclick = () => alert(eventDesc.textContent);
+                let event = createElement("button", elem.parentElement, {className: "ev", id: `${meeting.id}:${meeting.date}`});
                 event.setAttribute("data-bs-toggle", "modal")
                 event.setAttribute("data-bs-target", "#editEventModal")
                 event.setAttribute("type", "button")
+                event.setAttribute('onclick', 'showNote(this.id)')
+                let eventDesc = createElement("div", event, {className: "ev-desc"});
+                eventDesc.innerHTML = `<span class="hour">${meeting.hour}</span><span>${meeting.person}</span>`;
+
             }
         })
-          date ++
+        date++
     })
-
-    // if(sessionStorage.getItem('isMentor') === 'true'){
-    //     li.forEach(elem => {
-    //         elem.innerHTML = `<span>${date}</span><button type="button" class="add-event-btn" data-bs-toggle="modal" data-bs-target="#addEventModal"><i class="bi bi-calendar-plus"></i></button>`
-    //     date ++
-    // })
-    // }else {
-    //     li.forEach(elem => {
-    //         elem.innerHTML = `<span>${date}</span>`
-    //     date ++
-    // })
-    // }
-
-
-    // return (
-    //     data &&
-    //     data.map((item) => {
-    //         // console.log(sessionStorage.getItem('isMentor'))
-    //         sessionStorage.setItem('isMentor', item.isMentor);
-    //         let date = item.date.split("-"),
-    //             year = parseInt(date[2]),
-    //             month = parseInt(date[1]) -1,
-    //             day = parseInt(date[0]);
-                // console.log(year + ' ' + month + ' ' + day)
-            // console.log(item)
-
-
-
-    //     })
-    // );
 }
 
 // next month
@@ -226,7 +191,6 @@ function prev() {
 }
 
 // check how many days in a month code from
-// https://dzone.com/articles/determining-number-days-month
 function daysInMonth(iMonth, iYear) {
     return 32 - new Date(iYear, iMonth, 32).getDate();
 }
@@ -239,6 +203,10 @@ function createElement(element, elem, args) {
     return d;
 }
 
+//TODO finish function for creating meeting in proper order
+function createMeeting() {
+
+}
 
 // MU: functions for editing modal
 const editEventBtn = document.querySelector('.edit-event-btn')
@@ -256,6 +224,52 @@ const closeForm = () => {
     editingForm.style.display = 'none'
 }
 
+
 editEventBtn.addEventListener('click', showEditForm)
 cancelEventBtn.addEventListener('click', closeForm)
 
+//RG functions
+
+
+function showNote(id_obj) {
+    let view_note = document.querySelector('#view-note');
+    let note_hour = document.querySelector('#note-hour');
+    let note_date = document.querySelector('#edit-event-date');
+
+    fetch(get_base_url('/api/notes/?id=' + id_obj.split(':')[0]))
+        .then(resp => {
+            return resp.json()
+        })
+        .then(data => {
+            console.log(data[0].date)
+            if (data.length > 0) {
+                note_hour.innerHTML = data[0].hour
+                view_note.innerHTML = data[0].text
+                document.querySelector('.edit-event-btn').setAttribute('id', id_obj)
+            } else {
+                note_hour.innerHTML = ""
+                view_note.innerHTML = ""
+            }
+        })
+}
+
+function editNote(id_obj) {
+    console.log(id_obj);
+    document.querySelector('#edit-note').innerHTML = document.querySelector('#view-note').innerHTML;
+    document.querySelector('#edit-event-time').value = document.querySelector('#note-hour').innerHTML
+
+    fetch(get_base_url('/api/students/'))
+        .then(resp => {
+            return resp.json()
+        })
+        .then(data => {
+            console.log(data)
+            data.forEach(value => {
+                let elem = document.querySelector('#edit-event-student')
+                let option = document.createElement('option');
+                // option.setAttribute('selected', 'selected')
+                option.innerHTML = value.student;
+                elem.appendChild(option)
+            })
+        })
+}

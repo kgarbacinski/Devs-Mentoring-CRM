@@ -434,7 +434,10 @@ main .edit-event .editing-form {
 .empty {
   color: transparent;
 }
-
+main button.ev {
+    text-align: left;
+    width: 100%;
+}
 @-webkit-keyframes moveUp {
   0% {
     top: 45px;
