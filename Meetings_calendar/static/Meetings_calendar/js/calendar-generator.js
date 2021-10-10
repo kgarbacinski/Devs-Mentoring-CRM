@@ -157,12 +157,15 @@ function viewEvents(data, args) {
 
         data.forEach(meeting => {
             let whole_ddate = meeting.date.split('-'),
-                year = parseInt(whole_ddate[2]),
+                year = parseInt(whole_ddate[0]),
                 month = parseInt(whole_ddate[1]),
-                day = parseInt(whole_ddate[0]);
+                day = parseInt(whole_ddate[2]);
 
             if (year === args[0] && month === args[1] && day === date) {
-                let event = createElement("button", elem.parentElement, {className: "ev", id: `${meeting.id}:${meeting.date}`});
+                let event = createElement("button", elem.parentElement, {
+                    className: "ev",
+                    id: `${meeting.id};${meeting.date};${meeting.hour}`
+                });
                 event.setAttribute("data-bs-toggle", "modal")
                 event.setAttribute("data-bs-target", "#editEventModal")
                 event.setAttribute("type", "button")
@@ -232,20 +235,19 @@ cancelEventBtn.addEventListener('click', closeForm)
 
 
 function showNote(id_obj) {
+    // console.log(id_obj)
     let view_note = document.querySelector('#view-note');
     let note_hour = document.querySelector('#note-hour');
-    let note_date = document.querySelector('#edit-event-date');
-
-    fetch(get_base_url('/api/notes/?id=' + id_obj.split(':')[0]))
+    fetch(get_base_url('/api/notes/?id=' + id_obj.split(';')[0]))
         .then(resp => {
             return resp.json()
         })
         .then(data => {
-            console.log(data[0].date)
+            document.querySelector('.edit-event-btn').setAttribute('id', id_obj)
             if (data.length > 0) {
                 note_hour.innerHTML = data[0].hour
                 view_note.innerHTML = data[0].text
-                document.querySelector('.edit-event-btn').setAttribute('id', id_obj)
+
             } else {
                 note_hour.innerHTML = ""
                 view_note.innerHTML = ""
@@ -254,22 +256,54 @@ function showNote(id_obj) {
 }
 
 function editNote(id_obj) {
-    console.log(id_obj);
+    console.log(id_obj)
     document.querySelector('#edit-note').innerHTML = document.querySelector('#view-note').innerHTML;
-    document.querySelector('#edit-event-time').value = document.querySelector('#note-hour').innerHTML
-
+    document.querySelector('#edit-event-time').value = id_obj.split(';')[2];
+    document.querySelector('#edit-event-date').value = new Date(id_obj.split(';')[1]).toISOString().substr(0, 10)
     fetch(get_base_url('/api/students/'))
         .then(resp => {
             return resp.json()
         })
         .then(data => {
-            console.log(data)
-            data.forEach(value => {
-                let elem = document.querySelector('#edit-event-student')
-                let option = document.createElement('option');
-                // option.setAttribute('selected', 'selected')
-                option.innerHTML = value.student;
-                elem.appendChild(option)
-            })
+            // console.log(data)
+            if (data.length > 0) {
+                data.forEach(value => {
+                    let elem = document.querySelector('#edit-event-student')
+                    let option = document.createElement('option');
+                    // option.setAttribute('selected', 'selected')
+                    option.innerHTML = value.student;
+                    elem.appendChild(option)
+                })
+
+            }
         })
+}
+
+function saveNote() {
+    let meeting_data = document.querySelector('.edit-event-btn').id
+    let hour = document.querySelector('#edit-event-time').value;
+    let date = document.querySelector('#edit-event-date').value;
+    let note = document.querySelector('#edit-note').value;
+    console.log(date)
+    let url = get_base_url('/api/meeting-edit/' + meeting_data.split(';')[0])
+    fetch(url, {
+
+        // Adding method type
+        method: "POST",
+
+        // Adding body or contents to send
+        body: JSON.stringify({
+            id: '4',
+            date: '2021.10.07T15:30:00Z',
+            mentor: '1',
+            student: '2'
+        }),
+
+        // Adding headers to the request
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+        .then(response => response.json())
+        .then(json => console.log(json));
 }

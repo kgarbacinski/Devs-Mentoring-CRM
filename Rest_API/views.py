@@ -1,11 +1,14 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from rest_framework import permissions
 from rest_framework.generics import get_object_or_404
 from rest_framework.viewsets import ModelViewSet, generics
 from Meetings_calendar.models import Meeting, Note
 from Account_management.models import Mentor, Student
-from .permissions import MentorAllowAllStudentAllowPartial
-from .serializers import NoteSerializer, MeetingsStudentSerializer, MeetingsMentorSerializer, StudentsSerializer
+from . import serializers
+from .permissions import MentorCreate, MentorAllowAllStudentAllowPartial
+from .serializers import NoteSerializer, MeetingsStudentSerializer, MeetingsMentorSerializer, StudentsSerializer, \
+    AddMeetingSerializer, AddNoteSerializer, AllMeetingSerializer
 
 
 # Create your views here.
@@ -26,13 +29,64 @@ class ListMeetings(generics.ListAPIView):
         return Meeting.objects.filter(mentor__user=user).filter(date__month=month)
 
 
-class ListNotes(generics.ListCreateAPIView):
+class ListAllMeetings(generics.ListAPIView):
+    serializer_class = AllMeetingSerializer
+
+    def get_queryset(self):
+        month = self.request.GET.get('date')
+        return Meeting.objects.filter(date__month=month).order_by('mentor', 'date')
+
+
+class AddMeeting(generics.CreateAPIView):
+    permission_classes = [MentorCreate]
+    serializer_class = AddMeetingSerializer
+
+    def get_permissions(self):
+        return [permission() for permission in self.permission_classes]
+
+    def check_permissions(self, request):
+        for permission in self.get_permissions():
+            if not permission.has_permission(request, self):
+                self.permission_denied(request)
+
+
+class EditDeleteMeeting(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [MentorCreate]
+    serializer_class = AddMeetingSerializer
+    # queryset = Meeting.objects.all()
+
+    def get_permissions(self):
+        return [permission() for permission in self.permission_classes]
+
+    def check_permissions(self, request):
+        for permission in self.get_permissions():
+            if not permission.has_permission(request, self):
+                self.permission_denied(request)
+
+    def get_queryset(self):
+        user = self.request.user
+        return Meeting.objects.filter(mentor__user=user)
+
+
+class ListNotes(generics.ListAPIView):
     serializer_class = NoteSerializer
 
     def get_queryset(self):
         meeting = self.request.GET.get('id')
         user = self.request.user
         return Note.objects.filter(author_id=user).filter(meeting_id=meeting)
+
+
+class AddNote(generics.CreateAPIView):
+    serializer_class = AddNoteSerializer
+
+
+class EditDeleteNote(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AddNoteSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Note.objects.filter(author=user)
 
 
 class ListStudents(generics.ListAPIView):
