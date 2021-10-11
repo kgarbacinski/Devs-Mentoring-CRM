@@ -108,10 +108,10 @@
                         <div class="splide__track">
 
                             <ul class="splide__list">
-                                {% for subject in subjects %}
+{#                                {% for subtopic in subtopics %}#}
 {#                                    {% for subtopic in subtopics %}#}
                                 <li class="splide__slide">
-                                    <a href="{% url "subtopic" subject.programming_path.slug subject.slug  %}" id="category-link">
+{#                                    <a href="{% url "subtopic" subtopic.subject.programming_path.slug subtopic.subject.slug  %}" id="category-link">#}
                                         <div class="card categories mx-4 my-2 text-center">
                                             <div class="card-body glass">
                                                 <h5 class="category-name">{{ subject.name }}</h5>
@@ -119,8 +119,7 @@
                                         </div>
                                     </a>
                                 </li>
-{#                                    {% endfor %}#}
-                                                                {% endfor %}
+{#                                                                {% endfor %}#}
 
 
                             {% block files_content %}

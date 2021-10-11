@@ -29,7 +29,11 @@ class Subject(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        index = self.name.find("_")
+        if index:
+            self.slug = slugify(self.name[:index])
+        else:
+            self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
 
@@ -38,6 +42,7 @@ class SubTopic(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField()
     subject = models.OneToOneField(Subject, on_delete=models.PROTECT)
+    description = models.TextField()
 
     def __str__(self) -> str:
         return self.name
