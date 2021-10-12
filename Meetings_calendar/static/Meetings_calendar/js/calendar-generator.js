@@ -284,7 +284,9 @@ function saveNote() {
     let hour = document.querySelector('#edit-event-time').value;
     let date = document.querySelector('#edit-event-date').value;
     let note = document.querySelector('#edit-note').value;
-    console.log(date)
+    // console.log(date)
+    let dupa = new Date('2021-10-07:15:30')
+    console.log(dupa)
     let url = get_base_url('/api/meeting-edit/' + meeting_data.split(';')[0])
     fetch(url, {
 
@@ -293,10 +295,10 @@ function saveNote() {
 
         // Adding body or contents to send
         body: JSON.stringify({
-            id: '4',
-            date: '2021.10.07T15:30:00Z',
-            mentor: '1',
-            student: '2'
+            id: 4,
+            date: dupa,
+            mentor: 1,
+            student: 1,
         }),
 
         // Adding headers to the request
@@ -306,4 +308,56 @@ function saveNote() {
     })
         .then(response => response.json())
         .then(json => console.log(json));
+}
+
+// function newMeeting(){
+//     let date_new = new Date()
+//     let mentor_a = 4
+//     let student_a = 3
+//
+//     const url = 'http://127.0.0.1:8000/api/meeting-add/';
+//
+//     const meeting = {
+//     date: date_new,
+//     mentor: mentor_a,
+//     student: student_a
+// };
+//
+// // request options
+// const options = {
+//     method: 'POST',
+//     body: JSON.stringify(meeting),
+//     headers: {
+//         'Content-Type': 'application/json'
+//     }
+// }
+//
+// // send POST request
+// fetch(url, options)
+//     .then(res => res.json())
+//     .then(res => console.log(res));
+// }
+
+function newMeeting() {
+    let formData = new FormData();
+
+
+    let date_new = new Date()
+    date_new.toLocaleString()
+    let mentor_a = 4
+    let student_a = 3
+    formData.append('date', '12.10.2021 10:00');
+    formData.append('mentor', '4');
+    formData.append('student', '3');
+
+    fetch("http://127.0.0.1:8000/api/meeting-add/",
+        {
+            method: "post",
+            mode : 'same-origin',
+            credentials: 'same-origin',
+            contentType: 'application/json',
+            body: formData,
+        }).catch((error => {
+            console.log(error);
+    }));
 }

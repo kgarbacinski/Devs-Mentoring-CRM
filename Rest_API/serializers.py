@@ -92,3 +92,8 @@ class AddNoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
         fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['meeting'] = instance.meeting.id
+        return representation
