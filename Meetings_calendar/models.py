@@ -20,15 +20,6 @@ class Note(models.Model):
     title = models.CharField(max_length=50, null=True, blank=True)
     text = models.TextField()
 
-    # def validate_unique(self, *args, **kwargs):
-    #     super(Note, self).validate_unique(*args, **kwargs)
-    #
-    #     if self.__class__.objects.filter(meeting=self.meeting, author=self.author).exists():
-    #         raise ValidationError(
-    #             message='MyModel with this (fk, my_field) already exists.',
-    #             code='unique_together',
-    #         )
-
     class Meta:
         unique_together = [['meeting', 'author']]
 

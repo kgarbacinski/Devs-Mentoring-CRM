@@ -31,18 +31,9 @@
                             <label for="add-event-time">Hour:</label>
                             <input type="time" name="" id="add-event-time">
                             <label for="add-event-student">Student:</label>
-                            <select id="add-event-student">
-                                <option id="0" selected disabled>-- choose --</option>
-                                <option id="1">Test Testowy</option>
-                                <option id="2">Teścior Teściewicz</option>
-                                <option id="3">Testówka Testująca</option>
-                            </select>
+                            <select id="add-event-student" onchange="studentOncChange(this)"></select>
                         </div>
                         <div class="note-area">
-                            <div class="note">
-                                <label for="note">Note:</label>
-                                <textarea id="note" cols="" rows="5"></textarea>
-                            </div>
                             <button onclick="newMeeting()" class="save-event-btn" id="save-event-btn">Add</button>
                         </div>
 
@@ -69,7 +60,7 @@
                     <div class="preview-event">
                         <span class="view-time" id="note-hour"></span><span class="view-student">{% if user.is_authenticated %}{{ user.first_name }} {{ user.last_name }}{% endif %}</span>
                         <textarea class="view-note" id="view-note" rows="5" disabled="disabled"></textarea>
-                        <button onclick="editNote(this.id)" class="edit-event-btn">Edit</button>
+                        <button onclick="edit_Note(this.id)" class="edit-event-btn">Edit</button>
                     </div>
 
 
@@ -81,18 +72,13 @@
                             <label for="edit-event-time">Hour:</label>
                             <input type="time" name="" id="edit-event-time">
                             <label for="edit-event-student">Student:</label>
-                            <select id="edit-event-student">
-                                <option id="0" selected disabled>-- choose --</option>
-{#                                <option id="1">Test Testowy</option>#}
-{#                                <option id="2">Teścior Teściewicz</option>#}
-{#                                <option id="3">Testówka Testująca</option>#}
-                            </select>
+                            <select id="edit-event-student" onchange="studentOncChange(this)"></select>
                         </div>
                         {% endif %}
                         <div class="note-area">
                             <div class="note">
-                                <label for="note">Note:</label>
-                                <textarea id="edit-note" cols="" rows="5"></textarea>
+                                <label for="edit-event-note">Note:</label>
+                                <textarea id="edit-event-note" cols="" rows="5"></textarea>
                             </div>
                             <div class="control-buttons">
                                 <button class="edit-cancel-event-btn" id="edit-cancel-event-btn" data-bs-dismiss="modal">
@@ -107,8 +93,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <span>Delete event:</span>
-                    <button type="button" class="delete-event-btn" id="delete-event-btn"><i
+                    <span id="delete-event-txt"></span>
+                    <button type="button" onclick="deleteEvent(this.value)" class="delete-event-btn" id="delete-event-btn"><i
                             class="bi bi-trash-fill"></i></button>
                 </div>
             </div>
@@ -121,7 +107,15 @@
     <script src="{% static 'Meetings_calendar/js/calendar-generator.js' %}"></script>
     {% if request.user|has_group:"Mentor" %}
         <script>sessionStorage.setItem("isMentor", 'true');</script>
+        <script>sessionStorage.setItem("userId", "{{ user.id }}");</script>
+        <script>sessionStorage.setItem("mentorId", "{{ user.mentor.id }}");</script>
     {% else %}
         <script>sessionStorage.setItem("isMentor", 'false');</script>
+        <script>sessionStorage.setItem("userId", "{{ user.id }}");</script>
+        <script>sessionStorage.setItem("mentorId", "{{ user.student.id }}");</script>
     {% endif %}
 {% endblock script %}
+
+
+
+

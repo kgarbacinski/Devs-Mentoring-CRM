@@ -17,6 +17,7 @@ class NoteSerializer(serializers.ModelSerializer):
         representation['hour'] = instance.meeting.date.strftime("%H:%M")
         return representation
 
+
 class AllMeetingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meeting
@@ -30,6 +31,7 @@ class AllMeetingSerializer(serializers.ModelSerializer):
         representation['hour'] = instance.date.strftime("%H:%M")
         return representation
 
+
 class MeetingsMentorSerializer(serializers.ModelSerializer):
     # notes = NoteSerializer(many=True)
     # notes = serializers.PrimaryKeyRelatedField(many=True, read_only=False, queryset=Note.objects.all())
@@ -41,8 +43,8 @@ class MeetingsMentorSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['person'] = instance.student.__str__()
-        representation['mentor'] = instance.mentor.user_id
-        representation['student'] = instance.student.user_id
+        representation['mentor'] = instance.mentor.id
+        representation['student'] = instance.student.id
         representation['date'] = instance.date.strftime("%Y-%m-%d")
         representation['hour'] = instance.date.strftime("%H:%M")
         return representation
@@ -59,8 +61,8 @@ class MeetingsStudentSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['person'] = instance.mentor.__str__()
-        representation['mentor'] = instance.mentor.user.id
-        representation['student'] = instance.student.user.id
+        representation['mentor'] = instance.mentor.id
+        representation['student'] = instance.student.id
         representation['date'] = instance.date.strftime("%Y-%m-%d")
         representation['hour'] = instance.date.strftime("%H:%M")
         return representation
@@ -97,3 +99,17 @@ class AddNoteSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation['meeting'] = instance.meeting.id
         return representation
+
+
+class GetMeetingSerializer(serializers.ModelSerializer):
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['date'] = instance.date.strftime("%Y-%m-%d")
+        representation['hour'] = instance.date.strftime("%H:%M")
+        return representation
+
+
+    class Meta:
+        model = Meeting
+        fields = '__all__'
