@@ -1,0 +1,717 @@
+{% load user_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Mentoring CRM</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spartan:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'Files_organizer/css/style.css' %}">
+    <!-- carousel splide js -->
+    {#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">#}
+    {#    <link rel="stylesheet" href="css/files-start.css">#}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
+    <link rel="stylesheet" href="{% static 'Files_organizer/css/files-start.css' %}">
+</head>
+
+<body>
+
+
+<div class="wrapper">
+    <input type="checkbox" id="menu-toggle" class="d-none">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3 class="sidebar-title"><span class="title-span-one">Devs Mentoring</span> <span
+                    class="title-span-two">CRM</span></h3>
+            <label for="menu-toggle" class="menu-toggle"><i class="bi bi-list"></i></label>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+
+                <li>
+                    <a href="">
+                        <span><i class="bi bi-house" title="Home"></i></span>
+                        <span class="li-item">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span><i class="bi bi-calendar-check" title="Calendar"></i></span>
+                        <span class="li-item">Calendar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span><i class="bi bi-folder" title="Storage"></i></span>
+                        <span class="li-item">Storage</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span><i class="bi bi-braces" title="Exercises"></i></span>
+                        <span class="li-item">Exercises</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span><i class="bi bi-people" title="Users"></i></span>
+                        <span class="li-item">Users</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <span><i class="bi bi-credit-card-2-back" title="Payments"></i></span>
+                        <span class="li-item">Payments</span>
+                    </a>
+                </li>
+
+            </ul>
+
+            <div class="footer">
+                <div class="social-icons">
+                    <a href="https://www.devs-mentoring.pl/" title="devs-mentoring.pl"><i
+                            class="bi bi-globe2"></i></a>
+                    <a href="https://www.facebook.com/devs.mentoring" title="fb/devs.mentoring"><i
+                            class="bi bi-facebook"></i></a>
+                </div>
+                <p>Devs Mentoring &copy <span class="year"></span></p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="main-content">
+
+        <header>
+            <button class="log-out" title="log-out"><i class="bi bi-power"></i></button>
+            <p class="username m-0">Test Testowy</p>
+            <div class="avatar"><img id="user-avatar" src="img/avatar.jpg" alt="User avatar"></div>
+        </header>
+
+        <main>
+
+            <img class="icon-title" src="img/icon-wing.svg" alt="">
+            <h2 class="page-title">Programming courses</h2>
+            <hr>
+
+            <div class="files-content">
+
+                <div class="splide">
+                    <div class="splide__track">
+
+                        <ul class="splide__list">
+
+                            <li class="splide__slide">
+                                <a href="#" id="category-link">
+                                    <div class="card categories mx-4 my-2 text-center">
+                                        <div class="card-body glass">
+                                            <h5 class="category-name">Kategoria o przykładowym tytule</h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="splide__slide">
+                                <a href="#" id="category-link">
+                                    <div class="card categories mx-4 my-2 text-center">
+                                        <div class="card-body glass">
+                                            <h5 class="category-name">Kategoria o przykładowym tytule</h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="splide__slide">
+                                <a href="#" id="category-link">
+                                    <div class="card categories mx-4 my-2 text-center">
+                                        <div class="card-body glass">
+                                            <h5 class="category-name">Kategoria o przykładowym tytule</h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="splide__slide">
+                                <a href="#" id="category-link">
+                                    <div class="card categories mx-4 my-2 text-center">
+                                        <div class="card-body glass">
+                                            <h5 class="category-name">Kategoria o przykładowym tytule</h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="splide__slide">
+                                <a href="#" id="category-link">
+                                    <div class="card categories mx-4 my-2 text-center">
+                                        <div class="card-body glass">
+                                            <h5 class="category-name">Kategoria o przykładowym tytule</h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="splide__slide">
+                                <a href="#" id="category-link">
+                                    <div class="card categories mx-4 my-2 text-center">
+                                        <div class="card-body glass">
+                                            <h5 class="category-name">Kategoria o przykładowym tytule</h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="splide__slide">
+                                <a href="#" id="category-link">
+                                    <div class="card categories mx-4 my-2 text-center">
+                                        <div class="card-body glass">
+                                            <h5 class="category-name">Kategoria o przykładowym tytule</h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="splide__slide">
+                                <a href="#" id="category-link">
+                                    <div class="card categories mx-4 my-2 text-center">
+                                        <div class="card-body glass">
+                                            <h5 class="category-name">Kategoria o przykładowym tytule</h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+
+                <div class="row themes p-0">
+
+                    <h5 class="category-name py-2">Kategoria o przykładowym tytule</h5>
+
+                    <div class="col-sm-12 col-md-8 p-0">
+                        <div class="themes-box">
+                            <ol class="themes-box-list">
+                                {% for subtopic in subtopics %}
+                                    {% if request.user|has_group:"Mentor" or  request.user.is_superuser %}
+
+                                    <div class="themes-box-list-item">
+                                        <li>
+                                            <a href="#" class="theme-name available">{{ subtopic.name }}
+                                                <span class="theme-btn">
+                                                    <i class="bi bi-caret-right-fill"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <button type="button" class="share-btn" data-bs-toggle="modal"
+                                                data-bs-target="#Modal"><i class="bi bi-share"></i></button>
+                                    </div>
+
+                                    {% elif request.user|has_access:subtopic  %}
+                                        <div class="themes-box-list-item">
+                                        <li>
+                                            <a href="{% url 'documents' subtopic.id %}" class="theme-name available">{{ subtopic.name }}
+                                                <span class="theme-btn">
+                                                    <i class="bi bi-caret-right-fill"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        </div>
+                                    {% else %}
+                                        <div class="themes-box-list-item">
+                                            <!-- temat zablokowany musi otrzymywać na <li> klasę blocked, żeby pojawiła się kłudka.
+                                                Zablokowany również nie powinien przechowywać linku w odnośniku...
+                                                Zabkokowany nie może posiadać klasy available w <a> żeby nie uruchaniać popupu-->
+                                            <li class="blocked">
+                                                <a href="#" class="theme-name">{{ subtopic.name }}
+                                                    <span class="theme-btn">
+                                                    <i class="bi bi-caret-right-fill"></i>
+                                                </span>
+                                                </a>
+                                            </li>
+                                        </div>
+
+
+
+                                    {% endif %}
+                                {% endfor %}
+
+                                {#                                    <div class="themes-box-list-item">#}
+                                {#                                        <li>#}
+                                {#                                            <a href="#" class="theme-name available">Rodział przykładowy temat jakiśtam#}
+                                {#                                                <span class="theme-btn">#}
+                                {#                                                    <i class="bi bi-caret-right-fill"></i>#}
+                                {#                                                </span>#}
+                                {#                                            </a>#}
+                                {#                                        </li>#}
+                                {#                                        <button type="button" class="share-btn" data-bs-toggle="modal" data-bs-target="#Modal"><i class="bi bi-share"></i></button>#}
+                                {#                                    </div>#}
+                                {#                                    <div class="themes-box-list-item">#}
+                                {#                                        <li>#}
+                                {#                                            <a href="#" class="theme-name available">Rodział przykładowy temat jakiśtam#}
+                                {#                                                <span class="theme-btn">#}
+                                {#                                                    <i class="bi bi-caret-right-fill"></i>#}
+                                {#                                                </span>#}
+                                {#                                            </a>#}
+                                {#                                        </li>#}
+                                {#                                        <button type="button" class="share-btn" data-bs-toggle="modal" data-bs-target="#Modal"><i class="bi bi-share"></i></button>#}
+                                {#                                    </div>#}
+                                {#                                    <div class="themes-box-list-item">#}
+                                {#                                        <li>#}
+                                {#                                            <a href="#" class="theme-name available">Rodział przykładowy temat jakiśtam#}
+                                {#                                                <span class="theme-btn">#}
+                                {#                                                    <i class="bi bi-caret-right-fill"></i>#}
+                                {#                                                </span>#}
+                                {#                                            </a>#}
+                                {#                                        </li>#}
+                                {#                                        <button type="button" class="share-btn" data-bs-toggle="modal" data-bs-target="#Modal"><i class="bi bi-share"></i></button>#}
+                                {#                                    </div>#}
+                                {#                                    <div class="themes-box-list-item">#}
+                                {#                                        <li>#}
+                                {#                                            <a href="#" class="theme-name available">Rodział przykładowy temat jakiśtam#}
+                                {#                                                <span class="theme-btn">#}
+                                {#                                                    <i class="bi bi-caret-right-fill"></i>#}
+                                {#                                                </span>#}
+                                {#                                            </a>#}
+                                {#                                        </li>#}
+                                {#                                        <button type="button" class="share-btn" data-bs-toggle="modal" data-bs-target="#Modal"><i class="bi bi-share"></i></button>#}
+                                {#                                    </div>#}
+                                {#                                    <div class="themes-box-list-item">#}
+                                {#                                        <li>#}
+                                {#                                            <a href="#" class="theme-name available">Rodział przykładowy temat jakiśtam#}
+                                {#                                                <span class="theme-btn">#}
+                                {#                                                    <i class="bi bi-caret-right-fill"></i>#}
+                                {#                                                </span>#}
+                                {#                                            </a>#}
+                                {#                                        </li>#}
+                                {#                                        <button type="button" class="share-btn" data-bs-toggle="modal" data-bs-target="#Modal"><i class="bi bi-share"></i></button>#}
+                                {#                                    </div>#}
+                                {#                                    <div class="themes-box-list-item">#}
+                                {#                                        <li class="blocked">#}
+                                {#                                            <a href="#" class="theme-name">Rodział przykładowy temat jakiśtam#}
+                                {#                                                <span class="theme-btn">#}
+                                {#                                                    <i class="bi bi-caret-right-fill"></i>#}
+                                {#                                                </span>#}
+                                {#                                            </a>#}
+                                {#                                        </li>#}
+                                {#                                        <button type="button" class="share-btn" data-bs-toggle="modal" data-bs-target="#Modal"><i class="bi bi-share"></i></button>#}
+                                {#                                    </div>#}
+                                {#                                    <div class="themes-box-list-item">#}
+                                {#                                        <li>#}
+                                {#                                            <a href="#" class="theme-name available">Rodział przykładowy temat jakiśtam#}
+                                {#                                                <span class="theme-btn">#}
+                                {#                                                    <i class="bi bi-caret-right-fill"></i>#}
+                                {#                                                </span>#}
+                                {#                                            </a>#}
+                                {#                                        </li>#}
+                                {#                                        <button type="button" class="share-btn" data-bs-toggle="modal"#}
+                                {#                                            data-bs-target="#Modal"><i class="bi bi-share"></i></button>#}
+                                {#                                    </div>#}
+                                {##}
+                                {#                                    <div class="themes-box-list-item">#}
+                                {#                                        <!-- temat zablokowany musi otrzymywać na <li> klasę blocked, żeby pojawiła się kłudka.#}
+                                {#                                            Zablokowany również nie powinien przechowywać linku w odnośniku... #}
+                                {#                                            Zabkokowany nie może posiadać klasy available w <a> żeby nie uruchaniać popupu-->#}
+                                {#                                        <li class="blocked">#}
+                                {#                                            <a href="#" class="theme-name">Rodział przykładowy temat jakiśtam#}
+                                {#                                                <span class="theme-btn">#}
+                                {#                                                    <i class="bi bi-caret-right-fill"></i>#}
+                                {#                                                </span>#}
+                                {#                                            </a>#}
+                                {#                                        </li>#}
+                                {#                                        <button type="button" class="share-btn" data-bs-toggle="modal"#}
+                                {#                                            data-bs-target="#Modal"><i class="bi bi-share"></i></button>#}
+                                {#                                    </div>#}
+                                {#                                </ol>#}
+                                {##}
+                            {% if request.user|has_group:"Mentor" or  request.user.is_superuser %}
+                                <div class="share-all-section">
+                                    <button type="button" class="share-all-btn" data-bs-toggle="modal"
+                                            data-bs-target="#Modal2">Share all themes<i
+                                            class="bi bi-share-fill"></i></button>
+                                </div>
+                            {% endif %}
+                                {##}
+                                {#                            </div>#}
+                                {#                        </div>#}
+
+                                <div class="col-sm-12 col-md-4 p-0">
+                                    <div class="themes-details">
+                                        <h5 class="theme-name"><span class="number">1.</span>Rodział przykładowy temat
+                                            jakiśtam
+                                        </h5>
+                                        <p class="theme-description">Lorem, ipsum dolor sit amet consectetur adipisicing
+                                            elit.
+                                            Magnam dignissimos saepe odio facilis voluptatibus quo sequi dolorem cum
+                                            ducimus
+                                            officiis consectetur earum.</p>
+                                        <div class="files-container">
+                                            <p class="files-container-title">Download resources:</p>
+                                            <ul class="files-container-list">
+                                                <li class="files-container-list-item">
+                                                    <!-- w href umieszczamy ścieżkę do pliku na serwerze. W download podajemy nazwę pod jaką zapisze się plik (najlepiej z rozszerzeniem) -->
+                                                    <a href="img/frontend.jpg" download="front.jpg">
+                                                        <i class="bi bi-file-earmark-arrow-down"></i><span
+                                                            class="file-name">Przykładowy plik teoria</span>
+                                                    </a>
+                                                </li>
+                                                <li class="files-container-list-item">
+                                                    <a href="img/backend.jpg" download="back.jpg">
+                                                        <i class="bi bi-file-earmark-arrow-down"></i><span
+                                                            class="file-name">Przykładowy plik zadania</span>
+                                                    </a>
+                                                </li>
+                                                <li class="files-container-list-item">
+                                                    <a href="img/java.jpg" download="java.jpg">
+                                                        <i class="bi bi-file-earmark-arrow-down"></i><span
+                                                            class="file-name">Materiały dodatkowe</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="back-section my-4">
+                                            <span class="back-btn"><i class="bi bi-arrow-left"></i> BACK</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- share modal -->
+                                <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog  modal-fullscreen-md-down">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <p class="modal-title" id="ModalLabel">Share theme: <span
+                                                        class="theme-name">Rodział przykładowy temat jakiśtam</span></p>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="shared-for-box">
+                                                    <p>Shared for:</p>
+                                                    <input type="text" class="search-shared-for"
+                                                           placeholder="Search student">
+                                                    <div class="shared-for-student-list">
+                                                        <ul>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Test Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Jan Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Test Nowak
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Jan Nowak
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="sharing-box">
+                                                    <p>Share:</p>
+                                                    <input type="text" class="search-sharing"
+                                                           placeholder="Search student">
+                                                    <div class="sharing-student-list">
+                                                        <ul>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Jan Nowak
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Test Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Test Nowak
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="close-share-btn"
+                                                        data-bs-dismiss="modal">Close
+                                                </button>
+                                                <button type="button" class="save-share-btn">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- share all modal -->
+                                <div class="modal fade" id="Modal2" tabindex="-1" aria-labelledby="ModalLabel2"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-fullscreen-md-down">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <p class="modal-title" id="ModalLabel2">Share all themes in: <span
+                                                        class="category-name">Kategoria o przykładowym tytule</span></p>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="shared-for-box">
+                                                    <p>Shared for:</p>
+                                                    <input type="text" class="search-shared-for"
+                                                           placeholder="Search student">
+                                                    <div class="shared-for-student-list">
+                                                        <ul>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Test Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Jan Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Test Nowak
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="shared-for-student-name">
+                                                                <p class="student-name">Jan Nowak
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-dash-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="sharing-box">
+                                                    <p>Share:</p>
+                                                    <input type="text" class="search-sharing"
+                                                           placeholder="Search student">
+                                                    <div class="sharing-student-list">
+                                                        <ul>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Jan Nowak
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Test Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Adam Kowalski
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                            <li class="sharing-student-name">
+                                                                <p class="student-name">Test Nowak
+                                                                    <button
+                                                                            class="student-delete"><i
+                                                                            class="bi bi-plus-lg"></i></button>
+                                                                </p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="close-share-btn"
+                                                        data-bs-dismiss="modal">Close
+                                                </button>
+                                                <button type="button" class="save-share-btn">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                </div>
+
+                        </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
+</script>
+<!-- carousel splide js -->
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+<script src={% static 'Files_organizer/js/files.js' %}></script>
+
+</body>
+
+</html>

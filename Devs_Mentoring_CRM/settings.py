@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'Files_organizer.apps.FilesOrganizerConfig',
     'Meetings_calendar.apps.MeetingsCalendarConfig',
     'Rest_API.apps.RestApiConfig',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

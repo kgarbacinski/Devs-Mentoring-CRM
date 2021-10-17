@@ -287,6 +287,12 @@ main .files-content .themes-box-list {
 }
 
 main .files-content .themes-box-list-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   padding: 3px 8px;
   background-color: #fff;
   border-radius: 5px;
@@ -326,6 +332,18 @@ main .files-content .themes-box-list-item li .theme-btn {
   padding: 5px 10px;
 }
 
+main .files-content .themes-box-list-item .share-btn {
+  border: none;
+  padding: 0 10px;
+  background: transparent;
+  -webkit-transition: color .3s;
+  transition: color .3s;
+}
+
+main .files-content .themes-box-list-item .share-btn:hover {
+  color: #dbc110;
+}
+
 main .files-content .themes-box-list-item li.blocked::marker {
   font-weight: bold;
   content: url(../img/lock-fill.svg);
@@ -337,6 +355,34 @@ main .files-content .themes-box-list-item li.blocked .theme-name {
 
 main .files-content .themes-box-list-item li.blocked .theme-btn {
   padding: 5px 10px;
+}
+
+main .files-content .themes-box .share-all-section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+main .files-content .themes-box .share-all-btn {
+  padding: 7.5px 15px;
+  background-color: #dbc110;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+  -webkit-transition: color .3s, background-color .3s;
+  transition: color .3s, background-color .3s;
+}
+
+main .files-content .themes-box .share-all-btn:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+main .files-content .themes-box .share-all-btn i {
+  padding: 0 0 0 10px;
 }
 
 main .files-content .themes-details {
@@ -418,6 +464,133 @@ main .files-content .themes-details .back-section {
 
 main .files-content .themes-details .back-section:hover {
   color: #dbc110;
+}
+
+main .files-content .themes .modal {
+  padding-left: 0;
+}
+
+main .files-content .themes .modal-footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+main .files-content .themes .modal-footer button {
+  padding: 10px 20px;
+  width: 120px;
+  border: none;
+  background: #dbc110;
+  border-radius: 25px;
+  text-transform: uppercase;
+  font-weight: bold;
+  -webkit-transition: color .3s, background-color .3s, border .3s;
+  transition: color .3s, background-color .3s, border .3s;
+  margin: 15px 0;
+}
+
+main .files-content .themes .modal-footer button:hover {
+  color: #fff;
+  background-color: #000;
+}
+
+main .files-content .themes .modal-footer .close-share-btn {
+  background-color: #ccc;
+  border: 1px solid #ccc;
+}
+
+main .files-content .themes .modal .category-name,
+main .files-content .themes .modal .theme-name {
+  display: block;
+  font-weight: bold;
+}
+
+main .files-content .themes .modal .shared-for-box,
+main .files-content .themes .modal .sharing-box {
+  margin: 20px 0;
+}
+
+main .files-content .themes .modal .shared-for-box p,
+main .files-content .themes .modal .sharing-box p {
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+main .files-content .themes .modal .shared-for-box input,
+main .files-content .themes .modal .sharing-box input {
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 100%;
+  border: 1px solid #ccc;
+}
+
+main .files-content .themes .modal .shared-for-student-list,
+main .files-content .themes .modal .sharing-student-list {
+  border: 1px solid #ccc;
+  height: 200px;
+  overflow: scroll;
+}
+
+main .files-content .themes .modal .shared-for-student-list ul,
+main .files-content .themes .modal .sharing-student-list ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+main .files-content .themes .modal .shared-for-student-list ul li,
+main .files-content .themes .modal .sharing-student-list ul li {
+  padding: 5px;
+  font-size: 0.8rem;
+}
+
+main .files-content .themes .modal .shared-for-student-list ul li p,
+main .files-content .themes .modal .sharing-student-list ul li p {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 0;
+  text-transform: none;
+}
+
+main .files-content .themes .modal .shared-for-student-list ul li button,
+main .files-content .themes .modal .sharing-student-list ul li button {
+  border: none;
+  background-color: transparent;
+  padding: 0 10px;
+  -webkit-transition: color .3s, -webkit-transform .3s;
+  transition: color .3s, -webkit-transform .3s;
+  transition: color .3s, transform .3s;
+  transition: color .3s, transform .3s, -webkit-transform .3s;
+}
+
+main .files-content .themes .modal .shared-for-student-list ul li button:hover,
+main .files-content .themes .modal .sharing-student-list ul li button:hover {
+  color: #dbc110;
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
+}
+
+main .files-content .themes .modal .shared-for-student-list ul li:nth-child(even),
+main .files-content .themes .modal .sharing-student-list ul li:nth-child(even) {
+  background-color: #eee;
+}
+
+main .files-content .themes .modal .shared-for-box {
+  margin: 20px 0 30px;
 }
 
 @-webkit-keyframes moveUp {

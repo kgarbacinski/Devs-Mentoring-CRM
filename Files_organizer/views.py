@@ -12,7 +12,7 @@ class ProgramPathView(LoginRequiredMixin,ListView):
     template_name = 'Files_organizer/files-start.html'
     context_object_name = "paths"
 
-class SubjectView(DetailView):
+class SubjectView(LoginRequiredMixin, DetailView):
     model = ProgrammingPath
     template_name = 'Files_organizer/files.html'
     slug_url_kwarg = 'path'
@@ -22,25 +22,30 @@ class SubjectView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         path = self.get_object()
-        subtopic = SubTopic.objects.filter(subject__programming_path__name=path).all()
-        context['subtopics'] = subtopic
+        subject = Subject.objects.filter(programming_path__name=path).all()
+        context['subjects'] = subject
         return context
 
-class SubTopicView(DetailView):
+class SubTopicView(LoginRequiredMixin, DetailView):
     model = Subject
-    template_name = 'Files_organizer/files_details.html'
+    template_name = 'Files_organizer/files2.html'
     slug_url_kwarg = 'subject'
     slug_field = 'slug'
 
     def get_object(self, *args, **kwargs):
         path = get_object_or_404(ProgrammingPath, slug__iexact=self.kwargs['path'])
-        return self.model.objects.filter(programming_path__slug=path).all()
+        return self.model.objects.filter(programming_path=path).filter(slug=self.kwargs['subject']).first()
 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         subject = self.get_object()
+        context['subjects'] = Subject.objects.filter(programming_path=subject.programming_path).all()
         context['subtopics'] = SubTopic.objects.filter(subject=subject).all()
+
+
+
+        print(context)
         return context
 
 

@@ -1,3 +1,16 @@
 from django.shortcuts import render
+from rest_framework import generics
 
-# Create your views here.
+from Files_organizer.models import Document
+from Rest_API.permissions import FilesPermissions
+from Rest_API.serializers import DocumentSerializer
+
+
+class DocumentView(generics.ListAPIView):
+    serializer_class = DocumentSerializer
+    permission_classes = [FilesPermissions]
+
+    def get_queryset(self):
+        subtopic = self.request.GET.get('id')
+        documents =Document.objects.filter(subtopic_id=subtopic)
+        return documents
