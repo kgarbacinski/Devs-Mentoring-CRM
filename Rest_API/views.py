@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render
 from rest_framework import generics
 
@@ -11,6 +12,9 @@ class DocumentView(generics.ListAPIView):
     permission_classes = [FilesPermissions]
 
     def get_queryset(self):
-        subtopic = self.request.GET.get('id')
-        documents =Document.objects.filter(subtopic_id=subtopic)
-        return documents
+        subtopic_id = self.kwargs['pk']
+        query = Document.objects.filter(subtopic_id=subtopic_id).all()
+        if not query:
+            raise Http404
+        return query
+

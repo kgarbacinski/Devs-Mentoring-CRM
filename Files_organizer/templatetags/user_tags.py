@@ -12,8 +12,8 @@ def has_group(user, group_name):
     if group:
         group = group.first()
         return group in user.groups.all()
-    else:
-        return False
+
+    return False
 
 
 @register.filter(name='has_access')

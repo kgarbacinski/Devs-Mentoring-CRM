@@ -203,6 +203,7 @@
 
                     <div class="col-sm-12 col-md-8 p-0">
                         <div class="themes-box">
+
                             <ol class="themes-box-list">
                                 {% for subtopic in subtopics %}
                                     {% if request.user|has_group:"Mentor" or  request.user.is_superuser %}
@@ -222,7 +223,7 @@
                                     {% elif request.user|has_access:subtopic  %}
                                         <div class="themes-box-list-item">
                                         <li>
-                                            <a href="{% url 'documents' subtopic.id %}" class="theme-name available">{{ subtopic.name }}
+                                            <a href="#" class="theme-name available">{{ subtopic.name }}
                                                 <span class="theme-btn">
                                                     <i class="bi bi-caret-right-fill"></i>
                                                 </span>
@@ -247,6 +248,7 @@
 
                                     {% endif %}
                                 {% endfor %}
+                            </ol>
 
                                 {#                                    <div class="themes-box-list-item">#}
                                 {#                                        <li>#}

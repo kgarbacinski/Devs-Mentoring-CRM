@@ -1,8 +1,10 @@
-from django.urls import path
+from django.urls import path, re_path
 
 from Rest_API.views import DocumentView
 
 urlpatterns = [
-    path('files/', DocumentView.as_view(), name='documents'),
+    re_path('^files/(?P<pk>.+)/$', DocumentView.as_view()),
+    # path("files/<pk>", DocumentView.as_view(), name='documents'),
 
 ]
+
