@@ -1,3 +1,5 @@
+import datetime
+
 from rest_framework.viewsets import generics
 from Meetings_calendar.models import Meeting, Note
 from Account_management.models import Student
@@ -20,8 +22,8 @@ class ListMeetings(generics.ListAPIView):
         month = self.request.GET.get('date')
         user = self.request.user
         if user.groups.filter(name='Student').exists():
-            return Meeting.objects.filter(student__user=user).filter(date__month=month)
-        return Meeting.objects.filter(mentor__user=user).filter(date__month=month)
+            return Meeting.objects.filter(student__user=user).filter(date__month=month).order_by('date')
+        return Meeting.objects.filter(mentor__user=user).filter(date__month=month).order_by('date')
 
 
 class MeetingDetail(generics.ListAPIView):
@@ -99,4 +101,5 @@ class ListStudents(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
+        print(user)
         return Student.objects.filter(mentor__user__username=user)

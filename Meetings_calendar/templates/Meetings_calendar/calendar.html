@@ -24,7 +24,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form onsubmit="">
                         <div class="selection-area">
                             <label for="add-event-date">Day:</label>
                             <input type="date" id="add-event-date" min="">
@@ -64,7 +64,7 @@
                     </div>
 
 
-                    <form class="editing-form">
+                    <form class="editing-form" onsubmit="">
                         {% if request.user|has_group:"Mentor" %}
                         <div class="selection-area">
                             <label for="edit-event-date">Day:</label>

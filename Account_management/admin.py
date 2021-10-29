@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Mentor, Student
+from .models import Mentor, Student, PaymentInfo, Payment, Path
 
 
 # Register your models here.
@@ -15,3 +15,19 @@ class StudentAdmin(admin.ModelAdmin):
 
     def get_mentor(self, instance):
         return [mentor.user for mentor in instance.mentor.all()]
+
+
+@admin.register(PaymentInfo)
+class PaymentInfoAdmin(admin.ModelAdmin):
+    list_display = ['student', 'firstName', 'lastName']
+
+
+
+@admin.register(Path)
+class PathAdmin(admin.ModelAdmin):
+    list_display = ['name', 'price']
+
+
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ['student', 'paymentDate', 'next_payment']

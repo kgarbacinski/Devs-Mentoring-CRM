@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'Meetings_calendar.apps.MeetingsCalendarConfig',
     'Rest_API.apps.RestApiConfig',
     'rest_framework',
+    'phonenumber_field',
 ]
 
 MIDDLEWARE = [

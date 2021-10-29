@@ -1,7 +1,8 @@
+console.log('test')
 let today = new Date(),
     currentMonth = today.getMonth(),
     currentYear = today.getFullYear();
-// array days of the week
+
 const weekdays = [
     "Monday",
     "Tuesday",
@@ -11,7 +12,7 @@ const weekdays = [
     "Saturday",
     "Sunday"
 ];
-// array of months
+
 const months = [
     "January",
     "February",
@@ -27,57 +28,40 @@ const months = [
     "December"
 ];
 
-// structure
+
 let structureCalendar = createElement("div", window.root, {
         id: "structureCalendar"
     }),
-    // header
     calendarHeader = createElement("header", structureCalendar, {}),
-    // header columns left center and right
     headerLeft = createElement("div", calendarHeader, {className: "left"}),
     headerCenter = createElement("div", calendarHeader, {className: "center"}),
     headerRight = createElement("div", calendarHeader, {className: "right"}),
-    // inside left column
     buttonPrev = createElement("button", headerLeft, {innerHTML: `<i class="bi bi-chevron-left"></i>`}),
     buttonNext = createElement("button", headerRight, {innerHTML: `<i class="bi bi-chevron-right"></i>`}),
     centerTitle = createElement("h3", headerCenter, {
         textContent: months[currentMonth] + " " + currentYear
     }),
-    // calendar body
     calendarBody = createElement("div", structureCalendar, {id: "calendar"}),
     weekdayBody = createElement("ul", calendarBody, {id: "weekdays"}),
     daysBody = createElement("ul", calendarBody, {id: "days"});
 
-// init calendar
 showCalendar(currentMonth, currentYear);
 
-// map week days
 weekdays.map((item, i) =>
-    // change to monday
     today.getDay() - 1 === i
         ? createElement("li", weekdayBody, {className: "today", textContent: item})
         : createElement("li", weekdayBody, {textContent: item})
 );
 
-// buttons next prev
 buttonPrev.onclick = () => prev();
 buttonNext.onclick = () => next();
 
-// generate calendar
 function showCalendar(month, year) {
-    // first day - 1
     let firstDay = new Date(year, month).getDay() - 1;
-
-    // clear preview content
     daysBody.textContent = "";
-
-    // filing data about month and in the page via DOM.
     centerTitle.textContent = months[month] + " " + year;
-
-    // creating all cells
     let date = 1;
     for (let i = 0; i < 6; i++) {
-        //creating individual cells, filing them up with data.
         for (let j = 0; j < 7; j++) {
             if (i === 0 && j < firstDay) {
                 createElement("li", daysBody, {textContent: ""});
@@ -101,14 +85,18 @@ function showCalendar(month, year) {
 }
 
 
+
+
 function getAllMeetings(args) {
-    fetch(getBaseUrl('/api/meetings/?date=' + (currentMonth + 1)))
-        .then(resp => {
-            return resp.json()
-        })
+    getJson('/api/meetings/?date=' + (currentMonth + 1))
         .then(data => {
-            viewEvents(data, args)
+            viewMeetings(data, args)
         })
+}
+
+async function getJson(url) {
+    const response = await fetch(getBaseUrl(url));
+    return (await response).json()
 }
 
 function getBaseUrl(path) {
@@ -117,13 +105,13 @@ function getBaseUrl(path) {
     return `${protocol}//${host ? host : ""}${path}`
 }
 
-function setAttributes(elem, attrs){
-    for(let key in attrs) {
-    elem.setAttribute(key, attrs[key]);
-  }
+function setAttributes(elem, attrs) {
+    for (let key in attrs) {
+        elem.setAttribute(key, attrs[key]);
+    }
 }
-// view events
-function viewEvents(data, args) {
+
+function viewMeetings(data, args) {
     let where = document.querySelectorAll('#days > li > div')
     let date = 1;
     where.forEach(elem => {
@@ -148,7 +136,8 @@ function viewEvents(data, args) {
                     "data-bs-toggle": "modal",
                     "data-bs-target": "#editEventModal",
                     "type": "button",
-                    "onclick": "showNote(this.id)"})
+                    "onclick": "showNote(this.id)"
+                })
                 let eventDesc = createElement("div", event, {className: "ev-desc"});
                 eventDesc.innerHTML = `<span class="hour">${meeting.hour}</span><span>${meeting.person}</span>`;
 
@@ -159,26 +148,24 @@ function viewEvents(data, args) {
     })
 }
 
-// next month
 function next() {
     currentMonth = (currentMonth + 1) % 12;
     currentYear = currentMonth === 0 ? currentYear + 1 : currentYear;
     showCalendar(currentMonth, currentYear);
+
 }
 
-// previus month
+
 function prev() {
     currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
     currentYear = currentMonth === 11 ? currentYear - 1 : currentYear;
     showCalendar(currentMonth, currentYear);
 }
 
-// check how many days in a month code from
 function daysInMonth(iMonth, iYear) {
     return 32 - new Date(iYear, iMonth, 32).getDate();
 }
 
-// --- Create element
 function createElement(element, elem, args) {
     let d = document.createElement(element);
     if (args) for (const [k, v] of Object.entries(args)) d[k] = v;
@@ -186,12 +173,7 @@ function createElement(element, elem, args) {
     return d;
 }
 
-//TODO finish function for creating meeting in proper order
-function createMeeting() {
 
-}
-
-// MU: functions for editing modal
 const editEventBtn = document.querySelector('.edit-event-btn')
 const previewEvent = document.querySelector('.preview-event')
 const editingForm = document.querySelector('.editing-form')
@@ -211,11 +193,6 @@ const closeForm = () => {
 editEventBtn.addEventListener('click', showEditForm)
 cancelEventBtn.addEventListener('click', closeForm)
 
-
-async function getJson(url) {
-    const response = await fetch(getBaseUrl(url));
-    return (await response).json()
-}
 
 function showNote(id_obj) {
     let view_note = document.querySelector('#view-note');
@@ -264,7 +241,6 @@ function addEvent(date) {
 }
 
 function editNote(id_obj) {
-    //fetch meeting details
     if (sessionStorage.getItem('isMentor') === 'true') {
         document.querySelector('.modal-footer').style.display = 'unset'
         document.querySelector('#delete-event-txt').innerHTML = 'Delete meeting'
@@ -279,7 +255,6 @@ function editNote(id_obj) {
                 }
             })
             .then(student => {
-                //fetch student list
                 getJson('/api/students/')
                     .then(data => {
                         if (data.length > 0) {
