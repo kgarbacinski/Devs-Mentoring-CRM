@@ -54,3 +54,7 @@ class ResetRequestForm(PasswordResetForm):
 
 class ResetPasswordForm(SetPasswordForm):
     error_css_class = 'text-error'
+
+
+class PaymentForm(forms.ModelForm):
+    pass

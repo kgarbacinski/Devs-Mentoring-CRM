@@ -105,15 +105,6 @@
 {% block script %}
     <script src="{% static 'Meetings_calendar/js/calendar.js' %}"></script>
     <script src="{% static 'Meetings_calendar/js/calendar-generator.js' %}"></script>
-    {% if request.user|has_group:"Mentor" %}
-        <script>sessionStorage.setItem("isMentor", 'true');</script>
-        <script>sessionStorage.setItem("userId", "{{ user.id }}");</script>
-        <script>sessionStorage.setItem("mentorId", "{{ user.mentor.id }}");</script>
-    {% else %}
-        <script>sessionStorage.setItem("isMentor", 'false');</script>
-        <script>sessionStorage.setItem("userId", "{{ user.id }}");</script>
-        <script>sessionStorage.setItem("mentorId", "{{ user.student.id }}");</script>
-    {% endif %}
 {% endblock script %}
 
 

@@ -40,6 +40,7 @@ class PaymentInfo(models.Model):
     town = models.CharField(max_length=20)
     phone = PhoneNumberField()
     email = models.EmailField()
+    comment = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.student.__str__()

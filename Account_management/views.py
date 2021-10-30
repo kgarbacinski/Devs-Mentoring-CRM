@@ -54,4 +54,16 @@ class IndexView(View):
     template_name = 'Account_management/index.html'
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+        if request.user.is_authenticated:
+            return render(request, self.template_name)
+        return redirect('login')
+
+
+class PaymentView(View):
+    template_name = 'Account_management/payment.html'
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        if user.groups.filter(name='Student').exists():
+            return render(request, self.template_name)
+        return redirect('index')
