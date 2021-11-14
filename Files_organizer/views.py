@@ -1,8 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import MultipleObjectsReturned
 from django.shortcuts import render, get_object_or_404
-
-# Create your views here.
 from django.views.generic import ListView, DetailView
 from Files_organizer.models import ProgrammingPath, Subject, SubTopic
 
@@ -31,6 +28,7 @@ class SubTopicView(LoginRequiredMixin, DetailView):
     template_name = 'Files_organizer/files2.html'
     slug_url_kwarg = 'subject'
     slug_field = 'slug'
+    context_object_name = 'subject'
 
     def get_object(self, *args, **kwargs):
         path = get_object_or_404(ProgrammingPath, slug__iexact=self.kwargs['path'])
@@ -43,9 +41,6 @@ class SubTopicView(LoginRequiredMixin, DetailView):
         context['subjects'] = Subject.objects.filter(programming_path=subject.programming_path).all()
         context['subtopics'] = SubTopic.objects.filter(subject=subject).all()
 
-
-
-        print(context)
         return context
 
 
