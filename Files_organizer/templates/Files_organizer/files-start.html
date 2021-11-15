@@ -1,0 +1,44 @@
+
+{% extends 'Account_management/layout.html' %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static "Files_organizer/css/style.css" %}">
+    <link rel="stylesheet" href="{% static "Files_organizer/css/files-start.css" %}">
+{% endblock %}
+
+{% block main_content %}
+
+                <img class="icon-title" src="{% static "Files_organizer/img/icon-wing.svg" %}" alt="">
+                <h2 class="page-title">Programming courses</h2>
+                <hr>
+                <div class="files-content">
+                    
+                    <div class="row">
+                        <h3 class="track-header">Choose your development path:</h3>
+                        {% for path in paths %}
+                        <div class="path col-sm-12 col-md-6 col-lg-4">
+                            <div class="path-btn">
+                                <a href=" {% url "subject"  path.slug  %}">
+                                    <img src="{{ path.path_image.url }}" alt="{{ path.name }}" class="path-img">
+                                    <div class="path-logo">
+                                        <img src="{{ path.logo_image.url }}" alt="{{ path.name }} logo">
+                                    </div>
+                                    <h4 class="path-name">{{ path.name }}</h4>
+                                    <p class="path-in-progres">soon...</p>
+                                    <div class="path-about">{{ path.about }}</div>
+                                    <span class="get-started">Get started <i class="bi bi-caret-right-fill"></i></span>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+
+
+
+
+{% endblock %}
+
+
