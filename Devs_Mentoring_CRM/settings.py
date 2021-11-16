@@ -43,8 +43,7 @@ INSTALLED_APPS = [
     'Files_organizer.apps.FilesOrganizerConfig',
     'Meetings_calendar.apps.MeetingsCalendarConfig',
     'Rest_API.apps.RestApiConfig',
-    'rest_framework',
-    'phonenumber_field',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -138,12 +137,11 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ]
-}
+MEDIA_ROOT = os.path.join(BASE_DIR, 'materials/')
+MEDIA_URL = "/materials/"
+
 
 

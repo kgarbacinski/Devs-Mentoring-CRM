@@ -2,22 +2,23 @@ from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django import forms
 from django.forms.utils import ErrorList
+from django.http import HttpResponse
 
 from Account_management.exceptions import WrongPassword
 
 
 class LoginForm(forms.ModelForm):
     email = forms.CharField(widget=forms.EmailInput(attrs={'id': 'login-email'}), label='E-mail')
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'login-password'}), label='Password')
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'login-passoword'}), label='Password')
     error_messages = {'email': ' Wrong email or password'}
 
-    def validate_password(self, user):
+    def validate_password(self, user) -> None:
         password = self.cleaned_data.get('password')
         validator = user.check_password(password)
         if not validator:
             raise WrongPassword
 
-    def clean(self):
+    def clean(self) -> dict:
         super().clean()
 
         email = self.cleaned_data.get("email")
@@ -41,7 +42,7 @@ class ResetRequestForm(PasswordResetForm):
     email = forms.CharField(widget=forms.EmailInput(attrs={'id': 'reset-email'}), label='E-mail')
     error_messages = {'email': "Email doesn't exists"}
 
-    def clean(self):
+    def clean(self) -> dict:
         super().clean()
         email = self.cleaned_data.get("email")
         try:
@@ -54,7 +55,3 @@ class ResetRequestForm(PasswordResetForm):
 
 class ResetPasswordForm(SetPasswordForm):
     error_css_class = 'text-error'
-
-
-class PaymentForm(forms.ModelForm):
-    first_name= forms.CharField(required=True, defult=User.first_name)
