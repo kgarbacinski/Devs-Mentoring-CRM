@@ -57,4 +57,4 @@ class ResetPasswordForm(SetPasswordForm):
 
 
 class PaymentForm(forms.ModelForm):
-    pass
+    first_name= forms.CharField(required=True, defult=User.first_name)

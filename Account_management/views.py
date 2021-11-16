@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import  PasswordResetView
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from .forms import LoginForm, ResetRequestForm
+from .forms import LoginForm, ResetRequestForm, PaymentForm
 
 
 class LoginView(PasswordResetView):
@@ -65,5 +65,5 @@ class PaymentView(View):
     def get(self, request, *args, **kwargs):
         user = request.user
         if user.groups.filter(name='Student').exists():
-            return render(request, self.template_name)
+            return render(request, self.template_name, {'payment_form': PaymentForm()})
         return redirect('index')

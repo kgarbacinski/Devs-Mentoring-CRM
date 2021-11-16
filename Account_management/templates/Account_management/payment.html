@@ -27,7 +27,8 @@
                         <h4>PAYMENT DETAILS</h4>
                         <p class="checkout-form-field-name p-0">
                             <label for="name">Name: <span class="req text-danger">*</span></label>
-                            <input type="text" id="name" required>
+                            {{ payment_form.first_name }}
+{#                            <input type="text" id="name" required>#}
                         </p>
                         <p class="checkout-form-field-last-name">
                             <label for="last-name">Last name: <span class="req text-danger">*</span></label>
@@ -179,7 +180,7 @@
                                 other purposes described on the website: <b><a href="#">privacy policy</a></b>.
                                 <!-- jeśli będzie polityka pryw to trzeba podlinkowac -->
                             </p>
-                            <p class="consent-field">
+                            <p class="consent-wfield">
                                 <label for="regulations">
                                     <input id="regulations" type="checkbox" required>
                                     <span>I have read and accept the <b><a

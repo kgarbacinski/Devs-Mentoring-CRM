@@ -49,6 +49,7 @@ class PaymentInfo(models.Model):
 class Payment(models.Model):
     student = models.ForeignKey(Student, on_delete=models.PROTECT)
     paymentDate = models.DateField()
+    is_paid = models.BooleanField(default=False)
 
     @property
     def next_payment(self):
