@@ -279,6 +279,7 @@ main .files-content .themes {
 }
 
 main .files-content .themes-box {
+
   margin: 15px;
 }
 
@@ -386,12 +387,12 @@ main .files-content .themes-box .share-all-btn i {
 }
 
 main .files-content .themes-details {
-  position: absolute;
+  position: relative;
   top: 0;
-  left: 0;
+  right: 0;
   z-index: 99;
   height: 100%;
-  width: auto;
+  width: 100%;
   display: none;
   background-color: #fff;
   border-radius: 5px;

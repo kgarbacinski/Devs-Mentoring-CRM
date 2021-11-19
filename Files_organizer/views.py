@@ -11,7 +11,7 @@ class ProgramPathView(LoginRequiredMixin,ListView):
 
 class SubjectView(LoginRequiredMixin, DetailView):
     model = ProgrammingPath
-    template_name = 'Files_organizer/files.html'
+    template_name = 'Files_organizer/subject-choice.html'
     slug_url_kwarg = 'path'
     slug_field = 'slug'
 
@@ -25,7 +25,7 @@ class SubjectView(LoginRequiredMixin, DetailView):
 
 class SubTopicView(LoginRequiredMixin, DetailView):
     model = Subject
-    template_name = 'Files_organizer/files2.html'
+    template_name = 'Files_organizer/subtopic-choice.html'
     slug_url_kwarg = 'subject'
     slug_field = 'slug'
     context_object_name = 'subject'
