@@ -28,48 +28,46 @@
                         <p class="checkout-form-field-name p-0">
                             <label for="name">Name: <span class="req text-danger">*</span></label>
                             {{ payment_form.first_name }}
-{#                            <input type="text" id="name" required>#}
                         </p>
                         <p class="checkout-form-field-last-name">
                             <label for="last-name">Last name: <span class="req text-danger">*</span></label>
-                            <input type="text" id="last-name" required>
+                            {{ payment_form.last_name }}
                         </p>
                         <p class="checkout-form-field-company">
                             <label for="company">Company: <span class="optional"><em>(optional)</em></span></label>
-                            <input type="text" id="company">
+                            {{ payment_form.companyName }}
                         </p>
                         <p class="checkout-form-field-company-nip">
                             <label for="company-nip">NIP: <span
                                     class="optional"><em>(optional - for invoice)</em></span></label>
-                            <input type="text" id="company-nip">
+                            {{ payment_form.nip }}
                         </p>
                         <p class="checkout-form-field-adress">
                             <label for="adress">Adress: <span class="req text-danger">*</span></label>
-                            <input type="text" id="adress" placeholder="Street and house / flat number" required>
+                            {{ payment_form.street }}
                         </p>
                         <p class="checkout-form-field-post-code">
                             <label for="post-code">Post code: <span class="req text-danger">*</span></label>
-                            <input type="text" id="post-code" required>
+                            {{ payment_form.postCode }}
                         </p>
                         <p class="checkout-form-field-city">
                             <label for="city">City: <span class="req text-danger">*</span></label>
-                            <input type="text" id="city" required>
+                            {{ payment_form.town }}
                         </p>
                         <p class="checkout-form-field-phone">
                             <label for="phone">Phone: <span class="req text-danger">*</span></label>
-                            <input type="tel" id="phone" required>
+                            {{ payment_form.phone }}
                         </p>
                         <p class="checkout-form-field-email">
                             <label for="email">E-mail: <span class="req text-danger">*</span></label>
-                            <input type="email" id="email" class="error-input" required>
+                            {{ payment_form.email }}
                         </p>
                         <p class="error text-danger">
-                            The <span id="form-element">email</span> field is invalid
+                            <span id="form-element"></span>
                         </p>
                         <p class="checkout-form-field-seve">
                             <label for="save">
-                                <input id="save" type="checkbox" value="1"> <span>Remember the details for the next
-                                    payment</span>
+                                {{ payment_form.vat }}<span>Check this if you need invoice</span>
                             </label>
                         </p>
                         <h4>ADDITIONAL INFORMATION</h4>
@@ -182,8 +180,7 @@
                             </p>
                             <p class="consent-wfield">
                                 <label for="regulations">
-                                    <input id="regulations" type="checkbox" required>
-                                    <span>I have read and accept the <b><a
+                                    <input id="regulations" type="checkbox" required> <span>I have read and accept the <b><a
                                             href="#">regulations</a></b> <span class="req text-danger">*</span></span>
                                 </label>
                             </p>

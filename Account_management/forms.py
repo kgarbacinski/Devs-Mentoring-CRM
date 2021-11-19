@@ -1,9 +1,10 @@
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django import forms
-from django.forms.utils import ErrorList
+from phonenumber_field.formfields import PhoneNumberField
 
 from Account_management.exceptions import WrongPassword
+from Account_management.models import PaymentInfo
 
 
 class LoginForm(forms.ModelForm):
@@ -57,4 +58,21 @@ class ResetPasswordForm(SetPasswordForm):
 
 
 class PaymentForm(forms.ModelForm):
-    first_name= forms.CharField(required=True, defult=User.first_name)
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'id': 'name'}), label='name')
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'id': 'last-name'}), label='last-name')
+    companyName = forms.CharField(widget=forms.TextInput(attrs={'id': 'company'}), label='company')
+    nip = forms.CharField(widget=forms.TextInput(attrs={'id': 'company-nip'}), label='company-nip')
+    street = forms.CharField(
+        widget=forms.TextInput(attrs={'id': 'adress', 'placeholder': 'Street and house / flat number'}),
+        label='company-nip')
+    postCode = forms.CharField(widget=forms.TextInput(attrs={'id': 'post-code'}), label='post-code')
+    town = forms.CharField(widget=forms.TextInput(attrs={'id': 'city'}), label='city')
+    phone = PhoneNumberField(region='PL', widget=forms.TextInput(
+        attrs={'id': 'phone'}))
+    email = forms.EmailField(required=True, widget=forms.TextInput(
+        attrs={'id': 'email', 'name': 'email'}))
+    vat = forms.BooleanField(required=None, widget=forms.CheckboxInput(attrs={'id': 'save'}))
+
+    class Meta:
+        model = PaymentInfo
+        fields = '__all__'

@@ -41,6 +41,7 @@ class PaymentInfo(models.Model):
     phone = PhoneNumberField()
     email = models.EmailField()
     comment = models.TextField(null=True, blank=True)
+    vat = models.BooleanField(null=True, blank=True)
 
     def __str__(self):
         return self.student.__str__()
