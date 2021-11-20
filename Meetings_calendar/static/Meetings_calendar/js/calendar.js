@@ -1,11 +1,11 @@
 // document.addEventListener('DOMContentLoaded', () => {
-//     getAllMeetings()
+//     get_all_meetings()
 // })
 //
 //
 //
-// function getAllMeetings() {
-//     return fetch(getBaseUrl('/api/meetings/?format=json'))
+// function get_all_meetings() {
+//     return fetch(get_base_url('/api/meetings/?format=json'))
 //         .then(resp => {
 //             return resp.json()
 //         })
@@ -23,7 +23,7 @@
 //
 // function add_services(category) {
 //
-//     fetch(getBaseUrl('/api/meetings/?format=json'))
+//     fetch(get_base_url('/api/meetings/?format=json'))
 //         .then(response => {
 //             return response.json()
 //         })
@@ -51,9 +51,9 @@
 //     currentYear = today.getFullYear();
 //
 // var test;
-// getAllMeetings()
-// async function getAllMeetings() {
-//     const response = await fetch(getBaseUrl('/api/meetings/?date=' + (currentMonth + 1)));
+// get_all_meetings()
+// async function get_all_meetings() {
+//     const response = await fetch(get_base_url('/api/meetings/?date=' + (currentMonth + 1)));
 //     const data = await response.json()
 //     test = JSON.parse(JSON.stringify(data))
 //     console.log(test)

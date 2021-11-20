@@ -1,9 +1,17 @@
+from django.contrib.auth.models import User
+from django.shortcuts import render
+from rest_framework import permissions
+from rest_framework.decorators import action
+from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet, generics, ReadOnlyModelViewSet
 import datetime
 
 from rest_framework.viewsets import generics
 from Meetings_calendar.models import Meeting, Note
-from Account_management.models import Student
-from .permissions import MentorCreate
+from Account_management.models import Mentor, Student
+from . import serializers
+from .permissions import MentorCreate, MentorAllowAllStudentAllowPartial
 from .serializers import NoteSerializer, MeetingsStudentSerializer, MeetingsMentorSerializer, StudentsSerializer, \
     AddMeetingSerializer, AddNoteSerializer, AllMeetingSerializer, GetMeetingSerializer
 
@@ -101,5 +109,4 @@ class ListStudents(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        print(user)
         return Student.objects.filter(mentor__user__username=user)
