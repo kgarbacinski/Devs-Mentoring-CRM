@@ -61,6 +61,10 @@ class MeetingsStudentSerializer(serializers.ModelSerializer):
 
 
 class StudentsSerializer(serializers.ModelSerializer):
+    def get_subtopic_name(self, obj) -> SubTopic:
+        subtopic = self.context.get('subtopic')
+        return subtopic.name
+
     class Meta:
         model = Mentor
         fields = ['id', ]
@@ -70,9 +74,26 @@ class StudentsSerializer(serializers.ModelSerializer):
         representation['student'] = instance.user.student.__str__()
         return representation
 
+    def has_access(self, obj) -> bool:
+        subject = self.context.get('subject')
+        subtopics = SubTopic.objects.filter(subject=subject).all()
+        if not subtopics:
+            return False
+        user = User.objects.get(id=obj.id)
 
 class AddMeetingSerializer(serializers.ModelSerializer):
     # mentor = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+        for subtopic in subtopics:
+            users_set = subtopic.user.all()
+            if user not in users_set:
+                return False
+
+        return True
+
+    def get_subtopic_name(self, obj) -> Subject:
+        subject = self.context.get('subject')
+        return subject.name
 
     class Meta:
         model = Meeting

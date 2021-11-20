@@ -1,0 +1,55 @@
+{% extends 'Account_management/layout.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
+    <link rel="stylesheet" href="{% static 'Files_organizer/css/files-start.css' %}">
+
+{% endblock %}
+
+{% block main_content %}
+    <img class="icon-title" src="{% static 'Files_organizer/img/icon-wing.svg' %}" alt="">
+    <h2 class="page-title">Programming courses</h2>
+    <hr>
+
+
+    <div class="files-content">
+
+        <div class="splide">
+            <div class="splide__track">
+
+                <ul class="splide__list">
+                    {% for subject in subjects %}
+
+                        <li class="splide__slide">
+                            <a href="{% url "subtopic" subject.programming_path.slug subject.slug %}"
+                               id="category-link">
+                                <div class="card categories mx-4 my-2 text-center">
+                                    <div class="card-body glass">
+                                        <h5 class="category-name">{{ subject.name }}</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+
+
+{% endfor %}
+
+                </ul>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+{% block script %}
+<!-- carousel splide js -->
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+<script src="{% static 'Files_organizer/js/files.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+{% endblock %}
+

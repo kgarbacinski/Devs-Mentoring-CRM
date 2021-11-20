@@ -6,7 +6,7 @@ class MentorAllowAllStudentAllowPartial(BasePermission):
     edit_methods = ("PUT", "PATCH", "DELETE")
     message = 'dupa'
 
-    def has_permission(self, request, view):
+    def has_permission(self, request, view) -> bool:
         if request.user.is_authenticated:
             if request.user.groups.filter(name='Mentor').exists():
                 return True
