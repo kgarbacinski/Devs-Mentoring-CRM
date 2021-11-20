@@ -27,10 +27,9 @@ class AccessToFileSerializer(serializers.ModelSerializer):
         users_set = subtopic.user.all()
         return user in users_set
 
-    def get_subtopic_name(self, obj):
+    def get_subtopic_name(self, obj) -> SubTopic:
         subtopic = self.context.get('subtopic')
         return subtopic.name
-
 
     class Meta:
         model = User
@@ -47,21 +46,17 @@ class AccessToSubjectSerializer(serializers.ModelSerializer):
         if not subtopics:
             return False
         user = User.objects.get(id=obj.id)
-        print(user)
 
         for subtopic in subtopics:
             users_set = subtopic.user.all()
-            print(users_set)
             if user not in users_set:
                 return False
 
         return True
 
-
-    def get_subtopic_name(self, obj):
+    def get_subtopic_name(self, obj) -> Subject:
         subject = self.context.get('subject')
         return subject.name
-
 
     class Meta:
         model = User
