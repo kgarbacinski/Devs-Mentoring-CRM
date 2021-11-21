@@ -60,7 +60,7 @@
                     <div class="preview-event">
                         <span class="view-time" id="note-hour"></span><span class="view-student">{% if user.is_authenticated %}{{ user.first_name }} {{ user.last_name }}{% endif %}</span>
                         <textarea class="view-note" id="view-note" rows="5" disabled="disabled"></textarea>
-                        <button onclick="edit_Note(this.id)" class="edit-event-btn">Edit</button>
+                        <button onclick="editNote(this.id)" class="edit-event-btn">Edit</button>
                     </div>
 
 
@@ -106,7 +106,6 @@
     <script src="{% static 'Meetings_calendar/js/calendar.js' %}"></script>
     <script src="{% static 'Meetings_calendar/js/calendar-generator.js' %}"></script>
 {% endblock script %}
-
 
 
 
