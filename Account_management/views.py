@@ -1,6 +1,7 @@
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.contrib.auth.views import  PasswordResetView
+from django.contrib.auth.views import PasswordResetView
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from .forms import LoginForm, ResetRequestForm
@@ -46,12 +47,20 @@ class LoginView(PasswordResetView):
                 }
                 reset_form.save(**opts)
 
+
         return render(request, self.template_name,
                       {'login_form': LoginForm(request.POST), "reset_form": ResetRequestForm(request.POST)})
 
 
-class IndexView(View):
+class IndexView(LoginRequiredMixin, View):
     template_name = 'Account_management/index.html'
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
+
+
+
+
+
+
+

@@ -1,10 +1,7 @@
 from rest_framework import permissions
-from rest_framework.permissions import BasePermission
 
-
-class MentorAllowAllStudentAllowPartial(BasePermission):
+class MentorAllowAllStudentAllowPartial(permissions.BasePermission):
     edit_methods = ("PUT", "PATCH", "DELETE")
-    message = 'dupa'
 
     def has_permission(self, request, view):
         if request.user.is_authenticated:
@@ -30,7 +27,7 @@ class MentorAllowAllStudentAllowPartial(BasePermission):
         return False
 
 
-class MentorCreate(BasePermission):
+class MentorCreate(permissions.BasePermission):
 
     def has_permission(self, request, view):
         if request.user.is_authenticated:
@@ -42,3 +39,9 @@ class MentorCreate(BasePermission):
         if request.user.groups.filter(name='Mentor').exists():
             return True
         return False
+
+class FileAccessPermission(permissions.BasePermission):
+
+    def has_permission(self, request, view) -> bool:
+        if request.user.is_authenticated:
+            return request.user.groups.filter(name='Mentor').exists() or request.user.is_superuser

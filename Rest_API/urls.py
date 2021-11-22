@@ -1,17 +1,14 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from .views import ListNotes, ListMeetings, ListStudents, AddMeeting, EditDeleteMeeting, AddNote, EditDeleteNote, \
-    ListAllMeetings, MeetingDetail
-from rest_framework.routers import DefaultRouter
-
-#
-# router = DefaultRouter()
-# router.register(r'meetings', MeetingsViewSet, basename='all_meetings')
-# router.register(r'notes', ListNotes, basename='all_notes')
-# urlpatterns = router.urls
-
+    ListAllMeetings, MeetingDetail, DocumentView, HasAccessToFileView, HasAccessToSubjectView, UserSearchBoxSubjectView, \
+    UserSearchBoxSubtopicView
 
 urlpatterns = [
-
+    re_path('^files/(?P<pk>.+)/$', DocumentView.as_view(), name='documents'),
+    re_path('^access/files/(?P<pk>.+)/$', HasAccessToFileView.as_view(), name='file_access'),
+    re_path('^access/subject/(?P<pk>.+)/$', HasAccessToSubjectView.as_view(), name='subject_access'),
+    re_path('^access/searchbox/subtopic/(?P<pk>.+)/$', UserSearchBoxSubtopicView.as_view(), name='subtopic_searchbox'),
+    re_path('^access/searchbox/subject/(?P<pk>.+)/$', UserSearchBoxSubjectView.as_view(), name='subject_searchbox'),
     path('meetings/', ListMeetings.as_view(), name='meetings'),
     path('all-meetings/', ListAllMeetings.as_view(), name='all_meetings'),
     path('meeting/', MeetingDetail.as_view(), name='meeting'),
