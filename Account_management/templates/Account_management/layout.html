@@ -1,6 +1,8 @@
 {% load static %}
+{% load auth_extras %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,7 +25,8 @@
     <input type="checkbox" id="menu-toggle" class="d-none">
     <div class="sidebar">
         <div class="sidebar-header">
-            <h3 class="sidebar-title"><span class="title-span-one">Devs Mentoring</span> <span class="title-span-two">CRM</span></h3>
+            <h3 class="sidebar-title"><span class="title-span-one">Devs Mentoring</span> <span class="title-span-two">CRM</span>
+            </h3>
             <label for="menu-toggle" class="menu-toggle"><i class="bi bi-list"></i></label>
         </div>
         <div class="sidebar-menu">
@@ -59,13 +62,14 @@
                         <span class="li-item">Users</span>
                     </a>
                 </li>
+                {% if request.user|has_group:"Student" %}
                 <li>
-                    <a href="">
+                    <a href="{% url 'payment' %}">
                         <span><i class="bi bi-credit-card-2-back" title="Payments"></i></span>
                         <span class="li-item">Payments</span>
                     </a>
                 </li>
-
+                {% endif %}
             </ul>
 
             <div class="footer">
@@ -85,10 +89,11 @@
     <div class="main-content">
 
         <header>
-            <button onclick="window.location='{% url 'logout' %}'" class="log-out" title="log-out"><i class="bi bi-power"></i> </button>
-
-            <p class="username m-0">{% if user.is_authenticated %}{{ user.username }}{% endif %}</p>
-            <div class="avatar"><img id="user-avatar" src="{% static 'Account_management/img/avatar.jpg' %}" alt="User avatar"></div>
+            <a class="log-out " title="log-out" href='{% url 'logout' %}'><i class="bi bi-power"></i></a>
+            <p class="username m-0">
+                {% if user.is_authenticated %}{{ user.first_name }} {{ user.last_name }}{% endif %}</p>
+            <div class="avatar"><img id="user-avatar" src="{% static 'Account_management/img/avatar.jpg' %}"
+                                     alt="User avatar"></div>
         </header>
 
         <main>
@@ -101,11 +106,21 @@
 
 </div>
 
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
 </script>
 <script src="{% static 'Account_management/js/script.js' %}"></script>
 {% block script %}{% endblock %}
+{% if request.user|has_group:"Mentor" %}
+    <script>sessionStorage.setItem("isMentor", 'true');</script>
+    <script>sessionStorage.setItem("userId", "{{ user.id }}");</script>
+    <script>sessionStorage.setItem("mentorId", "{{ user.mentor.id }}");</script>
+{% else %}
+    <script>sessionStorage.setItem("isMentor", 'false');</script>
+    <script>sessionStorage.setItem("userId", "{{ user.id }}");</script>
+    <script>sessionStorage.setItem("mentorId", "{{ user.student.id }}");</script>
+{% endif %}
 </body>
 
 </html>

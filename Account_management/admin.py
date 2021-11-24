@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import Mentor, Student, PaymentInfo, Payment, Path
 
 
@@ -20,7 +21,6 @@ class StudentAdmin(admin.ModelAdmin):
 @admin.register(PaymentInfo)
 class PaymentInfoAdmin(admin.ModelAdmin):
     list_display = ['student', 'firstName', 'lastName']
-
 
 
 @admin.register(Path)
