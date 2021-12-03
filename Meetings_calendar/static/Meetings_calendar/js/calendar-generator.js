@@ -1,4 +1,3 @@
-console.log('test')
 let today = new Date(),
     currentMonth = today.getMonth(),
     currentYear = today.getFullYear();

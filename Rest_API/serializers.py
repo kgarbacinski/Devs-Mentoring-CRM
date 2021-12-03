@@ -66,11 +66,14 @@ class MeetingsStudentSerializer(serializers.ModelSerializer):
 class StudentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mentor
-        fields = ['id', ]
+        fields = '__all__' # ['id', ]
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['student'] = instance.user.student.__str__()
+        representation['email'] = instance.user.email
+        representation['enrolment'] = instance.user.student.enrollmentDate.strftime("%Y-%m-%d")
+        representation['path'] = instance.user.student.path.name
         return representation
 
 

@@ -15,6 +15,14 @@ class Path(models.Model):
 class Mentor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    def count_all_meetings(self):
+        return self.meeting_set.count()
+
+    def get_remaining_meetings(self):
+        # if self.is_sub_paid() is False:
+        #     return 0
+        return 4 - self.count_all_meetings() % 4
+
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
 
@@ -24,6 +32,26 @@ class Student(models.Model):
     mentor = models.ManyToManyField(Mentor)
     enrollmentDate = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     path = models.ForeignKey(Path, on_delete=models.PROTECT)
+    no_month = models.IntegerField(default=1)
+
+    def count_all_meetings(self):
+        return self.meeting_set.count()
+        # return self.meeting_set.filter(mentor__id=2).count()
+
+    def get_remaining_meetings(self):
+        if self.is_sub_paid() is False:
+            return 0
+        return 4 - self.count_all_meetings() % 4
+
+    def count_month_number(self):
+        if self.count_all_meetings() % 4 == 0:
+            self.no_month += 1
+
+    def is_sub_paid(self):
+        no_payments = self.payment_set.count()
+        if self.no_month <= no_payments:
+            return True
+        return False
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'

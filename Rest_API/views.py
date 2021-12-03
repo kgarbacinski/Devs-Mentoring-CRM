@@ -55,8 +55,10 @@ class ListAllMeetings(generics.ListAPIView):
     serializer_class = AllMeetingSerializer
 
     def get_queryset(self):
-        month = self.request.GET.get('date')
-        return Meeting.objects.filter(date__month=month).order_by('mentor', 'date')
+        # month = self.request.GET.get('date')
+        user = self.request.user
+        return Meeting.objects.filter(mentor__user=user)
+        # return Meeting.objects.filter(date__month=month).order_by('mentor', 'date')
 
 
 class AddMeeting(generics.CreateAPIView):
@@ -117,8 +119,8 @@ class ListStudents(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        print(user)
         return Student.objects.filter(mentor__user__username=user)
+
 
 class Patterns:
     whole_name_pattern = r'\w+\s\w+'

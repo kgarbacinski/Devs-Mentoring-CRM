@@ -1,12 +1,246 @@
 {% extends 'Account_management/layout.html' %}
 {% load static %}
+{% load auth_extras %}
 
 {% block style %}
+    <link rel="stylesheet" href="{% static 'Account_management/css/index-page.css' %}">
 {% endblock style %}
 
 {% block main_content %}
-    Index View
+    <img class="icon-title" src="{% static 'Account_management/img/icon-wing.svg' %}" alt="">
+    <h2 class="page-title">Hi, <span class="your-name">{% if user.is_authenticated %}{{ user.first_name }}
+        {{ user.last_name }}{% endif %}</span></h2>
+    <hr>
+    {% if request.user|has_group:"Mentor" %}
+        <div class="mentor-page">
+            <div class="row m-0">
+                <div class="incoming-meetings col-sm-12 col-md-6 col-lg-4 mb-4">
+                    <div class="mentor-page-block">
+                        <h3>Incoming meetings</h3>
+                        <hr>
+
+                        <!-- MU: Tutaj zaczyna się spotkanie -->
+{#                        <div class="meet-box">#}
+{#                            <p class="meet-details">#}
+{#                                <span class="date">#}
+{#                                    <i class="bi bi-calendar-check"></i>10.11.2021#}
+{#                                </span>#}
+{#                                <span class="hour">17:00#}
+{#                                    <i class="bi bi-clock"></i>#}
+{#                                </span>#}
+{#                            </p>#}
+{#                            <p>#}
+{#                                <i class="bi bi-person-square"></i>#}
+{#                                <span class="student-name">Student name</span>#}
+{#                            </p>#}
+{#                        </div>#}
+                        <!-- MU: koniec spotkania -->
+
+{#                        <div class="control-btn">#}
+{#                            <a class="button" href="{% url 'calendar' %}">show calendar</a>#}
+{#                        </div>#}
+
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-8 row m-0">
+
+                    <div class="meetings-held col-sm-12 col-md-12 col-lg-6 px-0 pe-md-0 pe-lg-4 mb-4">
+                        <div class="mentor-page-block">
+                            <h3>Meetings held</h3>
+                            <hr>
+                            <div class="meetings-held-box">
+                                <div class="row">
+                                    <div class="meetings-held-title col-7">
+                                        <p>How many meetings run in overall ➡</p>
+                                    </div>
+                                    <div class="meetings-held-count col-5"><span>101</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="students col-sm-12 col-md-12 col-lg-6 px-0 pe-md-0 mb-4">
+                        <div class="mentor-page-block">
+                            <h3>You and the students</h3>
+                            <hr>
+                            <div class="students-box">
+                                <div class="row" style="overflow:hidden; background-color: #f7f7f7;">
+                                    <div class="your-students col-6">
+                                        <p>The number of your students</p>
+                                        <span>6</span>
+                                    </div>
+                                    <div class="students-capacity col-6">
+                                        <p>Maximum number of students</p>
+                                        <span>10</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="students-cards col-sm-12 px-0 pe-md-0 mb-4">
+                        <div class="mentor-page-block students-cards-block">
+                            <h3>Your students:</h3>
+
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-2">
+
+                                <!-- MU: Tu zaczyna sie karta studenta -->
+                                {% for student in students %}
+
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="row">
+                                            <div class="col-4 pe-0">
+                                                <div class="avatar-box">
+                                                    <img src="img/user.png" class="card-img-top" alt="...">
+                                                </div>
+                                            </div>
+                                            <div class="col-8 ps-0 d-flex flex-column justify-content-center">
+                                                <p class="student-name m-0">
+                                                    {{ student.user.first_name }} {{ student.user.last_name }}
+                                                </p>
+                                                <p class="student-mail m-0">
+                                                    <a href="{{ student.user.email }}">{{ student.user.email }}</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title path-name">{{ student.path }}</h5>
+                                            <p class="card-text student-sign-up"><span>Student from: </span><span
+                                                    class="student-date">{{ student.enrollmentDate|date:'Y.m.d'}}</span>
+                                            </p>
+                                            <p class="card-text meetings"><span>Your meetings: </span><span
+                                                    class="meet-num">{{ student.count_all_meetings }}</span></p>
+                                            <p class="card-text end-of-sub">
+                                                <span>Subs. ends in: </span>
+                                                <span><span class="left-meetings">{{ student.get_remaining_meetings }}</span> calls</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <!-- MU: Koniec karty studenta -->
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="student-page">
+            <div class="row m-0">
+
+                <div class="col-sm-12 col-md-6 col-lg-8 row m-0">
+
+                    <div class="subscriprtion-details col-sm-12 col-md-12 col-lg-6 px-0 pe-md-0 pe-lg-4 mb-4">
+                        <div class="student-page-block">
+                            <h3>Subscription details</h3>
+                            <hr>
+                            <div class="left-meetings">
+                                <h4 class="path-name text-center">Nazwa aktualnej ścieżki</h4>
+                                <div class="row">
+                                    <div class="left-meetings-title col-7">
+                                        <p>Meetings left in a current subscription ➡</p>
+                                    </div>
+                                    <div class="left-meetings-count col-5"><span>3</span></div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="yuor-mentor col-6">
+                                        <p>Your mentor:</p>
+                                    </div>
+                                    <div class="mentor-details col-6 text-end">
+                                        <p class="mentor-name mb-0 ">Mentor Mentor</p>
+                                        <p><a class="mentor-mail" href="mailto:mentor@mentor.pl">mentor@mentor.pl</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="payment">
+                                <p class="next-payment pt-2">
+                                    <span>Next payment:</span><span class="next-payment-date fw-bold">20.11.2021</span>
+                                </p>
+                                <div class="control-btn">
+                                    <a href="" class="button button-pay">pay</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="incoming-meetings col-sm-12 col-md-12 col-lg-6 px-0 pe-md-0 mb-4">
+                        <div class="student-page-block">
+                            <h3>Incoming meetings</h3>
+                            <hr>
+                            <div class="meet-box">
+                                <p class="meet-details"><span class="date"><i class="bi bi-calendar-check"></i>10.11.2021</span><span
+                                        class="hour">17:00<i class="bi bi-clock"></i></span></p>
+                            </div>
+                            <div class="meet-box">
+                                <p class="meet-details"><span class="date"><i
+                                        class="bi bi-calendar-check"></i>10.11.2021</span><span class="hour">17:00<i
+                                        class="bi bi-clock"></i></span></p>
+                            </div>
+                            <div class="meet-box">
+                                <p class="meet-details"><span class="date"><i
+                                        class="bi bi-calendar-check"></i>10.11.2021</span><span class="hour">17:00<i
+                                        class="bi bi-clock"></i></span></p>
+                            </div>
+                            <div class="control-btn">
+                                <a class="button" href="">show calendar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="last-meetings col-sm-12 col-md-6 col-lg-4 mb-4">
+                    <div class=" student-page-block">
+                        <h3>Last meetings</h3>
+                        <hr>
+
+                        <div class="meet-box">
+                            <p class="meet-details"><span class="date"><i
+                                    class="bi bi-calendar-check"></i>10.11.2021</span><span class="hour">17:00<i
+                                    class="bi bi-clock"></i></span></p>
+                            <p class="note">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum perferendis
+                                velit, veritatis, ab error id laborum maiores iure distinctio voluptate mollitia quidem
+                                cumque, ratione architecto debitis provident placeat corporis autem.
+                            </p>
+                        </div>
+
+                        <div class="meet-box">
+                            <p class="meet-details"><span class="date"><i
+                                    class="bi bi-calendar-check"></i>10.11.2021</span><span class="hour">17:00<i
+                                    class="bi bi-clock"></i></span></p>
+                            <p class="note">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum perferendis
+                                velit, veritatis, ab error id laborum maiores iure.
+                            </p>
+                        </div>
+                        <div class="meet-box">
+                            <p class="meet-details"><span class="date"><i
+                                    class="bi bi-calendar-check"></i>10.11.2021</span><span class="hour">17:00<i
+                                    class="bi bi-clock"></i></span></p>
+                            <p class="note">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum perferendis
+                                velit, veritatis, ab error id laborum maiores iure distinctio voluptate mollitia.
+                            </p>
+                        </div>
+                        <div class="meet-box">
+                            <p class="meet-details"><span class="date"><i
+                                    class="bi bi-calendar-check"></i>10.11.2021</span><span class="hour">17:00<i
+                                    class="bi bi-clock"></i></span></p>
+                            <p class="note">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock main_content %}
 
 {% block script %}
+    <script src="{% static 'Account_management/js/script.js' %}"></script>
 {% endblock script %}

@@ -1,9 +1,12 @@
 from django.contrib.auth import login
 from django.contrib.auth.models import User
-from django.contrib.auth.views import  PasswordResetView
+from django.contrib.auth.views import PasswordResetView
 from django.shortcuts import render, redirect
-from django.views.generic import View
+from django.views.generic import View, ListView
+
+from Rest_API.serializers import StudentsSerializer
 from .forms import LoginForm, ResetRequestForm, PaymentForm
+from .models import Student
 
 
 class LoginView(PasswordResetView):
@@ -50,13 +53,18 @@ class LoginView(PasswordResetView):
                       {'login_form': LoginForm(request.POST), "reset_form": ResetRequestForm(request.POST)})
 
 
-class IndexView(View):
+class IndexView(ListView):
     template_name = 'Account_management/index.html'
+    context_object_name = 'students'
 
-    def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return render(request, self.template_name)
-        return redirect('login')
+    def get_queryset(self):
+        user = self.request.user
+        return Student.objects.filter(mentor__user__username=user)
+
+    # def get(self, request, *args, **kwargs):
+    #     if request.user.is_authenticated:
+    #         return render(request, self.template_name)
+    #     return redirect('login')
 
 
 class PaymentView(View):
