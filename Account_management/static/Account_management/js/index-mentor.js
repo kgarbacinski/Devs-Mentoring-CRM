@@ -18,7 +18,7 @@ function getMeetings() {
 
             })
             let cal = createElement('div', mentor, {className: 'control-btn'})
-            createElement('a', cal, {className: 'button', href: "http://127.0.0.1:8000/calendar/",
+            createElement('a', cal, {className: 'button', href: "/calendar/",
                 textContent: 'show calendar'})
 
         })
