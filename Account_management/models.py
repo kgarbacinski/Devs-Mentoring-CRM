@@ -14,13 +14,16 @@ class Path(models.Model):
 
 class Mentor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user_image = models.ImageField(upload_to='user_images/', default='user.png', null=True, blank=True)
+    max_students = models.IntegerField(default=1)
 
     def count_all_meetings(self):
         return self.meeting_set.count()
 
+    def count_all_students(self):
+        return self.student_set.count()
+
     def get_remaining_meetings(self):
-        # if self.is_sub_paid() is False:
-        #     return 0
         return 4 - self.count_all_meetings() % 4
 
     def __str__(self):
@@ -32,11 +35,16 @@ class Student(models.Model):
     mentor = models.ManyToManyField(Mentor)
     enrollmentDate = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     path = models.ForeignKey(Path, on_delete=models.PROTECT)
+    user_image = models.ImageField(upload_to='user_images/', default='user.png',  null=True, blank=True)
     no_month = models.IntegerField(default=1)
+
+    def get_next_payment(self):
+        if list(self.payment_set.all()):
+            return list(self.payment_set.all())[-1].next_payment
+        return "not paid"
 
     def count_all_meetings(self):
         return self.meeting_set.count()
-        # return self.meeting_set.filter(mentor__id=2).count()
 
     def get_remaining_meetings(self):
         if self.is_sub_paid() is False:

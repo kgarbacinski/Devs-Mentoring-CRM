@@ -184,6 +184,62 @@ body {
   transition: margin-left .3s;
 }
 
+.main-content .avatar-popup {
+  position: absolute;
+  top: 67px;
+  right: 5px;
+  height: 245px;
+  width: 295px;
+  z-index: 98;
+}
+
+.main-content form label {
+  margin: -1px;
+  padding: 5px 10px;
+  border: 2px solid #dbc110;
+  border-radius: 25px;
+  height: 36px;
+}
+
+.main-content form label:hover {
+  cursor: pointer;
+}
+
+.main-content form span {
+  font-size: .9rem;
+  padding: 6px 10px;
+  line-height: 25px;
+  height: 36px;
+  width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.main-content form .files-upload {
+  border: .5px solid #ebebeb;
+  border-radius: 25px;
+  height: 36px;
+}
+
+.main-content form .send-av-button {
+  padding: 5px 10px;
+  border: 1px solid #dbc110;
+  background: #dbc110;
+  border-radius: 25px;
+  text-transform: uppercase;
+  font-weight: bold;
+  -webkit-transition: color .3s, background-color .3s, border .3s;
+  transition: color .3s, background-color .3s, border .3s;
+  margin: 0;
+}
+
+.main-content form .send-av-button:hover {
+  color: #fff;
+  background-color: #000;
+  border: 1px solid #000;
+}
+
 header {
   position: relative;
   top: 0;

@@ -6,7 +6,7 @@ from django.views.generic import View, ListView
 
 from Rest_API.serializers import StudentsSerializer
 from .forms import LoginForm, ResetRequestForm, PaymentForm
-from .models import Student
+from .models import Student, Mentor
 
 
 class LoginView(PasswordResetView):
@@ -59,12 +59,9 @@ class IndexView(ListView):
 
     def get_queryset(self):
         user = self.request.user
+        if user.groups.filter(name='Student').exists():
+            return Mentor.objects.filter(student__user__username=user)
         return Student.objects.filter(mentor__user__username=user)
-
-    # def get(self, request, *args, **kwargs):
-    #     if request.user.is_authenticated:
-    #         return render(request, self.template_name)
-    #     return redirect('login')
 
 
 class PaymentView(View):

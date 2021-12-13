@@ -2,51 +2,16 @@ let today = new Date(),
     currentMonth = today.getMonth(),
     currentYear = today.getFullYear();
 
-
-function getMeetings() {
-    getJson('/api/meetings/?date=' + (currentMonth + 1))
-        .then(data => {
-            let mentor = document.querySelector('.mentor-page .mentor-page-block');
-            data.forEach(meeting => {
-                let div = createElement('div', mentor, {className: 'meet-box'}),
-                    p = createElement('p', div, {className: 'meet-details'}),
-                    span = createElement('span', p, {className: 'date'});
-                    createElement('i', span, {className: 'bi bi-calendar-check',});
-                    span.append(meeting.date.split("-").reverse().join("."));
-                let span2 =  createElement('span', p, {className: 'hour', textContent: meeting.hour})
-                createElement('i', span2 ,{className: 'bi bi-clock'})
-
-                let p2 = createElement('p', div),
-                    i2 = createElement('i', p2, {className: 'bi bi-person-square'})
-                    createElement('span', p2, {className: 'student-name', textContent: meeting.person})
-
-            })
-            let cal = createElement('div', mentor, {className: 'control-btn'})
-            createElement('a', cal, {className: 'button', href: "http://127.0.0.1:8000/calendar/",
-                textContent: 'show calendar'})
-
-        })
-}
-
-function getStudents(){
-    getJson('/api/students/')
-        .then(data => {
-            document.querySelector('.your-students span').innerHTML = data.length
-
-        })
-}
-
-function getAllMeetings(){
-    getJson('/api/all-meetings/')
-        .then(data => {
-            document.querySelector('.meetings-held-box .meetings-held-count span').innerHTML = data.length
-
-        })
-}
-
 async function getJson(url) {
     const response = await fetch(getBaseUrl(url));
     return (await response).json()
+}
+
+function getFutureDates(days){
+    let start = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
+    let end = add_days(today, days);
+    let end_date = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`
+    return {start_date: start, end_date: end_date}
 }
 
 
@@ -63,15 +28,70 @@ function createElement(element, elem, args) {
     return d;
 }
 
-function createElementBefore(element, elem, args) {
-    let d = document.createElement(element);
-    if (args) for (const [k, v] of Object.entries(args)) d[k] = v;
-    console.log(elem)
-    console.log(d)
-    elem.append(d);
-    return d;
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-getMeetings()
-getAllMeetings()
-getStudents()
+function add_days(date, days) {
+    let result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
+
+function sub_days(date, days) {
+    let result = new Date(date);
+    result.setDate(result.getDate() - days);
+    return result;
+}
+
+
+const footerYear = document.querySelector('.year')
+
+function showYear() {
+    const data = new Date();
+
+    let year = data.getYear();
+    if (year < 1000) {
+        year = 2000 + year - 100;
+    }
+    footerYear.textContent = year
+}
+showYear()
+
+const myFileBtn = document.getElementById('myFile');
+const avatar = document.getElementById('avatar');
+const fileChosen = document.getElementById('file-chosen');
+
+myFileBtn.addEventListener('change', function(){
+  fileChosen.textContent = this.files[0].name;
+  console.log(this.files[0])
+})
+
+avatar.addEventListener('submit', (e) =>{
+    e.preventDefault()
+
+
+    let userId = sessionStorage.getItem('mentorId')
+    let photoPath = 'D:/Python-Projects/Devs-Mentoring-CRM/materials/user_images/user.png'
+    let photo = {
+        'id': userId,
+        'user_image': photoPath
+    }
+    fetch(getBaseUrl('/api/change-avatar/' + userId + '/'),
+            {
+                method: "PATCH",
+                credentials: 'same-origin',
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken"),
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(photo),
+            }).catch((error => {
+            console.log(error)
+        }))
+})
+
+
