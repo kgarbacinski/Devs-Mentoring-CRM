@@ -5,6 +5,7 @@ import re
 
 from typing import Dict, Tuple
 from rest_framework.viewsets import generics
+from rest_framework.parsers import FormParser
 from Meetings_calendar.models import Meeting, Note
 from Account_management.models import Student, Mentor
 from .permissions import MentorCreate
@@ -95,8 +96,6 @@ class AddMeeting(generics.CreateAPIView):
 class EditDeleteMeeting(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [MentorCreate]
     serializer_class = AddMeetingSerializer
-
-    # queryset = Meeting.objects.all()
 
     def get_permissions(self):
         return [permission() for permission in self.permission_classes]

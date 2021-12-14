@@ -193,7 +193,7 @@ body {
   z-index: 98;
 }
 
-.main-content form label {
+.main-content .avatar-popup form label {
   margin: -1px;
   padding: 5px 10px;
   border: 2px solid #dbc110;
@@ -201,11 +201,11 @@ body {
   height: 36px;
 }
 
-.main-content form label:hover {
+.main-content .avatar-popup form label:hover {
   cursor: pointer;
 }
 
-.main-content form span {
+.main-content .avatar-popup form span {
   font-size: .9rem;
   padding: 6px 10px;
   line-height: 25px;
@@ -216,13 +216,13 @@ body {
   text-overflow: ellipsis;
 }
 
-.main-content form .files-upload {
+.main-content .avatar-popup form .files-upload {
   border: .5px solid #ebebeb;
   border-radius: 25px;
   height: 36px;
 }
 
-.main-content form .send-av-button {
+.main-content .avatar-popup form .send-av-button {
   padding: 5px 10px;
   border: 1px solid #dbc110;
   background: #dbc110;
@@ -234,7 +234,7 @@ body {
   margin: 0;
 }
 
-.main-content form .send-av-button:hover {
+.main-content .avatar-popup form .send-av-button:hover {
   color: #fff;
   background-color: #000;
   border: 1px solid #000;

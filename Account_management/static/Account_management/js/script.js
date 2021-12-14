@@ -51,47 +51,38 @@ const footerYear = document.querySelector('.year')
 
 function showYear() {
     const data = new Date();
-
-    let year = data.getYear();
-    if (year < 1000) {
-        year = 2000 + year - 100;
-    }
-    footerYear.textContent = year
+    footerYear.textContent = data.getFullYear().toString();
 }
 showYear()
 
 const myFileBtn = document.getElementById('myFile');
-const avatar = document.getElementById('avatar');
 const fileChosen = document.getElementById('file-chosen');
 
 myFileBtn.addEventListener('change', function(){
   fileChosen.textContent = this.files[0].name;
-  console.log(this.files[0])
+
 })
 
-avatar.addEventListener('submit', (e) =>{
-    e.preventDefault()
-
+function changeAvatar(){
+    let input = document.querySelector('input[type="file"]')
 
     let userId = sessionStorage.getItem('mentorId')
-    let photoPath = 'D:/Python-Projects/Devs-Mentoring-CRM/materials/user_images/user.png'
-    let photo = {
-        'id': userId,
-        'user_image': photoPath
-    }
+    let data = new FormData()
+    data.append('id', userId)
+    data.append('user_image', input.files[0])
+
     fetch(getBaseUrl('/api/change-avatar/' + userId + '/'),
             {
                 method: "PATCH",
                 credentials: 'same-origin',
                 headers: {
                     "X-CSRFToken": getCookie("csrftoken"),
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
                 },
-                body: JSON.stringify(photo),
+                body: data,
             }).catch((error => {
-            console.log(error)
-        }))
-})
+                console.log(error)
+        })).then(() => {window.location.reload()})
+}
+
 
 
