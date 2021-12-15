@@ -63,38 +63,72 @@
                     </a>
                 </li>
                 {% if request.user|has_group:"Student" %}
-                <li>
-                    <a href="{% url 'payment' %}">
-                        <span><i class="bi bi-credit-card-2-back" title="Payments"></i></span>
-                        <span class="li-item">Payments</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="{% url 'payment' %}">
+                            <span><i class="bi bi-credit-card-2-back" title="Payments"></i></span>
+                            <span class="li-item">Payments</span>
+                        </a>
+                    </li>
                 {% endif %}
             </ul>
-
-            <div class="footer">
-                <div class="social-icons">
-                    <a href="https://www.devs-mentoring.pl/" title="devs-mentoring.pl"><i
-                            class="bi bi-globe2"></i></a>
-                    <a href="https://www.facebook.com/devs.mentoring" title="fb/devs.mentoring"><i
-                            class="bi bi-facebook"></i></a>
-                </div>
-                <p>Devs Mentoring &copy <span class="year"></span></p>
+          <div class="footer">
+            <div class="social-icons">
+                <a href="https://www.devs-mentoring.pl/" title="devs-mentoring.pl"><i
+                        class="bi bi-globe2"></i></a>
+                <a href="https://www.facebook.com/devs.mentoring" title="fb/devs.mentoring"><i
+                        class="bi bi-facebook"></i></a>
             </div>
-
+            <p>Devs Mentoring &copy <span class="year"></span></p>
         </div>
+        </div>
+
+
     </div>
 
 
     <div class="main-content">
-
         <header>
             <a class="log-out " title="log-out" href='{% url 'logout' %}'><i class="bi bi-power"></i></a>
             <p class="username m-0">
-                {% if user.is_authenticated %}{{ user.first_name }} {{ user.last_name }}{% endif %}</p>
-            <div class="avatar"><img id="user-avatar" src="{% static 'Account_management/img/avatar.jpg' %}"
-                                     alt="User avatar"></div>
+                {% if user.is_authenticated %}{{ user.first_name }} {{ user.last_name }}{% endif %}
+            </p>
+            <div class="avatar">
+                <img id="user-avatar"
+                     {% if request.user|has_group:"Mentor" %}
+                        src="{{ user.mentor.user_image.url }}"
+                     {% else %}
+                        src="{{ user.student.user_image.url }}"
+                     {% endif %}
+                         alt="User avatar"
+                         data-bs-toggle="collapse" data-bs-target="#collapseAvatarPopup"
+                         aria-expanded="false"
+                         aria-controls="collapseAvatarPopup">
+            </div>
         </header>
+
+
+        <div class="collapse" id="collapseAvatarPopup">
+            <div class="avatar-popup card card-body pt-1">
+                <p class="d-flex justify-content-end mb-0">
+                    <button type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseAvatarPopup" aria-expanded="false"
+                            aria-controls="collapseAvatarPopup"
+                            style="border: transparent; background: transparent; padding: 5px 0 5px 10px;">
+                        <i class="bi bi-x-lg" style="color: gray"></i>
+                    </button>
+                </p>
+                <p class="my-0">Change your avatar</p>
+                <p><small>Make sure your avatar is 1:1 ratio (square)</small></p>
+                <form id="avatar" action="" class="d-flex flex-column">
+                    <div class="files-upload d-flex justify-content-between mb-3">
+                        <input type="file" id="myFile" name="filename" hidden accept="image/png, image/jpeg">
+                        <label for="myFile" name="filename">Choose File</label>
+                        <span id="file-chosen">No file chosen</span>
+                    </div>
+                    <input class="send-av-button" onclick="changeAvatar()" type="submit" value="send">
+                </form>
+            </div>
+        </div>
 
         <main>
             {% block main_content %}{% endblock %}
@@ -111,6 +145,7 @@
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
 </script>
 <script src="{% static 'Account_management/js/script.js' %}"></script>
+
 {% block script %}{% endblock %}
 {% if request.user|has_group:"Mentor" %}
     <script>sessionStorage.setItem("isMentor", 'true');</script>

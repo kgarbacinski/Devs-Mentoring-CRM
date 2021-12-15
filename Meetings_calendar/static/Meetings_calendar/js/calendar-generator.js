@@ -1,8 +1,3 @@
-console.log('test')
-let today = new Date(),
-    currentMonth = today.getMonth(),
-    currentYear = today.getFullYear();
-
 const weekdays = [
     "Monday",
     "Tuesday",
@@ -44,7 +39,7 @@ let structureCalendar = createElement("div", window.root, {
     calendarBody = createElement("div", structureCalendar, {id: "calendar"}),
     weekdayBody = createElement("ul", calendarBody, {id: "weekdays"}),
     daysBody = createElement("ul", calendarBody, {id: "days"});
-
+    calendarHeader.setAttribute('style', 'z-index: 97');
 showCalendar(currentMonth, currentYear);
 
 weekdays.map((item, i) =>
@@ -92,17 +87,6 @@ function getAllMeetings(args) {
         .then(data => {
             viewMeetings(data, args)
         })
-}
-
-async function getJson(url) {
-    const response = await fetch(getBaseUrl(url));
-    return (await response).json()
-}
-
-function getBaseUrl(path) {
-    let protocol = window.location.protocol;
-    let host = window.location.host;
-    return `${protocol}//${host ? host : ""}${path}`
 }
 
 function setAttributes(elem, attrs) {
@@ -155,7 +139,6 @@ function next() {
 
 }
 
-
 function prev() {
     currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
     currentYear = currentMonth === 11 ? currentYear - 1 : currentYear;
@@ -164,13 +147,6 @@ function prev() {
 
 function daysInMonth(iMonth, iYear) {
     return 32 - new Date(iYear, iMonth, 32).getDate();
-}
-
-function createElement(element, elem, args) {
-    let d = document.createElement(element);
-    if (args) for (const [k, v] of Object.entries(args)) d[k] = v;
-    elem.appendChild(d);
-    return d;
 }
 
 
@@ -417,11 +393,6 @@ function deleteEvent(note_id) {
     location.reload()
 }
 
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}
 
 function studentOncChange(student_obj) {
     student_obj.options[student_obj.selectedIndex].setAttribute('selected', 'selected');

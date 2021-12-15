@@ -176,7 +176,7 @@ body {
 }
 
 .authentication-panel .sign-in-form .text-error {
-  /*visibility: hidden;*/
+  visibility: hidden;
   color: #c0503c;
 }
 
@@ -237,7 +237,7 @@ body {
 }
 
 .authentication-panel .sign-in-form .popup .text-error {
-  /*visibility: hidden;*/
+  visibility: hidden;
   margin-bottom: 0;
 }
 

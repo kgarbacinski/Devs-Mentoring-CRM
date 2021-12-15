@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from Meetings_calendar.models import Meeting, Note
-from Account_management.models import Mentor
+from Account_management.models import Mentor, Student
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from Files_organizer.models import Document, SubTopic, Subject
@@ -66,11 +66,14 @@ class MeetingsStudentSerializer(serializers.ModelSerializer):
 class StudentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mentor
-        fields = ['id', ]
+        fields = '__all__' # ['id', ]
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['student'] = instance.user.student.__str__()
+        representation['email'] = instance.user.email
+        representation['enrolment'] = instance.user.student.enrollmentDate.strftime("%Y-%m-%d")
+        representation['path'] = instance.user.student.path.name
         return representation
 
 
@@ -93,6 +96,18 @@ class AddNoteSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation['meeting'] = instance.meeting.id
         return representation
+
+
+class ChangeStudentAvatarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = '__all__'
+
+
+class ChangeMentorAvatarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mentor
+        fields = '__all__'
 
 
 class GetMeetingSerializer(serializers.ModelSerializer):
