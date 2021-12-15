@@ -33,7 +33,6 @@ function getIncomingMeetings() {
         })
 }
 
-
 function getPastMeetings() {
     let dates = getBackDates(30);
     getJson(`/api/meetings-range/?start_date=${dates.start_date}&end_date=${dates.end_date}`)

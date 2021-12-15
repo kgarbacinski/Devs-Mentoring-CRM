@@ -150,14 +150,6 @@
                         <div class="student-page-block">
                             <h3>Incoming meetings</h3>
                             <hr>
-                            {#                            <div class="meet-box">#}
-                            {#                                <p class="meet-details"><span class="date"><i class="bi bi-calendar-check"></i>10.11.2021</span><span#}
-                            {#                                        class="hour">17:00<i class="bi bi-clock"></i></span></p>#}
-                            {#                            </div>#}
-
-                            {#                            <div class="control-btn">#}
-                            {#                                <a class="button" href="">show calendar</a>#}
-                            {#                            </div>#}
                         </div>
                     </div>
                 </div>
@@ -166,16 +158,6 @@
                     <div class=" student-page-block">
                         <h3>Last meetings</h3>
                         <hr>
-
-                        {#                        <div class="meet-box">#}
-                        {#                            <p class="meet-details"><span class="date"><i#}
-                        {#                                    class="bi bi-calendar-check"></i>10.11.2021</span><span class="hour">17:00<i#}
-                        {#                                    class="bi bi-clock"></i></span></p>#}
-                        {#                            <p class="note">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum perferendis#}
-                        {#                                velit, veritatis, ab error id laborum maiores iure distinctio voluptate mollitia quidem#}
-                        {#                                cumque, ratione architecto debitis provident placeat corporis autem.#}
-                        {#                            </p>#}
-                        {#                        </div>#}
                     </div>
                 </div>
             </div>
@@ -184,7 +166,6 @@
 {% endblock main_content %}
 
 {% block script %}
-{#    <script src="{% static 'Account_management/js/script.js' %}"></script>#}
     {% if request.user|has_group:"Mentor" %}
         <script src="{% static 'Account_management/js/index-mentor.js' %}"></script>
     {% else %}

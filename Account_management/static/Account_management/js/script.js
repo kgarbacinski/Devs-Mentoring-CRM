@@ -83,6 +83,3 @@ function changeAvatar(){
                 console.log(error)
         })).then(() => {window.location.reload()})
 }
-
-
-
