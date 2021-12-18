@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 from payments_przelewy24.config import Przelewy24Config
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -145,3 +146,20 @@ REST_FRAMEWORK = {
 MEDIA_ROOT = os.path.join(BASE_DIR, 'materials/')
 MEDIA_URL = "/materials/"
 
+PAYMENT_HOST = "przelewy24.source.net.pl"
+PAYMENT_USES_SSL = True
+PAYMENT_MODEL = "Account_management.CoursePayment"
+PAYMENT_VARIANTS = {
+    "przelewy24": (
+        "payments_przelewy24.provider.Przelewy24Provider",
+        {
+            "config": Przelewy24Config(
+                pos_id=config('POS_ID', cast=int),
+                merchant_id=config('MERCHANT_ID', cast=int),
+                crc=config('CRC'),
+                api_key=config('API_KEY'),
+                sandbox=False
+            ),
+        },
+    ),
+}
