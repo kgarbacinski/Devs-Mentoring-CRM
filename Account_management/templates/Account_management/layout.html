@@ -62,24 +62,22 @@
                         <span class="li-item">Users</span>
                     </a>
                 </li>
-                {% if request.user|has_group:"Student" %}
-                    <li>
-                        <a href="{% url 'payment' %}">
-                            <span><i class="bi bi-credit-card-2-back" title="Payments"></i></span>
-                            <span class="li-item">Payments</span>
-                        </a>
-                    </li>
-                {% endif %}
+                <li>
+                    <a href="{% url 'payment' %}">
+                        <span><i class="bi bi-credit-card-2-back" title="Payments"></i></span>
+                        <span class="li-item">Payments</span>
+                    </a>
+                </li>
             </ul>
-          <div class="footer">
-            <div class="social-icons">
-                <a href="https://www.devs-mentoring.pl/" title="devs-mentoring.pl"><i
-                        class="bi bi-globe2"></i></a>
-                <a href="https://www.facebook.com/devs.mentoring" title="fb/devs.mentoring"><i
-                        class="bi bi-facebook"></i></a>
+            <div class="footer">
+                <div class="social-icons">
+                    <a href="https://www.devs-mentoring.pl/" title="devs-mentoring.pl"><i
+                            class="bi bi-globe2"></i></a>
+                    <a href="https://www.facebook.com/devs.mentoring" title="fb/devs.mentoring"><i
+                            class="bi bi-facebook"></i></a>
+                </div>
+                <p>Devs Mentoring &copy <span class="year"></span></p>
             </div>
-            <p>Devs Mentoring &copy <span class="year"></span></p>
-        </div>
         </div>
 
 
@@ -94,15 +92,15 @@
             </p>
             <div class="avatar">
                 <img id="user-avatar"
-                     {% if request.user|has_group:"Mentor" %}
-                        src="{{ user.mentor.user_image.url }}"
-                     {% else %}
-                        src="{{ user.student.user_image.url }}"
-                     {% endif %}
-                         alt="User avatar"
-                         data-bs-toggle="collapse" data-bs-target="#collapseAvatarPopup"
-                         aria-expanded="false"
-                         aria-controls="collapseAvatarPopup">
+                        {% if request.user|has_group:"Mentor" %}
+                     src="{{ user.mentor.user_image.url }}"
+                        {% else %}
+                     src="{{ user.student.user_image.url }}"
+                        {% endif %}
+                     alt="User avatar"
+                     data-bs-toggle="collapse" data-bs-target="#collapseAvatarPopup"
+                     aria-expanded="false"
+                     aria-controls="collapseAvatarPopup">
             </div>
         </header>
 
