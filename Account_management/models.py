@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from dateutil import relativedelta
 from phonenumber_field.modelfields import PhoneNumberField
-
+from datetime import datetime
 
 class Path(models.Model):
     name = models.CharField(max_length=50)
@@ -18,13 +18,23 @@ class Mentor(models.Model):
     max_students = models.IntegerField(default=1)
 
     def count_all_meetings(self):
-        return self.meeting_set.count()
+        current_hour = datetime.now()
+        return self.meeting_set.filter(date__lte=current_hour).count()
 
     def count_all_students(self):
         return self.student_set.count()
 
     def get_remaining_meetings(self):
         return 4 - self.count_all_meetings() % 4
+
+    def save(self, *args, **kwargs):
+        try:
+            this = Mentor.objects.get(id=self.id)
+            if this.user_image != self.user_image and self.user_image.name != 'user.png':
+                this.user_image.delete(save=False)
+        except:
+            pass
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
@@ -44,7 +54,8 @@ class Student(models.Model):
         return "not paid"
 
     def count_all_meetings(self):
-        return self.meeting_set.count()
+        current_hour = datetime.now()
+        return self.meeting_set.filter(date__lte=current_hour).count()
 
     def get_remaining_meetings(self):
         if self.is_sub_paid() is False:
@@ -60,6 +71,15 @@ class Student(models.Model):
         if self.no_month <= no_payments:
             return True
         return False
+
+    def save(self, *args, **kwargs):
+        try:
+            this = Student.objects.get(id=self.id)
+            if this.user_image != self.user_image and self.user_image.name != 'user.png':
+                this.user_image.delete(save=False)
+        except:
+            pass
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
