@@ -136,3 +136,17 @@ def payment_details(request, payment_id):
     except RedirectNeeded as redirect_to:
         return redirect(str(redirect_to))
     return TemplateResponse(request, "Account_management/confirm-payment.html", {"form": form, "payment": payment})
+
+
+class SuccessPaymentView(LoginRequiredMixin, View):
+    template_name = 'Account_management/success-payment.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+
+class FailurePaymentView(LoginRequiredMixin, View):
+    template_name = 'Account_management/failure-payment.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)

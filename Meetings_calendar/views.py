@@ -3,7 +3,6 @@ from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-
 # Create your views here.
 
 class CalendarView(LoginRequiredMixin, View):
@@ -12,4 +11,3 @@ class CalendarView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
-

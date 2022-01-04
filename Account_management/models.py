@@ -3,10 +3,14 @@ from decimal import Decimal
 from django.db import models
 from django.contrib.auth.models import User
 from dateutil import relativedelta
+from django.shortcuts import redirect
+from django.urls import reverse
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import datetime
 from payments import PurchasedItem
 from payments.models import BasePayment
+from decouple import config
+
 
 class Path(models.Model):
     name = models.CharField(max_length=50)
@@ -49,7 +53,7 @@ class Student(models.Model):
     mentor = models.ManyToManyField(Mentor)
     enrollmentDate = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     path = models.ForeignKey(Path, on_delete=models.PROTECT)
-    user_image = models.ImageField(upload_to='user_images/', default='user.png',  null=True, blank=True)
+    user_image = models.ImageField(upload_to='user_images/', default='user.png', null=True, blank=True)
     no_month = models.IntegerField(default=1)
 
     def get_next_payment(self):
@@ -121,12 +125,15 @@ class CoursePayment(BasePayment):
     id = models.CharField(
         primary_key=True, editable=False, default=uuid.uuid4, max_length=50
     )
-    # TODO change urls to get proper response
+
+    # TODO change urls
     def get_failure_url(self):
-        return "https://przelewy24.source.net.pl/fail"
+        print(reverse('failure'))
+        return f"{config('HOST')}{reverse('failure')}"  # "https://przelewy24.source.net.pl/fail"
 
     def get_success_url(self):
-        return "https://przelewy24.source.net.pl/success"
+        print(reverse('success'))
+        return f"{config('HOST')}{reverse('success')}"  # "https://przelewy24.source.net.pl/success"
 
     def get_purchased_items(self):
         # you'll probably want to retrieve these from an associated order

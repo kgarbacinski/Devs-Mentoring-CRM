@@ -52,6 +52,7 @@ class Przelewy24Provider(BasicProvider):
         url = self._api.register(
             transaction=_create_transaction_from_payment(payment),
             success_url=payment.get_success_url(),
+            # failure_url=payment.get_failure_url(),
             status_url=self.get_return_url(payment),
         )
         logger.debug(f"Transaction registered: url={url}")
@@ -65,7 +66,6 @@ class Przelewy24Provider(BasicProvider):
         return {}
 
     def get_payment_response(self, payment, extra_data=None):
-        print('dupa1')
         post = self.get_product_data(payment, extra_data)
         print(post)
         return requests.post(self.endpoint, data=post)
