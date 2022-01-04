@@ -147,27 +147,36 @@ h4 {
   font-size: 0.8rem;
 }
 
-.checkout-form-field-name, .checkout-form-field-last-name, .checkout-form-field-post-code, .checkout-form-field-city, .checkout-form-field-phone, .checkout-form-field-email,
+.checkout-form-field-name, .checkout-form-field-last-name, .checkout-form-field-city, .checkout-form-field-country, .checkout-form-field-phone, .checkout-form-field-email,
 .thank-you-field-name,
 .thank-you-field-last-name,
 .thank-you-field-post-code,
+.thank-you-field-street,
 .thank-you-field-city,
 .thank-you-field-phone,
 .thank-you-field-email {
   display: inline-block;
   width: 49.60%;
 }
+.checkout-form-field-post-code{
+  display: inline-block;
+  width: 39.60%;
+}
+.checkout-form-field-address{
+  display: inline-block;
+  width: 49.60%;
+}
 
-.checkout-form-field-seve,
+.checkout-form-field-save,
 .checkout-form .consent-field,
-.thank-you-field-seve,
+.thank-you-field-save,
 .thank-you .consent-field {
   margin-bottom: 40px;
 }
 
-.checkout-form-field-seve label,
+.checkout-form-field-save label,
 .checkout-form .consent-field label,
-.thank-you-field-seve label,
+.thank-you-field-save label,
 .thank-you .consent-field label {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -178,9 +187,9 @@ h4 {
   width: auto;
 }
 
-.checkout-form-field-seve label input,
+.checkout-form-field-save label input,
 .checkout-form .consent-field label input,
-.thank-you-field-seve label input,
+.thank-you-field-save label input,
 .thank-you .consent-field label input {
   width: auto;
   margin-right: 8px;

@@ -1,8 +1,12 @@
+import uuid
+from decimal import Decimal
 from django.db import models
 from django.contrib.auth.models import User
 from dateutil import relativedelta
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import datetime
+from payments import PurchasedItem
+from payments.models import BasePayment
 
 class Path(models.Model):
     name = models.CharField(max_length=50)
@@ -94,6 +98,7 @@ class PaymentInfo(models.Model):
     street = models.CharField(max_length=200)
     postCode = models.CharField(max_length=6)
     town = models.CharField(max_length=20)
+    country = models.CharField(max_length=20, default='Poland')
     phone = PhoneNumberField()
     email = models.EmailField()
     comment = models.TextField(null=True, blank=True)
@@ -110,3 +115,25 @@ class Payment(models.Model):
     @property
     def next_payment(self):
         return self.paymentDate + relativedelta.relativedelta(months=1)
+
+
+class CoursePayment(BasePayment):
+    id = models.CharField(
+        primary_key=True, editable=False, default=uuid.uuid4, max_length=50
+    )
+    # TODO change urls to get proper response
+    def get_failure_url(self):
+        return "https://przelewy24.source.net.pl/fail"
+
+    def get_success_url(self):
+        return "https://przelewy24.source.net.pl/success"
+
+    def get_purchased_items(self):
+        # you'll probably want to retrieve these from an associated order
+        yield PurchasedItem(
+            name="The Hound of the Baskervilles",
+            sku="BSKV",
+            quantity=9,
+            price=Decimal(10),
+            currency="USD",
+        )

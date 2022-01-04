@@ -38,7 +38,7 @@ class ProcessForm(forms.Form):
             orderId=cleaned_data.get("orderId", 0),
             methodId=cleaned_data.get("methodId", 0),
             statement=cleaned_data.get("statement", ""),
-            email=cleaned_data.get("email", "dupa@gmail.com")
+            email=cleaned_data.get("email", "")
         )
 
         if sign != generated_sign:

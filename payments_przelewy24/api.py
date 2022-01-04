@@ -53,7 +53,7 @@ class TransactionDTO:
             amount=transaction.amount,
             currency=transaction.currency,
             description=transaction.description,
-            email=transaction.email != '' or 'dupa@gmail.com',
+            email=transaction.email,
             country=transaction.country,
             language=transaction.language,
             urlReturn=success_url,
@@ -139,7 +139,8 @@ class Przelewy24API:
         transaction = TransactionDTO.create_from(
             transaction, self._config, sign, success_url, status_url
         )
-        print(asdict(transaction))
+        # KG add print
+        # print(asdict(transaction))
         payload = asdict(transaction)
         response = self._do("POST", self._config.endpoints.transactionRegister, payload)
         token = response["data"]["token"]

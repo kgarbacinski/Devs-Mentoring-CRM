@@ -1,0 +1,9 @@
+<form action="{{ form.action }}" method="{{ form.method }}">
+    <p>Email: {{ payment.billing_email }}</p>
+    <p>Name: {{ payment.billing_first_name }} {{ payment.billing_last_name }}</p>
+    <p>Street: {{ payment.billing_address_1 }}</p>
+    <p>City: {{ payment.billing_city }}</p>
+    <p>Post code: {{ payment.billing_postcode }}</p>
+    <p>If all data is correct click "Proceed"</p>
+    <p><input type="button" value="Back" onClick="history.go(-1);">  <input type="submit" value="Proceed" /></p>
+</form>

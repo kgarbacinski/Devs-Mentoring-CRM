@@ -65,7 +65,9 @@ class Przelewy24Provider(BasicProvider):
         return {}
 
     def get_payment_response(self, payment, extra_data=None):
+        print('dupa1')
         post = self.get_product_data(payment, extra_data)
+        print(post)
         return requests.post(self.endpoint, data=post)
 
     def process_data(self, payment, request):
