@@ -89,7 +89,7 @@ class PaymentView(LoginRequiredMixin, View):
         form.instance.user = request.user.id
         user = request.user
         if form.is_valid():
-            if self.request.user.groups.filter(name='Mentor').exists():
+            if self.request.user.groups.filter(name='Student').exists():
                 PaymentInfo.objects.update_or_create(
                     student=Student.objects.get(user=request.user.id),
                     defaults={'firstName': form.cleaned_data.get('firstName'),

@@ -8,7 +8,6 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.http.response import HttpResponseBadRequest
 from payments import PaymentStatus
 from payments.core import BasicProvider
-from payments.forms import PaymentForm
 from payments.models import BasePayment
 
 from payments_przelewy24.api import Transaction
@@ -52,7 +51,6 @@ class Przelewy24Provider(BasicProvider):
         url = self._api.register(
             transaction=_create_transaction_from_payment(payment),
             success_url=payment.get_success_url(),
-            # failure_url=payment.get_failure_url(),
             status_url=self.get_return_url(payment),
         )
         logger.debug(f"Transaction registered: url={url}")
