@@ -1,0 +1,655 @@
+{% extends 'Account_management/layout.html' %}
+{% load static %}
+{% load auth_extras %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'Exercises_checker/css/task-list.css' %}">
+{% endblock style %}
+
+{% block main_content %}
+    <main>
+
+        <img class="icon-title" src="img/icon-wing.svg" alt="">
+        <h2 class="page-title">Exercises checker</h2>
+        <hr>
+
+        <div class="student-info-progress p-3 mb-5">
+            <p class="text-center fs-5 pt-4 pb-3">YOUR PROGRESS:</p>
+            <p class="tasks-count text-center"><span class="done-tasks">30</span><span> questions completed of
+                        </span><span class="all-tasks">60</span></p>
+
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=""
+                     aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+
+        <!-- MU: Tu zaczynaja się zakładki -->
+        <ul class="task-tabs nav nav-tabs" id="myTab" role="tablist">
+            <li class="task-tab nav-item" role="presentation">
+                <button class="nav-link active" id="python-tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-python" type="button" role="tab" aria-controls="tab-python"
+                        aria-selected="true">Python
+                </button>
+            </li>
+            <li class="task-tab nav-item" role="presentation">
+                <button class="nav-link" id="java-script-tab" data-bs-toggle="tab"
+                        data-bs-target="#tab-java-script" type="button" role="tab" aria-controls="tab-java-script"
+                        aria-selected="false">Java Script
+                </button>
+            </li>
+            <li class="task-tab nav-item" role="presentation">
+                <!-- MU: aby jakiś przycisk wyłączyć - należy dodać klasę .disabled na button -->
+                <button class="nav-link disabled" id="java-tab" data-bs-toggle="tab" data-bs-target="#tab-java"
+                        type="button" role="tab" aria-controls="tab-java" aria-selected="false">Java
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+
+            <!-- MU: start - zakladka PYTHON -->
+            <div class="tab-pane fade show active" id="tab-python" role="tabpanel" aria-labelledby="python-tab">
+                <div class="row task-content mx-0">
+
+                    <div class="col-sm-12 col-md-4 easy-level easy-level-python p-4">
+                        <h3 class="level-title fs-4 mt-5 mb-3">Easy <span class="count-tasks"><span
+                                class="done-easy done-easy-python">0</span>/<span
+                                class="total-easy total-easy-python">20</span></span></h3>
+                        <div class="tasks-list-box tasks-list-box-easy">
+                            <!-- MU: tu jest pojedyńczy task - zrobiony ma otrzymać klasę .complete obok .complete-circle -->
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle complete"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span> Przykładowe zadanie Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-easy"></div>
+                                </a>
+                            </div>
+                            <!-- koniec pojedyńczego taska -->
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span> Przykładowe zadanie Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-easy"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span> Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-easy"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span> Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-easy"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span> Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-easy"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-4 medium-level medium-level-python p-4">
+                        <h3 class="level-title fs-4 mt-5 mb-3">Medium <span class="count-tasks"><span
+                                class="done-medium done-medium-python">0</span>/<span
+                                class="total-medium total-medium-python">20</span></span></h3>
+
+                        <div class="tasks-list-box tasks-list-box-medium">
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle complete"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-medium"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-medium"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-medium"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-medium"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-medium"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-4 hard-level hard-level-python p-4">
+                        <h3 class="level-title fs-4 mt-5 mb-3">Hard <span class="count-tasks"><span
+                                class="done-hard done-hard-python">0</span>/<span
+                                class="total-hard total-hard-python">20</span></span></h3>
+                        <div class="tasks-list-box tasks-list-box-hard">
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle complete"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-hard"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-hard"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-hard"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-hard"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-hard"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- MU: stop - zakladka PYTHON -->
+
+            <!-- MU: start - zakladka JS -->
+            <div class="tab-pane fade" id="tab-java-script" role="tabpanel" aria-labelledby="java-script-tab">
+                <div class="row task-content mx-0">
+
+                    <div class="col-sm-12 col-md-4 easy-level easy-level-java-script p-4">
+                        <h3 class="level-title fs-4 mt-5 mb-3">Easy <span class="count-tasks"><span
+                                class="done-easy done-easy-java-script">0</span>/<span
+                                class="total-easy total-easy-java-script">20</span></span></h3>
+                        <div class="tasks-list-box tasks-list-box-easy">
+                            <!-- MU: tu jest pojedyńczy task - zrobiony ma otrzymać klasę .complete obok .complete-circle -->
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle complete"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-easy"></div>
+                                </a>
+                            </div>
+                            <!-- koniec pojedyńczego taska -->
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-easy"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-easy"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-easy"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-easy"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-4 medium-level medium-level-java-script p-4">
+                        <h3 class="level-title fs-4 mt-5 mb-3">Medium <span class="count-tasks"><span
+                                class="done-medium done-medium-java-script">0</span>/<span
+                                class="total-medium total-medium-java-script">20</span></span></h3>
+
+                        <div class="tasks-list-box tasks-list-box-medium">
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle complete"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-medium"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-medium"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-medium"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-medium"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-medium"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-4 hard-level hard-level-java-script p-4">
+                        <h3 class="level-title fs-4 mt-5 mb-3">Hard <span class="count-tasks"><span
+                                class="done-hard done-hard-java-script">0</span>/<span
+                                class="total-hard total-hard-java-script">20</span></span></h3>
+                        <div class="tasks-list-box tasks-list-box-hard">
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle complete"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-hard"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-hard"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-hard"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-hard"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-hard"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- MU: start - zakladka JS -->
+
+            <!-- MU: stop - zakladka JAVA -->
+            <div class="tab-pane fade" id="tab-java" role="tabpanel" aria-labelledby="java-tab">
+                <div class="row task-content mx-0">
+
+                    <div class="col-sm-12 col-md-4 easy-level easy-level-java p-4">
+                        <h3 class="level-title fs-4 mt-5 mb-3">Easy <span class="count-tasks"><span
+                                class="done-easy done-easy-java">0</span>/<span
+                                class="total-easy total-easy-java">20</span></span></h3>
+                        <div class="tasks-list-box tasks-list-box-easy">
+                            <!-- MU: tu jest pojedyńczy task - zrobiony ma otrzymać klasę .complete obok .complete-circle -->
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle complete"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-easy"></div>
+                                </a>
+                            </div>
+                            <!-- koniec pojedyńczego taska -->
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-easy"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-easy"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-easy"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-easy"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-4 medium-level medium-level-java p-4">
+                        <h3 class="level-title fs-4 mt-5 mb-3">Medium <span class="count-tasks"><span
+                                class="done-medium done-medium-java">0</span>/<span
+                                class="total-medium total-medium-java">20</span></span></h3>
+                        <div class="tasks-list-box tasks-list-box-medium">
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle complete"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-medium"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-medium"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-medium"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-medium"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-medium"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-4 hard-level hard-level-java p-4">
+                        <h3 class="level-title fs-4 mt-5 mb-3">Hard <span class="count-tasks"><span
+                                class="done-hard done-hard-java">0</span>/<span
+                                class="total-hard total-hard-java">20</span></span></h3>
+                        <div class="tasks-list-box tasks-list-box-hard">
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle complete"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-hard"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-hard"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-hard"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-hard"></div>
+                                </a>
+                            </div>
+                            <div class="task-box mb-2">
+                                <a class="go-to-checker" href="#">
+                                    <div class="complete-box">
+                                        <div class="complete-circle"></div>
+                                    </div>
+                                    <div class="task-name">
+                                        <span>Przykładowe zadanie</span>
+                                    </div>
+                                    <div class="level-color level-color-hard"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- MU: stop - zakladka JAVA -->
+
+        </div>
+        <!-- MU: koniec zakładek -->
+
+
+    </main>
+{% endblock main_content %}

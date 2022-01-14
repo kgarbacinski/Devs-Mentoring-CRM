@@ -62,13 +62,13 @@ function getCookie(name) {
 
 
 const showDetails = () => {
-    if (Selectors.themeDetails.style.display = "none") {
+    if (Selectors.themeDetails.style.display === "none") {
         Selectors.themeDetails.style.display = "block"
     }
 }
 
 const closeDetails = () => {
-    if (Selectors.themeDetails.style.display = "block") {
+    if (Selectors.themeDetails.style.display === "block") {
         Selectors.themeDetails.style.display = "none"
     }
 }

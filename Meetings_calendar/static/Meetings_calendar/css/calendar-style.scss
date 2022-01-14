@@ -1,0 +1,485 @@
+$gold-color: #dbc110;
+$secondary: #fdfdfd;
+$bg-gray: #f7f7f7;
+$shadow: #666;
+$border-gray: #ccc;
+
+
+::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+    background: $secondary;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $border-gray;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    position: relative;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+#root {
+    display: block;
+    height: 100vh;
+    padding: 15px;
+}
+
+.row {
+    --bs-gutter-x: 0;
+}
+
+main {
+    position: relative;
+    padding: 0;
+
+    .icon-title {
+        position: absolute;
+        top: 25px;
+        left: 15px;
+        height: 55px;
+        width: auto;
+        animation: moveUp 4s linear infinite;
+    }
+
+    .page-title {
+        display: inline-block;
+        margin-left: 70px;
+        padding: 55px 15px 0;
+        font-size: 20px;
+        text-transform: uppercase;
+    }
+
+    hr {
+        background-color: $gold-color;
+        opacity: 1;
+        margin-left: 85px;
+        width: 100px;
+        margin-top: -7px;
+        margin-bottom: 50px;
+
+        &:not([size]) {
+            height: 4px;
+        }
+    }
+
+    #structureCalendar header {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 80px;
+        background: rgb(164, 164, 164);
+        background: linear-gradient(90deg, rgba(164, 164, 164, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(164, 164, 164, 1) 100%);
+        color: #000;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        border-bottom: none;
+
+        .left,
+        .center,
+        .right {
+
+            h3 {
+                padding-top: 10px;
+                font-size: 25px;
+                text-transform: uppercase;
+                // line-height: 80px;
+            }
+
+            button {
+                margin-top: 2px;
+                padding: 0 1rem;
+                background-color: transparent;
+                border: none;
+                color: #000;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 30px;
+                cursor: pointer;
+                transition: transform .3s, color .3s, text-shadow .3s;
+
+                &:hover {
+                    transform: scale(1.2);
+                    color: $gold-color;
+                    text-shadow: 0 0 2px #000;
+                    // transition: all 500ms ease;
+                }
+            }
+        }
+    }
+
+    #calendar {
+        width: 100%;
+
+        #days,
+        #weekdays {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+
+            li {
+                display: block;
+                float: left;
+                width: calc(100% / 7);
+                padding: 5px;
+                box-sizing: border-box;
+            }
+        }
+
+        #weekdays {
+            height: 40px;
+            background: rgb(164, 164, 164);
+            background: linear-gradient(90deg, rgba(164, 164, 164, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(164, 164, 164, 1) 100%);
+            border-bottom: 3px solid $gold-color;
+
+            li {
+                text-align: center;
+                text-transform: uppercase;
+                line-height: 20px;
+                border: none !important;
+                padding: 10px 6px;
+                color: #000;
+                font-size: 13px;
+                font-weight: bold;
+            }
+
+            .today {
+                background: $gold-color;
+                border-top-left-radius: 25px;
+                border-top-right-radius: 25px;
+            }
+        }
+
+        #days {
+            li {
+                height: 125px;
+                overflow-y: auto;
+                background: $secondary;
+                position: relative;
+                color: #003566;
+                border-bottom: 1px solid #efefef;
+                transition: background .3s;
+
+                &:hover {
+                    background: darken($secondary, 5%);
+                }
+
+                .date {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    text-align: center;
+                    color: #003566b9;
+                    width: 100%;
+                    font-size: 12px;
+                    font-weight: bold;
+
+                    .add-event-btn {
+                        border: none;
+                        background-color: transparent;
+                        padding: 0 5px;
+                        color: #003566b9;
+                        font-size: 16px;
+                    }
+                }
+            }
+
+            .today {
+                background: #00356605;
+                box-shadow: inset 0 0 3px $shadow;
+                transition: background .3s, box-shadow .3s;
+
+                &:hover {
+                    background: #00356613;
+                    box-shadow: inset 0 0 3px #003566;
+                }
+            }
+        }
+    }
+
+    .ev {
+        display: block;
+        margin: 5px auto;
+        background: #00356628;
+        border: 1px solid #003566;
+        border-radius: 4px;
+        font-size: .65rem;
+        transition: background 500ms ease;
+    }
+
+    .ev:hover {
+        background: #efefef;
+    }
+
+    .ev-desc {
+        padding: 0.2rem 0.5rem;
+    }
+
+    .ev-desc a {
+        text-decoration: none;
+        color: #003566;
+        transition: color .3s;
+    }
+
+    .ev-desc span {
+        margin-right: 5px;
+        transition: color .3s;
+    }
+
+    .ev:hover .ev-desc a,
+    .ev:hover .ev-desc span {
+        color: darken($gold-color, 15%);
+
+    }
+
+    .add-event,
+    .edit-event {
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+
+            .close {
+                background-color: transparent;
+                border: none;
+                padding: 10px;
+                margin: 0;
+                width: 30px;
+                transition: color .3s;
+            }
+
+            .close:hover {
+                background-color: transparent;
+                border: none;
+                color: $gold-color;
+                padding: 10px;
+            }
+        }
+
+        .modal-body {
+
+            label {
+                width: 100%;
+                font-size: 1rem;
+            }
+
+            input,
+            select,
+            textarea {
+                width: 100%;
+                padding: 5px;
+                border: 1px solid $border-gray;
+                border-radius: 5px;
+                margin-bottom: 1.1rem;
+                background-color: transparent;
+                font-size: 14px;
+            }
+
+            input,
+            select {
+                height: 2.2rem;
+            }
+
+            option {
+                color: #003566;
+
+                &:hover {
+                    background-color: $shadow;
+                }
+            }
+
+            button {
+                padding: 10px 20px;
+                width: 120px;
+                border: 1px solid $gold-color;
+                background: $gold-color;
+                border-radius: 25px;
+                text-transform: uppercase;
+                font-weight: bold;
+                transition: color .3s, background-color .3s, border .3s;
+                margin: 15px 0;
+            }
+
+            button:hover {
+                color: #fff;
+                background-color: #000;
+                border: 1px solid #000;
+            }
+
+            .control-buttons {
+                display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+            }
+
+            .edit-cancel-event-btn {
+                background-color: $border-gray;
+                border: 1px solid $border-gray;
+            }
+        }
+
+        .modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .delete-event-btn {
+                background-color: transparent;
+                border: none;
+                padding: 10px;
+                margin: 0;
+                color: gray;
+                transition: color .3s;
+            }
+
+            .delete-event-btn:hover {
+                color: $gold-color;
+            }
+        }
+
+        .note-area,
+        .note {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            .note {
+                width: 100%;
+            }
+        }
+
+        .preview-event {
+            display: unset;
+            margin-top: 10px;
+        }
+
+        .view-time,
+        .view-student {
+            margin-right: 5px;
+        }
+
+        .view-note {
+            margin-top: 15px;
+        }
+
+        .editing-form {
+            display: none;
+        }
+    }
+}
+
+.empty {
+    color: transparent;
+}
+
+@keyframes moveUp {
+    0% {
+        top: 45px;
+    }
+
+    50% {
+        top: 30px;
+    }
+
+    100% {
+        top: 45px;
+        ;
+    }
+}
+
+@media (max-width: 768px) {
+    main {
+        #structureCalendar header {
+            height: auto;
+            text-align: center;
+            padding: 1rem;
+
+            .left,
+            .center,
+            .right {
+                width: 100%;
+                float: none;
+            }
+        }
+
+        #calendar {
+
+            #weekdays,
+            .null {
+                display: none;
+            }
+
+            #days li {
+                height: auto !important;
+                border-bottom: 1px solid #efefef;
+                width: 100%;
+                padding: 10px 20px;
+            }
+
+            .date {
+                margin: 5px 0;
+                float: none;
+            }
+        }
+
+        .add-event,
+        .edit-event {
+            .modal-content {
+                width: 90%;
+                margin: 0 auto;
+            }
+        }
+
+    }
+}
+
+@media (min-width: 576px) {
+    main {
+        .page-title {
+            font-size: 30px;
+        }
+
+        hr {
+            &:not([size]) {
+                height: 5px;
+            }
+        }
+    }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+    .note-area {
+        padding-left: 10px;
+    }
+
+    .selection-area {
+        padding-right: 10px;
+    }
+}
+
+
+@media (min-width: 992px) {
+    main {
+        // .add-event {
+        //     padding: 20px !important;
+        // }
+
+        #root {
+            padding: 20px;
+        }
+    }
+}

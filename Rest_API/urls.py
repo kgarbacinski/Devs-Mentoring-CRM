@@ -1,5 +1,5 @@
 from django.urls import path, include, re_path
-from .views import ListNotes, ListMeetings, ListStudents, AddMeeting, EditDeleteMeeting, AddNote, EditDeleteNote, \
+from .views import ListNotes, ListMeetings, ListStudents, AddMeeting, EditDeleteMeeting, EditDeleteNote, \
     ListAllMeetings, MeetingDetail, DocumentView, HasAccessToFileView, HasAccessToSubjectView, UserSearchBoxSubjectView, \
     UserSearchBoxSubtopicView, ListMeetingsByDates, ChangeAvatar
 
@@ -14,7 +14,6 @@ urlpatterns = [
     path('meetings-range/', ListMeetingsByDates.as_view(), name='meetings-range'),
     path('meeting/', MeetingDetail.as_view(), name='meeting'),
     path('notes/', ListNotes.as_view(), name='notes'),
-    path('add-note/', AddNote.as_view(), name='add_note'),
     path('edit-note/<int:pk>/', EditDeleteNote.as_view(), name='editNote'),
     path('students/', ListStudents.as_view(), name='students'),
     path('add-meeting/', AddMeeting.as_view(), name='add_meeting'),

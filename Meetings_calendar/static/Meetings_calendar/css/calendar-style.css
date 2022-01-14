@@ -353,6 +353,25 @@ main .edit-event .modal-body button:hover {
   border: 1px solid #000;
 }
 
+main .add-event .modal-body .control-buttons,
+main .edit-event .control-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-evenly;
+}
+
+main .add-event .modal-body .edit-cancel-event-btn,
+main .edit-event .modal-body .edit-cancel-event-btn {
+  background-color: #ccc;
+  border: 1px solid #ccc;
+}
+
 main .add-event .modal-footer,
 main .edit-event .modal-footer {
   display: -webkit-box;
@@ -376,6 +395,8 @@ main .edit-event .modal-footer .delete-event-btn {
   -webkit-transition: color .3s;
   transition: color .3s;
 }
+
+
 
 main .add-event .modal-footer .delete-event-btn:hover,
 main .edit-event .modal-footer .delete-event-btn:hover {
@@ -408,11 +429,11 @@ main .edit-event .note .note {
   width: 100%;
 }
 
-main .add-event .preview-event,
-main .edit-event .preview-event {
-  display: unset;
-  margin-top: 10px;
-}
+/*main .add-event .preview-event,*/
+/*main .edit-event .preview-event {*/
+/*  display: unset;*/
+/*  margin-top: 10px;*/
+/*}*/
 
 main .add-event .view-time,
 main .add-event .view-student,
@@ -426,18 +447,15 @@ main .edit-event .view-note {
   margin-top: 15px;
 }
 
-main .add-event .editing-form,
-main .edit-event .editing-form {
-  display: none;
-}
+/*main .add-event .editing-form,*/
+/*main .edit-event .editing-form {*/
+/*  display: none;*/
+/*}*/
 
 .empty {
   color: transparent;
 }
-main button.ev {
-    text-align: left;
-    width: 100%;
-}
+
 @-webkit-keyframes moveUp {
   0% {
     top: 45px;

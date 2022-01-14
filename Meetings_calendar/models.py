@@ -17,7 +17,7 @@ class Note(models.Model):
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE, related_name="notes", blank=True, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=50, null=True, blank=True)
-    text = models.TextField()
+    text = models.TextField(null=True, blank=True)
 
     class Meta:
         unique_together = [['meeting', 'author']]

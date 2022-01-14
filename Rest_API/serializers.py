@@ -16,6 +16,21 @@ class NoteSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation['date'] = instance.meeting.date.strftime("%d-%m-%Y")
         representation['hour'] = instance.meeting.date.strftime("%H:%M")
+        representation['student'] = instance.meeting.student.__str__()
+        representation['mentor'] = instance.meeting.mentor.__str__()
+        return representation
+
+
+class AddNoteSerializer(serializers.ModelSerializer):
+    # mentor = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+    class Meta:
+        model = Note
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['meeting'] = instance.meeting.id
         return representation
 
 
@@ -33,31 +48,30 @@ class AllMeetingSerializer(serializers.ModelSerializer):
         return representation
 
 
-class MeetingsMentorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Meeting
-        fields = '__all__'
+class GetMeetingSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['person'] = instance.student.__str__()
-        representation['mentor'] = instance.mentor.id
-        representation['student'] = instance.student.id
         representation['date'] = instance.date.strftime("%Y-%m-%d")
         representation['hour'] = instance.date.strftime("%H:%M")
         return representation
 
+    class Meta:
+        model = Meeting
+        fields = '__all__'
 
-class MeetingsStudentSerializer(serializers.ModelSerializer):
+
+class MeetingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meeting
         fields = '__all__'
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['person'] = instance.mentor.__str__()
         representation['mentor'] = instance.mentor.id
+        representation['mentor_name'] = instance.mentor.__str__()
         representation['student'] = instance.student.id
+        representation['student_name'] = instance.student.__str__()
         representation['date'] = instance.date.strftime("%Y-%m-%d")
         representation['hour'] = instance.date.strftime("%H:%M")
         return representation
@@ -85,19 +99,6 @@ class AddMeetingSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AddNoteSerializer(serializers.ModelSerializer):
-    # mentor = serializers.HiddenField(default=serializers.CurrentUserDefault())
-
-    class Meta:
-        model = Note
-        fields = '__all__'
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['meeting'] = instance.meeting.id
-        return representation
-
-
 class ChangeStudentAvatarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
@@ -110,21 +111,10 @@ class ChangeMentorAvatarSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class GetMeetingSerializer(serializers.ModelSerializer):
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['date'] = instance.date.strftime("%Y-%m-%d")
-        representation['hour'] = instance.date.strftime("%H:%M")
-        return representation
-
-    class Meta:
-        model = Meeting
-        fields = '__all__'
-
 class SubTopicSerializer(serializers.ModelSerializer):
-    model = SubTopic
-    fields = ['name', 'description']
+    class Meta:
+        model = SubTopic
+        fields = ['name', 'description']
 
 
 class DocumentSerializer(serializers.ModelSerializer):

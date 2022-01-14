@@ -9,9 +9,9 @@ from rest_framework.parsers import FormParser
 from Meetings_calendar.models import Meeting, Note
 from Account_management.models import Student, Mentor
 from .permissions import MentorCreate
-from .serializers import NoteSerializer, MeetingsStudentSerializer, MeetingsMentorSerializer, StudentsSerializer, \
-    AddMeetingSerializer, AddNoteSerializer, AllMeetingSerializer, GetMeetingSerializer, ChangeStudentAvatarSerializer, \
-    ChangeMentorAvatarSerializer
+from .serializers import NoteSerializer, StudentsSerializer, AddMeetingSerializer, AddNoteSerializer, \
+    AllMeetingSerializer, GetMeetingSerializer, ChangeStudentAvatarSerializer, ChangeMentorAvatarSerializer, \
+    MeetingSerializer
 from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from django.http import Http404
@@ -26,15 +26,10 @@ from Rest_API.permissions import FileAccessPermission
 from Rest_API.serializers import DocumentSerializer, AccessToFileSerializer, AccessToSubjectSerializer, \
     UserSearchBoxSerializer
 
+
 # Create your views here.
 class ListMeetings(generics.ListAPIView):
-
-    def get_serializer_class(self):
-        user = self.request.user
-        if user.groups.filter(name='Student').exists():
-            return MeetingsStudentSerializer
-        else:
-            return MeetingsMentorSerializer
+    serializer_class = MeetingSerializer
 
     def get_queryset(self):
         month = self.request.GET.get('date')
@@ -45,19 +40,15 @@ class ListMeetings(generics.ListAPIView):
 
 
 class ListMeetingsByDates(generics.ListAPIView):
-    def get_serializer_class(self):
-        user = self.request.user
-        if user.groups.filter(name='Student').exists():
-            return MeetingsStudentSerializer
-        else:
-            return MeetingsMentorSerializer
+    serializer_class = MeetingSerializer
 
     def get_queryset(self):
         start_date = self.request.GET.get('start_date')
         end_date = self.request.GET.get('end_date')
         user = self.request.user
         if user.groups.filter(name='Student').exists():
-            return Meeting.objects.filter(student__user=user).filter(date__range=[start_date, end_date]).order_by('date')
+            return Meeting.objects.filter(student__user=user).filter(date__range=[start_date, end_date]).order_by(
+                'date')
         return Meeting.objects.filter(mentor__user=user).filter(date__range=[start_date, end_date]).order_by('date')
 
 
@@ -92,6 +83,20 @@ class AddMeeting(generics.CreateAPIView):
             if not permission.has_permission(request, self):
                 self.permission_denied(request)
 
+    def perform_create(self, serializer):
+        data = self.request.data
+        meeting = serializer.save()
+        Note.objects.create(
+            meeting=meeting,
+            author=User.objects.get(id=Mentor.objects.get(id=data['mentor']).user.id),
+            title='',
+            text=data['note'] if 'note' in data else '')
+        Note.objects.create(
+            meeting=meeting,
+            author=User.objects.get(id=Student.objects.get(id=data['student']).user.id),
+            title='',
+            text='')
+
 
 class EditDeleteMeeting(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [MentorCreate]
@@ -119,8 +124,8 @@ class ListNotes(generics.ListAPIView):
         return Note.objects.filter(author_id=user).filter(meeting_id=meeting)
 
 
-class AddNote(generics.CreateAPIView):
-    serializer_class = AddNoteSerializer
+# class AddNote(generics.CreateAPIView):
+#     serializer_class = AddNoteSerializer
 
 
 class EditDeleteNote(generics.RetrieveUpdateDestroyAPIView):
@@ -129,6 +134,9 @@ class EditDeleteNote(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self, pk=None):
         user = self.request.user
         return Note.objects.all()
+
+    def perform_update(self, serializer):
+        serializer.save()
 
 
 class ListStudents(generics.ListAPIView):
@@ -393,7 +401,7 @@ class UserSearchBoxSubjectView(generics.ListAPIView):
 
         return users_list
 
-    def __get_queryset_from_text(self, text, subject)-> Tuple[QuerySet[User], SubTopic]:
+    def __get_queryset_from_text(self, text, subject) -> Tuple[QuerySet[User], SubTopic]:
         subtopics = SubTopic.objects.filter(subject=subject).all()
         filter = self.__get_user_by_name_or_surname_access
         if re.match(Patterns.whole_name_pattern, text):

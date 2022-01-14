@@ -14,7 +14,7 @@ function getMeetings() {
 
                 let p2 = createElement('p', div),
                     i2 = createElement('i', p2, {className: 'bi bi-person-square'})
-                    createElement('span', p2, {className: 'student-name', textContent: meeting.person})
+                    createElement('span', p2, {className: 'student-name', textContent: meeting.student_name})
 
             })
             let cal = createElement('div', mentor, {className: 'control-btn'})

@@ -140,7 +140,7 @@ class Przelewy24API:
             transaction, self._config, sign, success_url, status_url
         )
         # KG add print
-        # print(asdict(transaction))
+        print(asdict(transaction))
         payload = asdict(transaction)
         response = self._do("POST", self._config.endpoints.transactionRegister, payload)
         token = response["data"]["token"]

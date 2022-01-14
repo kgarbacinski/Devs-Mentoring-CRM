@@ -23,6 +23,17 @@ const months = [
     "December"
 ];
 
+const API_URLS = {
+    note: "/api/notes/?id=",
+    addNote: "/api/add-note/",
+    editNote: "/api/edit-note/",
+    meeting: "/api/meeting/?id=",
+    allMeetings: "/api/meetings/?date=",
+    addMeeting: "/api/add-meeting/",
+    editMeeting: "/api/edit-meeting/",
+    allStudents: "/api/students/",
+}
+
 
 let structureCalendar = createElement("div", window.root, {
         id: "structureCalendar"
@@ -39,7 +50,7 @@ let structureCalendar = createElement("div", window.root, {
     calendarBody = createElement("div", structureCalendar, {id: "calendar"}),
     weekdayBody = createElement("ul", calendarBody, {id: "weekdays"}),
     daysBody = createElement("ul", calendarBody, {id: "days"});
-    calendarHeader.setAttribute('style', 'z-index: 97');
+calendarHeader.setAttribute('style', 'z-index: 97');
 showCalendar(currentMonth, currentYear);
 
 weekdays.map((item, i) =>
@@ -80,10 +91,8 @@ function showCalendar(month, year) {
 }
 
 
-
-
 function getAllMeetings(args) {
-    getJson('/api/meetings/?date=' + (currentMonth + 1))
+    getJson(API_URLS.allMeetings + (currentMonth + 1))
         .then(data => {
             viewMeetings(data, args)
         })
@@ -96,7 +105,8 @@ function setAttributes(elem, attrs) {
 }
 
 function viewMeetings(data, args) {
-    let where = document.querySelectorAll('#days > li > div')
+    let where = document.querySelectorAll('#days > li > div');
+    // let student_name = document.querySelector('.view-student');
     let date = 1;
     where.forEach(elem => {
         if (sessionStorage.getItem('isMentor') === 'true') {
@@ -123,7 +133,11 @@ function viewMeetings(data, args) {
                     "onclick": "showNote(this.id)"
                 })
                 let eventDesc = createElement("div", event, {className: "ev-desc"});
-                eventDesc.innerHTML = `<span class="hour">${meeting.hour}</span><span>${meeting.person}</span>`;
+                if (sessionStorage.getItem('isMentor') === 'true') {
+                    eventDesc.innerHTML = `<span class="hour">${meeting.hour}</span><span>${meeting.student_name}</span>`;
+                } else {
+                    eventDesc.innerHTML = `<span class="hour">${meeting.hour}</span><span>${meeting.mentor_name}</span>`;
+                }
 
 
             }
@@ -150,44 +164,43 @@ function daysInMonth(iMonth, iYear) {
 }
 
 
-const editEventBtn = document.querySelector('.edit-event-btn')
-const previewEvent = document.querySelector('.preview-event')
-const editingForm = document.querySelector('.editing-form')
-const cancelEventBtn = document.querySelector('.edit-cancel-event-btn')
-
-const showEditForm = () => {
-    editingForm.style.display = 'unset'
-    previewEvent.style.display = 'none'
+async function getNote(url, meeting_id) {
+    const response = await (getJson(url + meeting_id));
+    // console.log(await response)
+    return (await response)
 }
 
-const closeForm = () => {
-    previewEvent.style.display = 'unset'
-    editingForm.style.display = 'none'
+function test() {
+    getNote(API_URLS.note, 100)
+        .then(data => {
+            console.log(data)
+        })
 }
 
-
-editEventBtn.addEventListener('click', showEditForm)
-cancelEventBtn.addEventListener('click', closeForm)
-
+test()
 
 function showNote(id_obj) {
     let view_note = document.querySelector('#view-note');
     let note_hour = document.querySelector('#note-hour');
-    getJson('/api/notes/?id=' + id_obj)
+    let student_name = document.querySelector('.view-student');
+    getJson(API_URLS.note + id_obj)
         .then(data => {
-            document.querySelector('.edit-event-btn').setAttribute('id', id_obj)
             if (data.length > 0) {
-                note_hour.innerHTML = data[0].hour
-                view_note.innerHTML = data[0].text
+                console.log(data);
+                note_hour.innerHTML = `${data[0].date}   ${data[0].hour}`
+                document.querySelector('.edit-event-btn').setAttribute('id', id_obj)
                 document.querySelector('.edit-event-btn').innerHTML = 'Edit'
-                document.querySelector('.modal-footer').style.display = 'unset'
-                document.querySelector('#delete-event-txt').innerHTML = 'Delete note'
-                document.querySelector('#delete-event-btn').value = data[0].id
-            } else {
-                document.querySelector('.edit-event-btn').innerHTML = 'Add'
-                document.querySelector('.modal-footer').style.display = 'none'
-                note_hour.innerHTML = ""
-                view_note.innerHTML = ""
+                if (sessionStorage.getItem('isMentor') === 'true') {
+                    document.querySelector('.delete-event-btn').value = data[0].id
+                    student_name.innerHTML = data[0].student
+                } else {
+                    student_name.innerHTML = data[0].mentor
+                }
+                if (data[0].text === '') {
+                    view_note.value = "There is no note for this meeting yet"
+                } else {
+                    view_note.value = data[0].text
+                }
             }
         })
 }
@@ -197,12 +210,12 @@ function addEvent(date) {
     let elem = document.querySelector('#add-event-student');
     set_options_to_null(elem)
     let option = document.createElement('option');
-    option.setAttribute('selected', 'selected');
-    option.setAttribute('disabled', 'disabled');
+    option.setAttribute('value', '');
+    // option.setAttribute('disabled', 'disabled');
     option.innerHTML = '-- choose --';
     elem.appendChild(option)
 
-    getJson('/api/students/')
+    getJson(API_URLS.allStudents)
         .then(data => {
             if (data.length > 0) {
                 data.forEach(value => {
@@ -218,11 +231,11 @@ function addEvent(date) {
 
 function editNote(id_obj) {
     if (sessionStorage.getItem('isMentor') === 'true') {
-        document.querySelector('.modal-footer').style.display = 'unset'
-        document.querySelector('#delete-event-txt').innerHTML = 'Delete meeting'
+        // document.querySelector('.modal-footer').style.display = 'unset'
+        // document.querySelector('#delete-event-txt').innerHTML = 'Delete meeting'
         let elem = document.querySelector('#edit-event-student');
         set_options_to_null(elem);
-        getJson('/api/meeting/?id=' + id_obj)
+        getJson(API_URLS.meeting + id_obj)
             .then(data => {
                 if (data.length > 0) {
                     document.querySelector('#edit-event-date').value = new Date(data[0].date).toISOString().substr(0, 10)
@@ -231,7 +244,7 @@ function editNote(id_obj) {
                 }
             })
             .then(student => {
-                getJson('/api/students/')
+                getJson(API_URLS.allStudents)
                     .then(data => {
                         if (data.length > 0) {
 
@@ -244,25 +257,30 @@ function editNote(id_obj) {
                                 elem.appendChild(option)
                             })
                             Array.from(elem.options).forEach(option => {
-                                if (option.id == student) {
+                                if (parseInt(option.id) === student) {
                                     option.setAttribute('selected', 'selected')
                                 }
                             })
 
                         }
-                    })
+                    }).then(() => {
+                    getJson(API_URLS.note + id_obj)
+                        .then(data => {
+                            if (data.length > 0) {
+                                document.querySelector('#edit-event-note').value = data[0].text
+                            } else {
+                                document.querySelector('#edit-event-note').value = ""
+                            }
+                        }).catch((error => {
+                        console.log(error)
+                    }))
+                })
             })
     }
-
-
-    document.querySelector('#edit-event-note').value = document.querySelector('#view-note').value;
-
 }
 
-function saveNote() {
-    let meeting_data = document.querySelector('.edit-event-btn').id
-    let note_text = document.querySelector('#edit-event-note').value;
-
+function saveMeeting() {
+    let meeting_data = document.querySelector('.edit-event-btn').id;
     if (sessionStorage.getItem('isMentor') === 'true') {
         let hour = document.querySelector('#edit-event-time').value;
         let date = document.querySelector('#edit-event-date').value;
@@ -274,7 +292,7 @@ function saveNote() {
             'student': student_id,
             'date': note_time,
         }
-        fetch(getBaseUrl('/api/edit-meeting/' + meeting_data + '/'),
+        fetch(getBaseUrl(API_URLS.editMeeting + meeting_data + '/'),
             {
                 method: "PATCH",
                 credentials: 'same-origin',
@@ -288,58 +306,54 @@ function saveNote() {
             console.log(error)
         }))
     }
+    saveNote()
+}
+
+function saveNote(del='false') {
+    let meeting_data = document.querySelector('.edit-event-btn').id;
+    let note_text = ''
+    if(del === 'true'){
+        note_text = '';
+    }else {
+        note_text = document.querySelector('#edit-event-note').value;
+    }
 
     const note = {
         'text': note_text,
         'meeting': meeting_data,
         'author': sessionStorage.getItem('userId')
     };
-
-    if (document.querySelector('#view-note').value === "") {
-        fetch(getBaseUrl('/api/add-note/'),
-            {
-                method: "post",
-                credentials: 'same-origin',
-                headers: {
-                    "X-CSRFToken": getCookie("csrftoken"),
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-
-                },
-                body: JSON.stringify(note),
-            }).catch((error => {
-            console.log(error);
-        }));
-    } else {
-        getJson('/api/notes/?id=' + meeting_data)
-            .then(data => {
-                let note_id;
-                if (data.length > 0) {
-                    note_id = data[0].id
-                }
-                return note_id
-            })
-            .then(note_id => {
-                const editNote = {
-                    'id': note_id,
-                    'text': note_text
-                };
-                fetch(getBaseUrl('/api/edit-note/' + note_id + '/'),
-                    {
-                        method: "PATCH",
-                        credentials: 'same-origin',
-                        headers: {
-                            "X-CSRFToken": getCookie("csrftoken"),
-                            "Accept": "application/json",
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(editNote)
-                    }
-                ).then(r => console.log(r))
-            })
-    }
-
+    getNote(API_URLS.note, meeting_data)
+        .then(data => {
+            return data[0].id
+        })
+        .then(note_id => {
+            const editNote = {
+                'id': note_id,
+                'text': note_text
+            };
+            fetch(getBaseUrl(API_URLS.editNote + note_id + '/'),
+                {
+                    method: "PATCH",
+                    credentials: 'same-origin',
+                    headers: {
+                        "X-CSRFToken": getCookie("csrftoken"),
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(editNote)
+                }).catch((error => {
+                console.log(error);
+            }));
+        })
 }
+
+
+let form = document.querySelector('#addEvent');
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    newMeeting();
+})
 
 function newMeeting() {
     let meeting_date = document.querySelector('#add-event-date').value;
@@ -348,12 +362,16 @@ function newMeeting() {
     let student = document.querySelector('#add-event-student');
     let student_id = student.options[student.selectedIndex].id;
     let mentor_id = sessionStorage.getItem('mentorId');
+    let note = document.querySelector('#add-event-note').value;
+    console.log(note)
     const meeting = {
         'date': meeting_time,
         'mentor': mentor_id,
-        'student': student_id
+        'student': student_id,
+        'note': note
     };
-    fetch(getBaseUrl('/api/add-meeting/'),
+
+    fetch(getBaseUrl(API_URLS.addMeeting),
         {
             method: "post",
             credentials: 'same-origin',
@@ -367,6 +385,7 @@ function newMeeting() {
         }).catch((error => {
         console.log(error);
     }));
+    window.location.reload();
 }
 
 function deleteData(url) {
@@ -380,17 +399,26 @@ function deleteData(url) {
                 "Content-Type": "application/json"
             },
             body: null,
-        }).then(r => console.log(r))
+        }).catch((error => {
+        console.log(error);
+    }));
 }
 
+function eraseMeeting(mentor_note_id) {
+    let meeting_id = document.querySelector('.edit-event-btn').id;
+    deleteData(API_URLS.editMeeting + meeting_id + '/')
+    window.location.reload();
+}
+
+
 function deleteEvent(note_id) {
-    if (document.querySelector('#delete-event-txt').innerHTML === 'Delete note' && note_id) {
-        deleteData('/api/edit-note/' + note_id + '/')
+    if (document.querySelector('#delete-note-txt').textContent === 'Delete note:' && note_id) {
+        deleteData(API_URLS.editNote + note_id + '/')
     } else {
         let meeting_data = document.querySelector('.edit-event-btn').id;
-        deleteData('/api/edit-meeting/' + meeting_data + '/')
+        deleteData(API_URLS.editMeeting + meeting_data + '/')
     }
-    location.reload()
+    window.location.reload();
 }
 
 
