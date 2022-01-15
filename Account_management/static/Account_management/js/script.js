@@ -1,6 +1,15 @@
+
+if (localStorage.getItem('currentDate') === ''){
+    console.log('data')
+    localStorage.setItem('currentDate', new Date().toString())
+}
+
+
 let today = new Date(),
     currentMonth = today.getMonth(),
     currentYear = today.getFullYear();
+
+console.log(today);
 
 async function getJson(url) {
     const response = await fetch(getBaseUrl(url));

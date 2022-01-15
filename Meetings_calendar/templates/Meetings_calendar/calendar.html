@@ -69,7 +69,7 @@
                         </label>
                         <textarea disabled cols="5" class="view-note" id="view-note" style="border: none"></textarea>
                         <div class="control-buttons">
-                            <button onclick="saveNote('true')"
+                            <button onclick="saveNote()"
                                     class="delete-note-btn" id="delete-note-btn" data-bs-dismiss="modal">Delete
                             </button>
                             <button onclick="editNote(this.id)" class="edit-event-btn" data-bs-target="#editEventModal2"
@@ -101,7 +101,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="editing-form" onsubmit="">
+                    <form class="editing-form" id="editing-form">
                         {% if request.user|has_group:"Mentor" %}
                             <div class="selection-area">
                                 <label for="edit-event-date">Day:</label>
@@ -123,7 +123,7 @@
                                         data-bs-target="#editEventModal" data-bs-toggle="modal"
                                         data-bs-dismiss="modal">Cancel
                                 </button>
-                                <button onclick="saveMeeting()" class="edit-save-event-btn" style="margin: 0 0 0 15px;"
+                                <button type="submit" class="edit-save-event-btn" style="margin: 0 0 0 15px;"
                                         id="edit-save-event-btn" data-bs-dismiss="modal">Save
                                 </button>
                             </div>

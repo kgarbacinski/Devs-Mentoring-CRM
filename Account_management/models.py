@@ -132,7 +132,7 @@ class CoursePayment(BasePayment):
 
     def get_success_url(self):
         print(reverse('success'))
-        return f"{config('HOST')}{reverse('success')}"  # "https://przelewy24.source.net.pl/success"
+        return f"{config('HOST')}{reverse('failure')}"  # "https://przelewy24.source.net.pl/success"
 
     def get_purchased_items(self):
         # you'll probably want to retrieve these from an associated order

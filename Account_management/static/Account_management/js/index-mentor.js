@@ -9,12 +9,12 @@ function getMeetings() {
                     span = createElement('span', p, {className: 'date'});
                     createElement('i', span, {className: 'bi bi-calendar-check',});
                     span.append(meeting.date.split("-").reverse().join("."));
-                let span2 =  createElement('span', p, {className: 'hour', textContent: meeting.hour})
-                createElement('i', span2 ,{className: 'bi bi-clock'})
+                let span2 =  createElement('span', p, {className: 'hour', textContent: meeting.hour});
+                createElement('i', span2 ,{className: 'bi bi-clock'});
 
-                let p2 = createElement('p', div),
-                    i2 = createElement('i', p2, {className: 'bi bi-person-square'})
-                    createElement('span', p2, {className: 'student-name', textContent: meeting.student_name})
+                let p2 = createElement('p', div);
+                    createElement('i', p2, {className: 'bi bi-person-square'})
+                    createElement('span', p2, {className: 'student-name', textContent: meeting.student_name});
 
             })
             let cal = createElement('div', mentor, {className: 'control-btn'})

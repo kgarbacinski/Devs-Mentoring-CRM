@@ -108,8 +108,8 @@ class PaymentView(LoginRequiredMixin, View):
             payment = Payment.objects.create(
                 variant="przelewy24",  # this is the variant from PAYMENT_VARIANTS
                 description=user.student.path.name,
-                # total=Decimal(user.student.path.price),
-                total=Decimal(0.1),
+                total=Decimal(user.student.path.price),
+                # total=Decimal(0.1),
                 # tax=Decimal(20),
                 currency="PLN",
                 # delivery=Decimal(10),
@@ -122,7 +122,7 @@ class PaymentView(LoginRequiredMixin, View):
                 billing_country_code="PL",
                 billing_country_area=form.cleaned_data.get('country'),
                 customer_ip_address="127.0.0.1",
-                billing_email=form.cleaned_data.get('email')
+                billing_email=form.cleaned_data.get('email'),
                 # success_url='Account_management/index.html'
             )
             return redirect(f"/payment_details/{payment.pk}")

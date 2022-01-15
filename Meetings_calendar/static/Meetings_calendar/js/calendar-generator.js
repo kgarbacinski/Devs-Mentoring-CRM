@@ -33,7 +33,17 @@ const API_URLS = {
     editMeeting: "/api/edit-meeting/",
     allStudents: "/api/students/",
 }
+let newEvent = document.querySelector('#addEvent');
+newEvent.addEventListener('submit', (event) => {
+    event.preventDefault();
+    newMeeting();
+})
 
+let saveEvent = document.querySelector('#editing-form');
+saveEvent.addEventListener('submit', (event) => {
+    event.preventDefault();
+    saveMeeting();
+})
 
 let structureCalendar = createElement("div", window.root, {
         id: "structureCalendar"
@@ -106,7 +116,6 @@ function setAttributes(elem, attrs) {
 
 function viewMeetings(data, args) {
     let where = document.querySelectorAll('#days > li > div');
-    // let student_name = document.querySelector('.view-student');
     let date = 1;
     where.forEach(elem => {
         if (sessionStorage.getItem('isMentor') === 'true') {
@@ -149,6 +158,8 @@ function viewMeetings(data, args) {
 function next() {
     currentMonth = (currentMonth + 1) % 12;
     currentYear = currentMonth === 0 ? currentYear + 1 : currentYear;
+    let testDate = new Date(currentYear, currentMonth, today.getDay())
+    localStorage.setItem('currentDate', testDate.toString())
     showCalendar(currentMonth, currentYear);
 
 }
@@ -166,18 +177,8 @@ function daysInMonth(iMonth, iYear) {
 
 async function getNote(url, meeting_id) {
     const response = await (getJson(url + meeting_id));
-    // console.log(await response)
     return (await response)
 }
-
-function test() {
-    getNote(API_URLS.note, 100)
-        .then(data => {
-            console.log(data)
-        })
-}
-
-test()
 
 function showNote(id_obj) {
     let view_note = document.querySelector('#view-note');
@@ -302,27 +303,20 @@ function saveMeeting() {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(meeting),
-            }).catch((error => {
+            })
+            .then(() =>{
+                saveNote()
+            })
+            .catch((error => {
             console.log(error)
         }))
     }
     saveNote()
 }
 
-function saveNote(del='false') {
+function saveNote() {
     let meeting_data = document.querySelector('.edit-event-btn').id;
-    let note_text = ''
-    if(del === 'true'){
-        note_text = '';
-    }else {
-        note_text = document.querySelector('#edit-event-note').value;
-    }
-
-    const note = {
-        'text': note_text,
-        'meeting': meeting_data,
-        'author': sessionStorage.getItem('userId')
-    };
+    let note_text = document.querySelector('#edit-event-note').value
     getNote(API_URLS.note, meeting_data)
         .then(data => {
             return data[0].id
@@ -346,14 +340,8 @@ function saveNote(del='false') {
                 console.log(error);
             }));
         })
+    location.reload()
 }
-
-
-let form = document.querySelector('#addEvent');
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    newMeeting();
-})
 
 function newMeeting() {
     let meeting_date = document.querySelector('#add-event-date').value;
@@ -385,7 +373,7 @@ function newMeeting() {
         }).catch((error => {
         console.log(error);
     }));
-    window.location.reload();
+    location.reload();
 }
 
 function deleteData(url) {
@@ -407,20 +395,8 @@ function deleteData(url) {
 function eraseMeeting(mentor_note_id) {
     let meeting_id = document.querySelector('.edit-event-btn').id;
     deleteData(API_URLS.editMeeting + meeting_id + '/')
-    window.location.reload();
+    location.reload();
 }
-
-
-function deleteEvent(note_id) {
-    if (document.querySelector('#delete-note-txt').textContent === 'Delete note:' && note_id) {
-        deleteData(API_URLS.editNote + note_id + '/')
-    } else {
-        let meeting_data = document.querySelector('.edit-event-btn').id;
-        deleteData(API_URLS.editMeeting + meeting_data + '/')
-    }
-    window.location.reload();
-}
-
 
 function studentOncChange(student_obj) {
     student_obj.options[student_obj.selectedIndex].setAttribute('selected', 'selected');

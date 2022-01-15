@@ -147,36 +147,27 @@ h4 {
   font-size: 0.8rem;
 }
 
-.checkout-form-field-name, .checkout-form-field-last-name, .checkout-form-field-city, .checkout-form-field-country, .checkout-form-field-phone, .checkout-form-field-email,
+.checkout-form-field-name, .checkout-form-field-last-name, .checkout-form-field-post-code, .checkout-form-field-city, .checkout-form-field-phone, .checkout-form-field-email,
 .thank-you-field-name,
 .thank-you-field-last-name,
 .thank-you-field-post-code,
-.thank-you-field-street,
 .thank-you-field-city,
 .thank-you-field-phone,
 .thank-you-field-email {
   display: inline-block;
   width: 49.60%;
 }
-.checkout-form-field-post-code{
-  display: inline-block;
-  width: 39.60%;
-}
-.checkout-form-field-address{
-  display: inline-block;
-  width: 49.60%;
-}
 
-.checkout-form-field-save,
+.checkout-form-field-seve,
 .checkout-form .consent-field,
-.thank-you-field-save,
+.thank-you-field-seve,
 .thank-you .consent-field {
   margin-bottom: 40px;
 }
 
-.checkout-form-field-save label,
+.checkout-form-field-seve label,
 .checkout-form .consent-field label,
-.thank-you-field-save label,
+.thank-you-field-seve label,
 .thank-you .consent-field label {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -187,9 +178,9 @@ h4 {
   width: auto;
 }
 
-.checkout-form-field-save label input,
+.checkout-form-field-seve label input,
 .checkout-form .consent-field label input,
-.thank-you-field-save label input,
+.thank-you-field-seve label input,
 .thank-you .consent-field label input {
   width: auto;
   margin-right: 8px;
@@ -198,6 +189,7 @@ h4 {
 .checkout-form-sum,
 .thank-you-sum {
   background-color: #ededed;
+  border-radius: 8px;
 }
 
 .checkout-form-sum table,
@@ -282,7 +274,8 @@ a {
 }
 
 button.pay,
-button.return {
+button.return,
+button.confirm-and-pay-btn {
   padding: 10px 20px;
   width: 150px;
   border: 1px solid #dbc110;
@@ -296,23 +289,27 @@ button.return {
 }
 
 button.pay:hover,
-button.return:hover {
+button.return:hover,
+button.confirm-and-pay-btn:hover {
   color: #fff;
   background-color: #000;
   border: 1px solid #000;
 }
 
-button.return {
+button.return,
+button.confirm-and-pay-btn {
   width: auto;
   margin-top: 30px;
 }
 
-button.return a {
+button.return a,
+button.confirm-and-pay-btn a {
   -webkit-transition: color .3s;
   transition: color .3s;
 }
 
-button.return:hover a:hover {
+button.return:hover a:hover,
+button.confirm-and-pay-btn:hover a:hover {
   color: #fff;
 }
 
@@ -327,12 +324,42 @@ button.return:hover a:hover {
   background-color: #dc354615;
 }
 
+.confirm-box {
+  height: auto;
+  padding: 25px 15px 50px;
+}
+
+.confirm-and-pay {
+  margin: 0 auto;
+  padding: 30px 30px 0px;
+  max-width: 500px;
+  background-color: #fff;
+  border-radius: 8px;
+  -webkit-box-shadow: 0px 0px 5px #ccc;
+          box-shadow: 0px 0px 5px #ccc;
+}
+
+.confirm-and-pay-title {
+  text-transform: uppercase;
+}
+
+.confirm-and-pay hr {
+  background-color: #ccc;
+}
+
+.confirm-and-pay .confirm-and-pay-btn {
+  text-align: center;
+}
+
 @media (min-width: 320px) {
   .checkout-form {
     padding: 40px 20px;
   }
   .checkout-form-field-name, .checkout-form-field-last-name, .checkout-form-field-post-code, .checkout-form-field-city, .checkout-form-field-phone, .checkout-form-field-email {
     width: 49.2%;
+  }
+  .confirm-box {
+    height: 73.5vh;
   }
 }
 

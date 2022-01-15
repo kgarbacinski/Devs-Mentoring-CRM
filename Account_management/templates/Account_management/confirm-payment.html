@@ -2,16 +2,70 @@
 {% load static %}
 {% load auth_extras %}
 
+{% block style %}
+    <link rel="stylesheet" href="{% static 'Account_management/css/checkout.css' %}">
+{% endblock style %}
 
 {% block main_content %}
-<form action="{{ form.action }}" method="{{ form.method }}">
-    <p>Email: {{ payment.billing_email }}</p>
-    <p>Name: {{ payment.billing_first_name }} {{ payment.billing_last_name }}</p>
-    <p>Street: {{ payment.billing_address_1 }}</p>
-    <p>City: {{ payment.billing_city }}</p>
-    <p>Post code: {{ payment.billing_postcode }}</p>
-    <p>If all data is correct click "Proceed"</p>
-    <p><input type="button" value="Back" onClick="history.go(-1);">  <input type="submit" value="Proceed" /></p>
-</form>
+    <div class="container-fluid p-0">
+        <div class="left-column">
+            <div class="header-text align-items-center"
+            ">
+            <h1 class=" company-name">Devs Mentoring <span>CRM</span>
+            </h1>
+        </div>
+    </div>
+
+    <div class="right-column">
+        <p class="sign-in-title">complete your payment</p>
+        <div class="back-section">
+            <a href="{% url 'payment' %}"><span class="back-btn"><i class="bi bi-arrow-left"></i> BACK</span></a>
+        </div>
+
+        <div class="confirm-box">
+            <div class="confirm-and-pay">
+                <p class="confirm-and-pay-title">
+                    Please confirm your details and complete the payment
+                </p>
+                <hr>
+                <form action="{{ form.action }}" method="{{ form.method }}">
+                    <p class="confirm-and-pay-name-path">
+                        <!-- <small class="fw-bold">Path name:</small> <span class="path-name">Python Developer</span><br>
+                        <small class="fw-bold">Category name:</small> <span class="category-name">Kategoria o przykładowym tytule</span><br>
+                        <small class="fw-bold">Theme name:</small> <span class="theme-name">Rozdział przykładowy temat jakiśtam</span><br>
+                        <small class="fw-bold">Subscription plan:</small> <span class="theme-name">Monthly / 4 meets</span> -->
+                        <small class="fw-bold">Product:</small> <span class="product-name">{{ payment.description }}</span>
+
+                    </p>
+                    <p class="confirm-and-pay-student">
+                        <small class="fw-bold">Name:</small> <span class="student-name">{{ payment.billing_first_name}} {{ payment.billing_last_name}}</span><br>
+                        <small class="fw-bold">Email:</small> <span class="student-mail">{{ payment.billing_email }}</span>
+                    </p>
+
+                    <p class="confirm-and-pay-amount">
+                        <small class="fw-bold">Amount:</small> <span class="confirm-and-pay-amount-total">{{ payment.total }}<span> zł</span></span><br>
+                    </p>
+                    <div class="confirm-and-pay-btn">
+                        <button type="submit" class="confirm-and-pay-btn">Confirm and pay</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+    </div>
+
+
+
+    {#<form action="{{ form.action }}" method="{{ form.method }}">#}
+    {#    <p>Email: {{ payment.billing_email }}</p>#}
+    {#    <p>Name: {{ payment.billing_first_name }} {{ payment.billing_last_name }}</p>#}
+    {#    <p>Street: {{ payment.billing_address_1 }}</p>#}
+    {#    <p>City: {{ payment.billing_city }}</p>#}
+    {#    <p>Post code: {{ payment.billing_postcode }}</p>#}
+    {#    <p>If all data is correct click "Proceed"</p>#}
+    {#    <p><input type="button" value="Back" onClick="history.go(-1);">  <input type="submit" value="Proceed" /></p>#}
+    {#</form>#}
 
 {% endblock main_content %}
