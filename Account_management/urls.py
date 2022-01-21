@@ -1,6 +1,10 @@
 from django.contrib.auth.views import LogoutView
-from django.urls import path, include
+from django.urls import path, include, re_path
 from .views import IndexView, LoginView, PaymentView,payment_details, SuccessPaymentView, FailurePaymentView
+from django.views.generic.base import RedirectView
+
+
+favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
 
 urlpatterns = [
     path('', LoginView.as_view(), name='login'),
@@ -11,4 +15,8 @@ urlpatterns = [
     path('payment/', PaymentView.as_view(), name='payment'),
     path("payment_details/<uuid:payment_id>", payment_details, name='payment-details'),
     path("payments/", include("payments.urls")),
+    re_path(r'^favicon\.ico$', favicon_view),
 ]
+
+
+

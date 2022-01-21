@@ -20,7 +20,4 @@ class SubjectAdmin(admin.ModelAdmin):
 @admin.register(Document)
 class DocumentAdmin(admin.ModelAdmin):
     pass
-    # list_display = ['name', 'creator']
-    # prepopulated_fields = {'slug': ('name',)}
 
-# admin.site.register(Document)

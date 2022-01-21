@@ -10,8 +10,8 @@
     <img class="icon-title" src="{% static 'Account_management/img/icon-wing.svg' %}" alt="">
     <h2 class="page-title">Hi, <span class="your-name">{% if user.is_authenticated %}{{ user.first_name }}
         {{ user.last_name }}{% endif %}</span></h2>
-
     <hr>
+
     {% if request.user|has_group:"Mentor" %}
         <div class="mentor-page">
             <div class="row m-0">
@@ -61,7 +61,7 @@
                         <div class="mentor-page-block students-cards-block">
                             <h3>Your students:</h3>
 
-                            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-2">
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-3 g-2">
                                 {% for student in students %}
                                     <div class="col">
                                         <div class="card">
@@ -108,7 +108,7 @@
             <div class="row m-0">
                 <div class="col-sm-12 col-md-6 col-lg-8 row m-0">
 
-                    <div class="subscriprtion-details col-sm-12 col-md-12 col-lg-6 px-0 pe-md-0 pe-lg-4 mb-4">
+                    <div class="subscription-details col-sm-12 col-md-12 col-lg-6 px-0 pe-md-0 pe-lg-4 mb-4">
                         <div class="student-page-block">
                             <h3>Subscription details</h3>
                             <hr>
@@ -122,10 +122,10 @@
                                 </div>
                                 <hr>
                                 <div class="row">
-                                    <div class="yuor-mentor col-6">
+                                    <div class="your-mentor col-3">
                                         <p>Your mentors:</p>
                                     </div>
-                                    <div class="mentor-details col-6 text-end">
+                                    <div class="mentor-details col-9">
                                         {% for mentor in students %}
                                         <p class="mentor-name mb-0 ">{{ mentor.user.first_name}} {{ mentor.user.last_name}}</p>
                                         <p><a class="mentor-mail" href="mailto:{{ mentor.user.email }}">{{ mentor.user.email }}</a></p>
@@ -166,9 +166,5 @@
 {% endblock main_content %}
 
 {% block script %}
-    {% if request.user|has_group:"Mentor" %}
-        <script src="{% static 'Account_management/js/index-mentor.js' %}"></script>
-    {% else %}
-        <script src="{% static 'Account_management/js/index-student.js' %}"></script>
-    {% endif %}
+    <script src="{% static 'Account_management/js/index.js' %}"></script>
 {% endblock script %}

@@ -10,7 +10,7 @@ from Meetings_calendar.models import Meeting, Note
 from Account_management.models import Student, Mentor
 from .permissions import MentorCreate
 from .serializers import NoteSerializer, StudentsSerializer, AddMeetingSerializer, AddNoteSerializer, \
-    AllMeetingSerializer, GetMeetingSerializer, ChangeStudentAvatarSerializer, ChangeMentorAvatarSerializer, \
+    GetMeetingSerializer, ChangeStudentAvatarSerializer, ChangeMentorAvatarSerializer, \
     MeetingSerializer
 from django.contrib.auth.models import User
 from django.db.models import QuerySet
@@ -61,14 +61,14 @@ class MeetingDetail(generics.ListAPIView):
         return Meeting.objects.filter(mentor__user=user).filter(id=meeting)
 
 
-class ListAllMeetings(generics.ListAPIView):
-    serializer_class = AllMeetingSerializer
-
-    def get_queryset(self):
-        # month = self.request.GET.get('date')
-        user = self.request.user
-        return Meeting.objects.filter(mentor__user=user)
-        # return Meeting.objects.filter(date__month=month).order_by('mentor', 'date')
+# class ListAllMeetings(generics.ListAPIView):
+#     serializer_class = AllMeetingSerializer
+#
+#     def get_queryset(self):
+#         # month = self.request.GET.get('date')
+#         user = self.request.user
+#         return Meeting.objects.filter(mentor__user=user)
+#         # return Meeting.objects.filter(date__month=month).order_by('mentor', 'date')
 
 
 class AddMeeting(generics.CreateAPIView):

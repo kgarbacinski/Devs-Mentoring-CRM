@@ -251,8 +251,10 @@ main {
         .modal-header {
             display: flex;
             align-items: center;
-
             .close {
+                font-size: 1.5em;
+                font-weight: 700;
+                opacity: 0.5;
                 background-color: transparent;
                 border: none;
                 padding: 10px;
@@ -262,6 +264,7 @@ main {
             }
 
             .close:hover {
+                opacity: 1.0;
                 background-color: transparent;
                 border: none;
                 color: $gold-color;
@@ -354,7 +357,7 @@ main {
         .note {
             display: flex;
             justify-content: center;
-            align-items: center;
+            //align-items: center;
             flex-direction: column;
 
             .note {
@@ -377,7 +380,7 @@ main {
         }
 
         .editing-form {
-            display: none;
+            //display: none;
         }
     }
 }

@@ -4,18 +4,13 @@
 
 
 {% block style %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.10/dist/css/splide.min.css">
     <link rel="stylesheet" href="{% static 'Files_organizer/css/files-start.css' %}">
-    <link rel="stylesheet" href="{% static 'Files_organizer/css/style.css' %}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
-    {#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">#}
-    {#<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">#}
-
-{% endblock %}
+{% endblock style %}
 
 
 {% block main_content %}
-
-    <img class="icon-title" src="{% static 'Files_organizer/img/icon-wing.svg' %}" alt="">
+    <img class="icon-title" src="{% static 'Account_management/img/icon-wing.svg' %}" alt="">
     <h2 class="page-title">Programming courses</h2>
     <hr>
 
@@ -49,7 +44,7 @@
 
 
         <div class="row themes p-0">
-
+{#            TODO co tu wstawić?#}
             <h5 class="category-name py-2">Kategoria o przykładowym tytule</h5>
 
             <div class="col-sm-12 col-md-8 p-0">
@@ -75,7 +70,7 @@
 
                             {% elif request.user|has_access:subtopic %}
                                 <div class="themes-box-list-item">
-                                    <li>
+                                    <li class="themes-box-list-item">
                                         <a href="#" onclick="getFiles('{{ subtopic.id }}');return false;"
                                            class="theme-name available">{{ subtopic.name }}
                                             <span class="theme-btn">
@@ -86,9 +81,9 @@
                                 </div>
                             {% else %}
                                 <div class="themes-box-list-item">
-                                    <!-- temat zablokowany musi otrzymywać na <li> klasę blocked, żeby pojawiła się kłudka.
+                                    <!-- temat zablokowany musi otrzymywać na <li> klasę blocked, żeby pojawiła się kłódka.
                                         Zablokowany również nie powinien przechowywać linku w odnośniku...
-                                        Zabkokowany nie może posiadać klasy available w <a> żeby nie uruchaniać popupu-->
+                                        Zablokowany nie może posiadać klasy available w <a> żeby nie uruchamiać popup-->
                                     <li class="blocked">
                                         <a href="#" class="theme-name">{{ subtopic.name }}
                                             <span class="theme-btn">
@@ -118,138 +113,134 @@
                     {% endif %}
 
 
-                    <div class="col-sm-12 col-md-4 p-0">
-                        <div class="themes-details" style="visibility: hidden">
-                            <h5 class="theme-name" name="tittle"><span class="number">1.</span>Rodział
-                                przykładowy temat
-                                jakiśtam
-                            </h5>
-                            <p class="theme-description" name="description">Lorem, ipsum dolor sit amet
-                            </p>
-                            <div class="files-container" name="container">
-                                <p class="files-container-title">Download resources:</p>
-                                <ul class="files-container-list" name='filesListContainer'>
-                                    <li class="files-container-list-item" name='filesList'>
-                                        <!-- w href umieszczamy ścieżkę do pliku na serwerze. W download podajemy nazwę pod jaką zapisze się plik (najlepiej z rozszerzeniem) -->
-                                    </li>
+            <div class="col-sm-12 col-md-4 p-0">
+                <div class="themes-details" style="visibility: hidden">
+                    <h5 class="theme-name" id="tittle"><span class="number">1.</span>Rozdział
+                        przykładowy temat
+                        jakiś tam
+                    </h5>
+                    <p class="theme-description" id="description">Lorem, ipsum dolor sit amet
+                    </p>
+                    <div class="files-container" id="container">
+                        <p class="files-container-title">Download resources:</p>
+                        <ul class="files-container-list" id='filesListContainer'>
+                            <li class="files-container-list-item" id='filesList'>
+                                <!-- w href umieszczamy ścieżkę do pliku na serwerze. W download podajemy nazwę pod jaką zapisze się plik (najlepiej z rozszerzeniem) -->
+                            </li>
 
-                                </ul>
-                            </div>
-                            <div class="back-section my-4">
-                                <span class="back-btn"><i class="bi bi-arrow-left"></i> BACK</span>
-                            </div>
-                        </div>
+                        </ul>
                     </div>
-
-
-                    <!-- share modal -->
-                    <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel"
-                         aria-hidden="true">
-                        <div class="modal-dialog  modal-fullscreen-md-down">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <p class="modal-title" id="ModalLabel">Share theme: <span
-                                            class="theme-name" name="tittle_modal_for_one"></span>
-                                    </p>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="shared-for-box">
-                                        <p>Shared for:</p>
-                                        <input type="text" id="search-shared-for-subtopic"
-                                               class="search-shared-for"
-                                               onkeyup="getSharedUsersSearchboxSubtopic();return false;"
-                                               placeholder="Search student">
-                                        <div class="shared-for-student-list">
-
-                                            <ul name="shared_for_one">
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="sharing-box">
-                                        <p>Share:</p>
-                                        <input type="text" id="search-sharing-subtopic"
-                                               class="search-sharing"
-                                               onkeyup="GetNotSharedUsersSearchBoxSubtopic();return false;"
-                                               placeholder="Search student">
-                                        <div class="sharing-student-list">
-                                            <ul name="share_for_one">
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="close-share-btn"
-                                            data-bs-dismiss="modal">Close
-                                    </button>
-                                    <button type="button" class="save-share-btn">Save</button>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="back-section my-4">
+                        <span class="back-btn"><i class="bi bi-arrow-left"></i> BACK</span>
                     </div>
-
-                    <!-- share all modal -->
-                    <div class="modal fade" id="Modal2" tabindex="-1" aria-labelledby="ModalLabel2"
-                         aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-fullscreen-md-down">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <p class="modal-title" id="ModalLabel2">Share all themes in: <span
-                                            class="category-name" name="tittle_modal_for_subject"> </span>
-                                    </p>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="shared-for-box">
-                                        <p>Shared for:</p>
-                                        <input type="text" id="search-shared-for-subject"
-                                               class="search-shared-for"
-                                               onkeyup="getSharedUsersSearchboxSubject();return false;"
-                                               placeholder="Search student">
-                                        <div class="shared-for-student-list">
-                                            <ul name="shared_for_all">
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="sharing-box">
-                                        <p>Share:</p>
-                                        <input type="text" id="search-sharing-for-subject"
-                                               class="search-sharing"
-                                               onkeyup="getNotSharedUsersSearchboxSubject();return false;"
-                                               placeholder="Search student">
-                                        <div class="sharing-student-list">
-                                            <ul name="share_for_all">
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="close-share-btn"
-                                            data-bs-dismiss="modal">Close
-                                    </button>
-                                    <button type="button" class="save-share-btn">Save</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
+            </div>
 
+
+            <!-- share modal -->
+            <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog  modal-fullscreen-md-down">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <p class="modal-title" id="ModalLabel">Share theme: <span
+                                    class="theme-name" id="tittle_modal_for_one"></span>
+                            </p>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="shared-for-box">
+                                <p>Shared for:</p>
+                                <input type="text" id="search-shared-for-subtopic"
+                                       class="search-shared-for"
+                                       onkeyup="getSharedUsersSearchBoxSubtopic();return false;"
+                                       placeholder="Search student">
+                                <div class="shared-for-student-list">
+
+                                    <ul id="shared_for_one">
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="sharing-box">
+                                <p>Share:</p>
+                                <input type="text" id="search-sharing-subtopic"
+                                       class="search-sharing"
+                                       onkeyup="GetNotSharedUsersSearchBoxSubtopic();return false;"
+                                       placeholder="Search student">
+                                <div class="sharing-student-list">
+                                    <ul id="share_for_one">
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="close-share-btn"
+                                    data-bs-dismiss="modal">Close
+                            </button>
+                            <button type="button" class="save-share-btn" data-bs-dismiss="modal">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- share all modal -->
+            <div class="modal fade" id="Modal2" tabindex="-1" aria-labelledby="ModalLabel2"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-fullscreen-md-down">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <p class="modal-title" id="ModalLabel2">Share all themes in: <span
+                                    class="category-name" id="tittle_modal_for_subject"> </span>
+                            </p>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="shared-for-box">
+                                <p>Shared for:</p>
+                                <input type="text" id="search-shared-for-subject"
+                                       class="search-shared-for"
+                                       onkeyup="getSharedUsersSearchboxSubject();return false;"
+                                       placeholder="Search student">
+                                <div class="shared-for-student-list">
+                                    <ul id="shared_for_all">
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="sharing-box">
+                                <p>Share:</p>
+                                <input type="text" id="search-sharing-for-subject"
+                                       class="search-sharing"
+                                       onkeyup="getNotSharedUsersSearchBoxSubject();return false;"
+                                       placeholder="Search student">
+                                <div class="sharing-student-list">
+                                    <ul id="share_for_all">
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="close-share-btn"
+                                    data-bs-dismiss="modal">Close
+                            </button>
+                            <button type="button" class="save-share-btn">Save</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-{% endblock %}
+{% endblock main_content %}
 {% block script %}
-    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.10/dist/js/splide.min.js"></script>
     <script src="{% static 'Files_organizer/js/files.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-{% endblock %}
+    <script src="{% static 'Files_organizer/js/files-subtopic.js' %}"></script>
+{% endblock script %}
 
 
 

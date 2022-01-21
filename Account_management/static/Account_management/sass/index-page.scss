@@ -1,0 +1,404 @@
+$gold-color: #dbc110;
+$secondary: #fdfdfd;
+$bg-gray: #f7f7f7;
+$shadow: #666;
+$border-gray: #ccc;
+
+main {
+    position: relative;
+    padding: 0;
+
+    .icon-title {
+        position: absolute;
+        top: 25px;
+        left: 15px;
+        height: 55px;
+        width: auto;
+        animation: moveUp 4s linear infinite;
+    }
+
+    .page-title {
+        display: inline-block;
+        margin-left: 70px;
+        padding: 55px 15px 0;
+        font-size: 20px;
+        text-transform: uppercase;
+    }
+
+    hr {
+        background-color: $gold-color;
+        opacity: 1;
+        margin-left: 85px;
+        width: 100px;
+        margin-top: -7px;
+        margin-bottom: 50px;
+
+        &:not([size]) {
+            height: 4px;
+        }
+    }
+
+    .mentor-page-block {
+        &.students-cards-block {
+            padding: 0;
+            background-color: transparent;
+            box-shadow: none;
+
+            .card {
+                background: $gold-color;
+                background: linear-gradient(107deg, rgba(149, 133, 26, 1) 0%, rgba(219, 193, 16, 1) 30%, rgba(235, 208, 32, 1) 50%, rgba(215, 191, 31, 1) 70%, rgba(149, 133, 26, 1) 100%);
+                border-radius: 8px;
+                border: 1px solid rgb(149, 133, 26);
+                box-shadow: 0px 0px 5px $border-gray;
+
+                .card-body {
+                    padding: 10px;
+                }
+
+                .card-text {
+                    font-size: 0.8rem;
+                    margin-bottom: 0.3rem;
+                }
+
+                .student-sign-up,
+                .meetings,
+                .end-of-sub {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                }
+            }
+
+            .avatar-box {
+                padding: 10px;
+
+                img {
+                    border-radius: 50%;
+                    height: 70px;
+                    width: 70px;
+                }
+            }
+
+            .student-name,
+            .student-mail {
+                font-size: 0.8rem;
+                padding: 0 5px;
+            }
+
+            .student-name {
+                font-weight: bold;
+            }
+
+            .student-mail a {
+                text-decoration: none;
+                color: black;
+                transition: color .3s;
+
+                &:hover {
+                    color: #fff;
+                }
+
+            }
+        }
+    }
+
+    .student-page,
+    .mentor-page {
+
+        &-block {
+            padding: 15px;
+            box-shadow: 0px 0px 5px $border-gray;
+            border-radius: 8px;
+            background-color: #fff;
+
+            h3 {
+                font-size: 1.1rem;
+            }
+
+            hr {
+                margin-left: 0;
+                margin-top: 0;
+                margin-bottom: 20px;
+                width: 100%;
+                background-color: $border-gray;
+
+                &:not([size]) {
+                    height: 1px;
+                }
+            }
+
+            .path-name {
+                padding: 5px 0;
+                font-size: 1rem;
+                text-transform: uppercase;
+                font-weight: bold;
+            }
+            .mentor-details {
+                text-align: right;
+            }
+
+            .mentor-mail {
+                font-size: 10px;
+                text-decoration: none;
+                color: $gold-color;
+                transition: color .3s;
+            }
+
+            .mentor-mail:hover {
+                color: black;
+            }
+
+            .meet-box {
+                margin-bottom: 20px;
+                font-size: 0.9rem;
+                border-bottom: 1px solid $bg-gray;
+
+                .bi-person-square {
+                    margin-right: 10px;
+                }
+
+                .meet-details {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 5px;
+
+                    .bi-clock {
+                        margin-left: 10px;
+                    }
+
+                    .bi-calendar-check {
+                        margin-right: 10px;
+                    }
+
+                }
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+
+            .left-meetings-title,
+            .left-meetings-count,
+            .meetings-held-title,
+            .meetings-held-count,
+            .your-students,
+            .students-capacity {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                p {
+                    text-align: center;
+                    padding: 0 10px;
+                }
+            }
+
+            .your-students,
+            .students-capacity {
+                flex-direction: column;
+            }
+
+            .left-meetings-count,
+            .meetings-held-count,
+            .your-students,
+            .students-capacity {
+                span {
+                    font-size: 4rem;
+                    color: $gold-color;
+                }
+            }
+
+            .your-students,
+            .students-capacity {
+                margin-left: -7px;
+                transform: skew(-15deg);
+
+                p {
+                    margin-top: 10px;
+                    height: 60px;
+                    font-size: 0.8rem;
+                }
+
+                p,
+                span {
+                    transform: skew(15deg);
+                }
+
+                span {
+                    margin-left: 40px;
+                }
+            }
+
+            .your-students {
+                background-color: $bg-gray;
+            }
+
+            .students-capacity {
+                background: linear-gradient(to right, #e0e0e0, $bg-gray);
+                background-color: #e0e0e0;
+            }
+
+            .next-payment {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+    }
+
+    .control-btn {
+        display: flex;
+        justify-content: center;
+    }
+
+    .button {
+        padding: 10px 20px;
+        width: auto;
+        border: 1px solid $gold-color;
+        background: transparent;
+        border-radius: 25px;
+        text-transform: uppercase;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color .3s, background-color .3s, border .3s;
+        margin: 15px 0 30px;
+        font-size: .8rem;
+        line-height: 0.8rem;
+        color: black;
+    }
+
+    .button:hover {
+        color: #fff;
+        background-color: #000;
+        border: 1px solid #000;
+    }
+
+    .button-pay {
+        background: $gold-color;
+        width: 120px;
+        text-align: center;
+    }
+}
+
+@media(min-width: 576px) {
+    main {
+        .mentor-page-block {
+
+            .your-students,
+            .students-capacity {
+
+                p {
+                    margin-top: 15px;
+                    height: 40px;
+                    font-size: .9rem;
+                }
+            }
+
+            &.students-cards-block {
+                .avatar-box {
+                    img {
+                        height: 60px;
+                        width: 60px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media(min-width: 768px) {
+    main {
+        .mentor-page-block {
+
+            &.students-cards-block {
+                .avatar-box {
+                    img {
+                        height: 35px;
+                        width: 35px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media(min-width: 768px) {
+    main {
+        .mentor-page-block {
+
+            &.students-cards-block {
+                .avatar-box {
+                    img {
+                        height: 45px;
+                        width: 45px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media(min-width: 992px) {
+    main {
+        .mentor-page-block {
+
+            .meetings-held-title,
+            .meetings-held-count {
+                height: 167px;
+            }
+        }
+        .student-page-block {
+            .mentor-mail {
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+@media(min-width: 1300px) {
+    main {
+        .mentor-page-block {
+
+            &.students-cards-block {
+                .avatar-box {
+                    img {
+                        height: 65px;
+                        width: 65px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media(min-width: 1400px) {
+    main {
+        .mentor-page-block {
+
+            &.students-cards-block {
+                .avatar-box {
+                    img {
+                        height: 75px;
+                        width: 75px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes moveUp {
+    0% {
+        top: 45px;
+    }
+
+    50% {
+        top: 30px;
+    }
+
+    100% {
+        top: 45px;
+        ;
+    }
+}

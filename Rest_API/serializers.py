@@ -1,5 +1,3 @@
-from rest_framework import serializers
-
 from Meetings_calendar.models import Meeting, Note
 from Account_management.models import Mentor, Student
 from django.contrib.auth.models import User
@@ -22,7 +20,6 @@ class NoteSerializer(serializers.ModelSerializer):
 
 
 class AddNoteSerializer(serializers.ModelSerializer):
-    # mentor = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Note
@@ -34,18 +31,18 @@ class AddNoteSerializer(serializers.ModelSerializer):
         return representation
 
 
-class AllMeetingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Meeting
-        fields = '__all__'
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['mentor'] = instance.mentor.__str__()
-        representation['student'] = instance.student.__str__()
-        representation['date'] = instance.date.strftime("%d-%m-%Y")
-        representation['hour'] = instance.date.strftime("%H:%M")
-        return representation
+# class AllMeetingSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Meeting
+#         fields = '__all__'
+#
+#     def to_representation(self, instance):
+#         representation = super().to_representation(instance)
+#         representation['mentor'] = instance.mentor.__str__()
+#         representation['student'] = instance.student.__str__()
+#         representation['date'] = instance.date.strftime("%d-%m-%Y")
+#         representation['hour'] = instance.date.strftime("%H:%M")
+#         return representation
 
 
 class GetMeetingSerializer(serializers.ModelSerializer):
@@ -80,7 +77,7 @@ class MeetingSerializer(serializers.ModelSerializer):
 class StudentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mentor
-        fields = '__all__' # ['id', ]
+        fields = '__all__'
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -92,7 +89,6 @@ class StudentsSerializer(serializers.ModelSerializer):
 
 
 class AddMeetingSerializer(serializers.ModelSerializer):
-    # mentor = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Meeting

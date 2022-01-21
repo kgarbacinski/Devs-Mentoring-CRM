@@ -51,7 +51,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'exercises' %}">
+                    <a href="">
                         <span><i class="bi bi-braces" title="Exercises"></i></span>
                         <span class="li-item">Exercises</span>
                     </a>
@@ -120,20 +120,16 @@
                 <form id="avatar" action="" class="d-flex flex-column">
                     <div class="files-upload d-flex justify-content-between mb-3">
                         <input type="file" id="myFile" name="filename" hidden accept="image/png, image/jpeg">
-                        <label for="myFile" name="filename">Choose File</label>
+                        <label for="myFile">Choose File</label>
                         <span id="file-chosen">No file chosen</span>
                     </div>
                     <input class="send-av-button" onclick="changeAvatar()" type="submit" value="send">
                 </form>
             </div>
         </div>
-
         <main>
             {% block main_content %}{% endblock %}
-
         </main>
-
-
     </div>
 
 </div>

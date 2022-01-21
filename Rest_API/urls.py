@@ -1,6 +1,6 @@
-from django.urls import path, include, re_path
+from django.urls import path, re_path
 from .views import ListNotes, ListMeetings, ListStudents, AddMeeting, EditDeleteMeeting, EditDeleteNote, \
-    ListAllMeetings, MeetingDetail, DocumentView, HasAccessToFileView, HasAccessToSubjectView, UserSearchBoxSubjectView, \
+    MeetingDetail, DocumentView, HasAccessToFileView, HasAccessToSubjectView, UserSearchBoxSubjectView, \
     UserSearchBoxSubtopicView, ListMeetingsByDates, ChangeAvatar
 
 urlpatterns = [
@@ -10,7 +10,7 @@ urlpatterns = [
     re_path('^access/searchbox/subtopic/(?P<pk>.+)/$', UserSearchBoxSubtopicView.as_view(), name='subtopic_searchbox'),
     re_path('^access/searchbox/subject/(?P<pk>.+)/$', UserSearchBoxSubjectView.as_view(), name='subject_searchbox'),
     path('meetings/', ListMeetings.as_view(), name='meetings'),
-    path('all-meetings/', ListAllMeetings.as_view(), name='all_meetings'),
+    # path('all-meetings/', ListAllMeetings.as_view(), name='all_meetings'),
     path('meetings-range/', ListMeetingsByDates.as_view(), name='meetings-range'),
     path('meeting/', MeetingDetail.as_view(), name='meeting'),
     path('notes/', ListNotes.as_view(), name='notes'),

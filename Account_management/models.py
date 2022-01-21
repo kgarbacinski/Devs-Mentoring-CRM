@@ -1,5 +1,7 @@
 import uuid
 from decimal import Decimal
+
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.contrib.auth.models import User
 from dateutil import relativedelta
@@ -37,9 +39,9 @@ class Mentor(models.Model):
     def save(self, *args, **kwargs):
         try:
             this = Mentor.objects.get(id=self.id)
-            if this.user_image != self.user_image and self.user_image.name != 'user.png':
+            if this.user_image != self.user_image:
                 this.user_image.delete(save=False)
-        except:
+        except ObjectDoesNotExist:
             pass
         super().save(*args, **kwargs)
 
@@ -82,9 +84,9 @@ class Student(models.Model):
     def save(self, *args, **kwargs):
         try:
             this = Student.objects.get(id=self.id)
-            if this.user_image != self.user_image and self.user_image.name != 'user.png':
+            if this.user_image != self.user_image:
                 this.user_image.delete(save=False)
-        except:
+        except ObjectDoesNotExist:
             pass
         super().save(*args, **kwargs)
 
@@ -132,7 +134,7 @@ class CoursePayment(BasePayment):
 
     def get_success_url(self):
         print(reverse('success'))
-        return f"{config('HOST')}{reverse('failure')}"  # "https://przelewy24.source.net.pl/success"
+        return f"{config('HOST')}{reverse('success')}"  # "https://przelewy24.source.net.pl/success"
 
     def get_purchased_items(self):
         # you'll probably want to retrieve these from an associated order
