@@ -1,0 +1,518 @@
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+  background: #fdfdfd;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  position: relative;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+#root {
+  display: block;
+  height: 100vh;
+  padding: 15px;
+}
+
+.row {
+  --bs-gutter-x: 0;
+}
+
+main {
+  position: relative;
+  padding: 0;
+}
+
+main .icon-title {
+  position: absolute;
+  top: 25px;
+  left: 15px;
+  height: 55px;
+  width: auto;
+  -webkit-animation: moveUp 4s linear infinite;
+          animation: moveUp 4s linear infinite;
+}
+
+main .page-title {
+  display: inline-block;
+  margin-left: 70px;
+  padding: 55px 15px 0;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+main hr {
+  background-color: #dbc110;
+  opacity: 1;
+  margin-left: 85px;
+  width: 100px;
+  margin-top: -7px;
+  margin-bottom: 50px;
+}
+
+main hr:not([size]) {
+  height: 4px;
+}
+
+main #structureCalendar header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 80px;
+  background: #a4a4a4;
+  background: -webkit-gradient(linear, left top, right top, from(#a4a4a4), color-stop(50%, white), to(#a4a4a4));
+  background: linear-gradient(90deg, #a4a4a4 0%, white 50%, #a4a4a4 100%);
+  color: #000;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  border-bottom: none;
+}
+
+main #structureCalendar header .left h3,
+main #structureCalendar header .center h3,
+main #structureCalendar header .right h3 {
+  padding-top: 10px;
+  font-size: 25px;
+  text-transform: uppercase;
+}
+
+main #structureCalendar header .left button,
+main #structureCalendar header .center button,
+main #structureCalendar header .right button {
+  margin-top: 2px;
+  padding: 0 1rem;
+  background-color: transparent;
+  border: none;
+  color: #000;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 30px;
+  cursor: pointer;
+  -webkit-transition: color .3s, text-shadow .3s, -webkit-transform .3s;
+  transition: color .3s, text-shadow .3s, -webkit-transform .3s;
+  transition: transform .3s, color .3s, text-shadow .3s;
+  transition: transform .3s, color .3s, text-shadow .3s, -webkit-transform .3s;
+}
+
+main #structureCalendar header .left button:hover,
+main #structureCalendar header .center button:hover,
+main #structureCalendar header .right button:hover {
+  -webkit-transform: scale(1.2);
+          transform: scale(1.2);
+  color: #dbc110;
+  text-shadow: 0 0 2px #000;
+}
+
+main #calendar {
+  width: 100%;
+}
+
+main #calendar #days,
+main #calendar #weekdays {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+main #calendar #days li,
+main #calendar #weekdays li {
+  display: block;
+  float: left;
+  width: calc(100% / 7);
+  padding: 5px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+main #calendar #weekdays {
+  height: 40px;
+  background: #a4a4a4;
+  background: -webkit-gradient(linear, left top, right top, from(#a4a4a4), color-stop(50%, white), to(#a4a4a4));
+  background: linear-gradient(90deg, #a4a4a4 0%, white 50%, #a4a4a4 100%);
+  border-bottom: 3px solid #dbc110;
+}
+
+main #calendar #weekdays li {
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 20px;
+  border: none !important;
+  padding: 10px 6px;
+  color: #000;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+main #calendar #weekdays .today {
+  background: #dbc110;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
+main #calendar #days li {
+  height: 125px;
+  overflow-y: auto;
+  background: #fdfdfd;
+  position: relative;
+  color: #003566;
+  border-bottom: 1px solid #efefef;
+  -webkit-transition: background .3s;
+  transition: background .3s;
+}
+
+main #calendar #days li:hover {
+  background: #f0f0f0;
+}
+
+main #calendar #days li .date {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  text-align: center;
+  color: #003566b9;
+  width: 100%;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+main #calendar #days li .date .add-event-btn {
+  border: none;
+  background-color: transparent;
+  padding: 0 5px;
+  color: #003566b9;
+  font-size: 16px;
+}
+
+main #calendar #days .today {
+  background: #00356605;
+  -webkit-box-shadow: inset 0 0 3px #666;
+          box-shadow: inset 0 0 3px #666;
+  -webkit-transition: background .3s, -webkit-box-shadow .3s;
+  transition: background .3s, -webkit-box-shadow .3s;
+  transition: background .3s, box-shadow .3s;
+  transition: background .3s, box-shadow .3s, -webkit-box-shadow .3s;
+}
+
+main #calendar #days .today:hover {
+  background: #00356613;
+  -webkit-box-shadow: inset 0 0 3px #003566;
+          box-shadow: inset 0 0 3px #003566;
+}
+
+main .ev {
+  display: block;
+  margin: 5px auto;
+  background: #00356628;
+  border: 1px solid #003566;
+  border-radius: 4px;
+  font-size: .65rem;
+  -webkit-transition: background 500ms ease;
+  transition: background 500ms ease;
+}
+
+main .ev:hover {
+  background: #efefef;
+}
+
+main .ev-desc {
+  padding: 0.2rem 0.5rem;
+}
+
+main .ev-desc a {
+  text-decoration: none;
+  color: #003566;
+  -webkit-transition: color .3s;
+  transition: color .3s;
+}
+
+main .ev-desc span {
+  margin-right: 5px;
+  -webkit-transition: color .3s;
+  transition: color .3s;
+}
+
+main .ev:hover .ev-desc a,
+main .ev:hover .ev-desc span {
+  color: #94820b;
+}
+
+main .add-event .modal-header,
+main .edit-event .modal-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+main .add-event .modal-header .close,
+main .edit-event .modal-header .close {
+  background-color: transparent;
+  border: none;
+  padding: 10px;
+  margin: 0;
+  width: 30px;
+  -webkit-transition: color .3s;
+  transition: color .3s;
+}
+
+main .add-event .modal-header .close:hover,
+main .edit-event .modal-header .close:hover {
+  background-color: transparent;
+  border: none;
+  color: #dbc110;
+  padding: 10px;
+}
+
+main .add-event .modal-body label,
+main .edit-event .modal-body label {
+  width: 100%;
+  font-size: 1rem;
+}
+
+main .add-event .modal-body input,
+main .add-event .modal-body select,
+main .add-event .modal-body textarea,
+main .edit-event .modal-body input,
+main .edit-event .modal-body select,
+main .edit-event .modal-body textarea {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 1.1rem;
+  background-color: transparent;
+  font-size: 14px;
+}
+
+main .add-event .modal-body input,
+main .add-event .modal-body select,
+main .edit-event .modal-body input,
+main .edit-event .modal-body select {
+  height: 2.2rem;
+}
+
+main .add-event .modal-body option,
+main .edit-event .modal-body option {
+  color: #003566;
+}
+
+main .add-event .modal-body option:hover,
+main .edit-event .modal-body option:hover {
+  background-color: #666;
+}
+
+main .add-event .modal-body button,
+main .edit-event .modal-body button {
+  padding: 10px 20px;
+  width: 120px;
+  border: 1px solid #dbc110;
+  background: #dbc110;
+  border-radius: 25px;
+  text-transform: uppercase;
+  font-weight: bold;
+  -webkit-transition: color .3s, background-color .3s, border .3s;
+  transition: color .3s, background-color .3s, border .3s;
+  margin: 15px 0;
+}
+
+main .add-event .modal-body button:hover,
+main .edit-event .modal-body button:hover {
+  color: #fff;
+  background-color: #000;
+  border: 1px solid #000;
+}
+
+main .add-event .modal-footer,
+main .edit-event .modal-footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+main .add-event .modal-footer .delete-event-btn,
+main .edit-event .modal-footer .delete-event-btn {
+  background-color: transparent;
+  border: none;
+  padding: 10px;
+  margin: 0;
+  color: gray;
+  -webkit-transition: color .3s;
+  transition: color .3s;
+}
+
+main .add-event .modal-footer .delete-event-btn:hover,
+main .edit-event .modal-footer .delete-event-btn:hover {
+  color: #dbc110;
+}
+
+main .add-event .note-area,
+main .add-event .note,
+main .edit-event .note-area,
+main .edit-event .note {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+main .add-event .note-area .note,
+main .add-event .note .note,
+main .edit-event .note-area .note,
+main .edit-event .note .note {
+  width: 100%;
+}
+
+main .add-event .preview-event,
+main .edit-event .preview-event {
+  display: unset;
+  margin-top: 10px;
+}
+
+main .add-event .view-time,
+main .add-event .view-student,
+main .edit-event .view-time,
+main .edit-event .view-student {
+  margin-right: 5px;
+}
+
+main .add-event .view-note,
+main .edit-event .view-note {
+  margin-top: 15px;
+}
+
+main .add-event .editing-form,
+main .edit-event .editing-form {
+  display: none;
+}
+
+.empty {
+  color: transparent;
+}
+
+@-webkit-keyframes moveUp {
+  0% {
+    top: 45px;
+  }
+  50% {
+    top: 30px;
+  }
+  100% {
+    top: 45px;
+  }
+}
+
+@keyframes moveUp {
+  0% {
+    top: 45px;
+  }
+  50% {
+    top: 30px;
+  }
+  100% {
+    top: 45px;
+  }
+}
+
+@media (max-width: 768px) {
+  main #structureCalendar header {
+    height: auto;
+    text-align: center;
+    padding: 1rem;
+  }
+  main #structureCalendar header .left,
+  main #structureCalendar header .center,
+  main #structureCalendar header .right {
+    width: 100%;
+    float: none;
+  }
+  main #calendar #weekdays,
+  main #calendar .null {
+    display: none;
+  }
+  main #calendar #days li {
+    height: auto !important;
+    border-bottom: 1px solid #efefef;
+    width: 100%;
+    padding: 10px 20px;
+  }
+  main #calendar .date {
+    margin: 5px 0;
+    float: none;
+  }
+  main .add-event .modal-content,
+  main .edit-event .modal-content {
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 576px) {
+  main .page-title {
+    font-size: 30px;
+  }
+  main hr:not([size]) {
+    height: 5px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+  .note-area {
+    padding-left: 10px;
+  }
+  .selection-area {
+    padding-right: 10px;
+  }
+}
+
+@media (min-width: 992px) {
+  main #root {
+    padding: 20px;
+  }
+}
+/*# sourceMappingURL=calendar-style.css.map */

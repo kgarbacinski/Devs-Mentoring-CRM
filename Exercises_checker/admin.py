@@ -1,3 +1,4 @@
 from django.contrib import admin
+from Exercises_checker.models import Language, Exercise, ExerciseStatus
 
-# Register your models here.
+admin.site.register([Language, Exercise, ExerciseStatus])

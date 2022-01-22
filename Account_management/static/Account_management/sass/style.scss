@@ -173,6 +173,67 @@ body {
     position: relative;
     margin-left: 55px;
     transition: margin-left .3s;
+
+    .avatar-popup {
+        position: absolute;
+        top: 67px;
+        right: 5px;
+        height: 245px;
+        width: 295px;
+        z-index: 98;
+
+        form {
+            label {
+                margin: -1px;
+                padding: 5px 10px;
+                border: 2px solid $gold-color;
+                border-radius: 25px;
+                height: 36px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            span {
+                font-size: .9rem;
+                padding: 6px 10px;
+                line-height: 25px;
+                height: 36px;
+                width: 50%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .files-upload {
+                border: .5px solid #ebebeb;
+                border-radius: 25px;
+                height: 36px;
+            }
+
+            .send-av-button {
+                padding: 5px 10px;
+                // width: 150px;
+                border: 1px solid $gold-color;
+                background: $gold-color;
+                border-radius: 25px;
+                text-transform: uppercase;
+                font-weight: bold;
+                transition: color .3s, background-color .3s, border .3s;
+                margin: 0;
+
+                &:hover {
+                    color: #fff;
+                    background-color: #000;
+                    border: 1px solid #000;
+                }
+            }
+        }
+    }
+
+
+
 }
 
 header {
@@ -232,6 +293,8 @@ main {
     min-height: 92vh;
     padding: 1rem;
 }
+
+
 
 @media(max-width: 992px) {
     #menu-toggle:checked~.main-content {

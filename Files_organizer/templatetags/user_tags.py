@@ -1,7 +1,5 @@
 from django import template
-from django.contrib.auth.models import Group, User
-
-from Files_organizer.models import SubTopic
+from django.contrib.auth.models import Group
 
 register = template.Library()
 

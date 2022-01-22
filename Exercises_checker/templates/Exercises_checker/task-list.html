@@ -1,0 +1,100 @@
+{% extends 'Account_management/layout.html' %}
+{% load exercise_tags %}
+{% load static %}
+
+
+{% block style %}
+    <link rel="stylesheet" type="text/css" href={% static "Exercises_checker/css/task-list.css" %}>
+{% endblock %}
+{% block main_content %}
+
+    <h2 class="page-title">Exercises checker</h2>
+    <hr>
+
+    <div class="student-info-progress p-3 mb-5" style="visibility: hidden">
+        <p class="text-center fs-5 pt-4 pb-3">YOUR PROGRESS:</p>
+        <p class="tasks-count text-center"><span class="done-tasks">{{ done_tasks }}</span><span> questions completed of
+                        </span><span class="all-tasks">{{ all_tasks }}</span></p>
+
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=""
+                 aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+
+
+    <!-- MU: Tu zaczynaja się zakładki -->
+    <ul class="task-tabs nav nav-tabs" id="myTab" role="tablist">
+        {% for language in languages %}
+            {% if request.user|has_group:"Student" and request.user|has_access:path or request.user.is_superuser %}
+                <li class="task-tab nav-item" role="presentation">
+                    <button class="nav-link" id="python-tab" data-bs-toggle="tab"
+                            data-bs-target="#tab-python" type="button" role="tab" aria-controls="tab-python"
+                            aria-selected="true"
+                            onclick="getPathExercisesInfo('{{ language.id }}');return false;">{{ language.name }}</button>
+                </li>
+            {% else %}
+
+                <li class="task-tab nav-item" role="presentation">
+                    <button class="nav-link disabled" id="python-tab" data-bs-toggle="tab"
+                            data-bs-target="#tab-python" type="button" role="tab" aria-controls="tab-python"
+                            aria-selected="true">{{ language.name }}  </button>
+                </li>
+
+
+
+
+            {% endif %}
+
+        {% endfor %}
+    </ul>
+
+    <div class="tab-content" id="myTabContent" style="visibility: hidden">
+
+        <!-- MU: start - zakladka -->
+        <div class="tab-pane fade show active" id="tab-python" role="tabpanel" aria-labelledby="python-tab">
+            <div class="row task-content mx-0">
+                <div class="col-sm-12 col-md-4 easy-level easy-level p-4">
+                    <h3 class="level-title fs-4 mt-5 mb-3">Easy <span class="count-tasks"><span
+                            class="done-easy"></span>/<span
+                            class="total-easy"></span></span></h3>
+                    <div class="tasks-list-box tasks-list-box-easy">
+
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-4 medium-level medium-level-python p-4">
+                    <h3 class="level-title fs-4 mt-5 mb-3">Medium <span class="count-tasks"><span
+                            class="done-medium"></span>/<span
+                            class="total-medium"></span></span></h3>
+
+                    <div class="tasks-list-box tasks-list-box-medium">
+
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-4 hard-level hard-level-python p-4">
+                    <h3 class="level-title fs-4 mt-5 mb-3">Hard <span class="count-tasks"><span
+                            class="done-hard">0</span>/<span
+                            class="total-hard">20</span></span></h3>
+                    <div class="tasks-list-box tasks-list-box-hard">
+
+
+                    </div>
+                </div>
+                <!-- MU: stop - zakladka -->
+
+
+            </div>
+        </div>
+    </div>
+    <!-- MU: koniec zakładek -->
+
+
+{% endblock %}
+
+
+{% block script %}
+    <script src="{% static 'Exercises_checker/js/exercises.js' %}"></script>
+
+{% endblock %}

@@ -1,14 +1,22 @@
 from __future__ import annotations
+import datetime
 import enum
 import re
 from typing import Dict, Tuple
-
+from rest_framework.renderers import JSONRenderer
+from Exercises_checker.models import Language, Exercise, ExerciseStatus
+from Meetings_calendar.models import Meeting, Note
+from Account_management.models import Student, Mentor
+from .permissions import MentorCreate
+from .serializers import NoteSerializer, MeetingsStudentSerializer, MeetingsMentorSerializer, StudentsSerializer, \
+    AddMeetingSerializer, AddNoteSerializer, AllMeetingSerializer, GetMeetingSerializer, ChangeStudentAvatarSerializer, \
+    ChangeMentorAvatarSerializer, PathExerciseSerializer
 from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from django.http import Http404
 from rest_framework import generics, mixins, status
-from rest_framework.exceptions import PermissionDenied, ValidationError
-from rest_framework.generics import GenericAPIView
+from rest_framework.exceptions import PermissionDenied, ValidationError, APIException
+from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -16,6 +24,137 @@ from Files_organizer.models import Document, SubTopic, Subject
 from Rest_API.permissions import FileAccessPermission
 from Rest_API.serializers import DocumentSerializer, AccessToFileSerializer, AccessToSubjectSerializer, \
     UserSearchBoxSerializer
+from rest_framework.views import exception_handler
+
+
+# Create your views here.
+class ListMeetings(generics.ListAPIView):
+
+    def get_serializer_class(self):
+        user = self.request.user
+        if user.groups.filter(name='Student').exists():
+            return MeetingsStudentSerializer
+        else:
+            return MeetingsMentorSerializer
+
+    def get_queryset(self):
+        month = self.request.GET.get('date')
+        user = self.request.user
+        if user.groups.filter(name='Student').exists():
+            return Meeting.objects.filter(student__user=user).filter(date__month=month).order_by('date')
+        return Meeting.objects.filter(mentor__user=user).filter(date__month=month).order_by('date')
+
+
+class ListMeetingsByDates(generics.ListAPIView):
+    def get_serializer_class(self):
+        user = self.request.user
+        if user.groups.filter(name='Student').exists():
+            return MeetingsStudentSerializer
+        else:
+            return MeetingsMentorSerializer
+
+    def get_queryset(self):
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        user = self.request.user
+        if user.groups.filter(name='Student').exists():
+            return Meeting.objects.filter(student__user=user).filter(date__range=[start_date, end_date]).order_by(
+                'date')
+        return Meeting.objects.filter(mentor__user=user).filter(date__range=[start_date, end_date]).order_by('date')
+
+
+class MeetingDetail(generics.ListAPIView):
+    serializer_class = GetMeetingSerializer
+
+    def get_queryset(self):
+        meeting = self.request.GET.get('id')
+        user = self.request.user
+        return Meeting.objects.filter(mentor__user=user).filter(id=meeting)
+
+
+class ListAllMeetings(generics.ListAPIView):
+    serializer_class = AllMeetingSerializer
+
+    def get_queryset(self):
+        # month = self.request.GET.get('date')
+        user = self.request.user
+        return Meeting.objects.filter(mentor__user=user)
+        # return Meeting.objects.filter(date__month=month).order_by('mentor', 'date')
+
+
+class AddMeeting(generics.CreateAPIView):
+    permission_classes = [MentorCreate]
+    serializer_class = AddMeetingSerializer
+
+    def get_permissions(self):
+        return [permission() for permission in self.permission_classes]
+
+    def check_permissions(self, request):
+        for permission in self.get_permissions():
+            if not permission.has_permission(request, self):
+                self.permission_denied(request)
+
+
+class EditDeleteMeeting(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [MentorCreate]
+    serializer_class = AddMeetingSerializer
+
+    def get_permissions(self):
+        return [permission() for permission in self.permission_classes]
+
+    def check_permissions(self, request):
+        for permission in self.get_permissions():
+            if not permission.has_permission(request, self):
+                self.permission_denied(request)
+
+    def get_queryset(self):
+        user = self.request.user
+        return Meeting.objects.filter(mentor__user=user)
+
+
+class ListNotes(generics.ListAPIView):
+    serializer_class = NoteSerializer
+
+    def get_queryset(self):
+        meeting = self.request.GET.get('id')
+        user = self.request.user
+        return Note.objects.filter(author_id=user).filter(meeting_id=meeting)
+
+
+class AddNote(generics.CreateAPIView):
+    serializer_class = AddNoteSerializer
+
+
+class EditDeleteNote(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AddNoteSerializer
+
+    def get_queryset(self, pk=None):
+        user = self.request.user
+        return Note.objects.all()
+
+
+class ListStudents(generics.ListAPIView):
+    serializer_class = StudentsSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Student.objects.filter(mentor__user__username=user)
+
+
+class ChangeAvatar(generics.RetrieveUpdateDestroyAPIView):
+
+    def get_serializer_class(self):
+        user = self.request.user
+        if user.groups.filter(name='Student').exists():
+            return ChangeStudentAvatarSerializer
+        else:
+            return ChangeMentorAvatarSerializer
+
+    def get_queryset(self, pk=None):
+        user = self.request.user
+        if user.groups.filter(name='Student').exists():
+            return Student.objects.all()
+        return Mentor.objects.all()
 
 
 class Patterns:
@@ -256,7 +395,7 @@ class UserSearchBoxSubjectView(generics.ListAPIView):
 
         return users_list
 
-    def __get_queryset_from_text(self, text, subject)-> Tuple[QuerySet[User], SubTopic]:
+    def __get_queryset_from_text(self, text, subject) -> Tuple[QuerySet[User], SubTopic]:
         subtopics = SubTopic.objects.filter(subject=subject).all()
         filter = self.__get_user_by_name_or_surname_access
         if re.match(Patterns.whole_name_pattern, text):
@@ -288,7 +427,6 @@ class UserSearchBoxSubjectView(generics.ListAPIView):
         access = self.request.GET.get('access')
         access = self.Access.from_str(access)
 
-        print(access)
         try:
             subject = Subject.objects.get(id=subject_id)
         except Subject.DoesNotExist:
@@ -298,7 +436,62 @@ class UserSearchBoxSubjectView(generics.ListAPIView):
             return self.with_access(text, subject)
 
         if access == self.Access.NO_ACCESS:
-            print('elo')
             return self.no_access(text, subject)
 
         raise ValidationError(detail="Access parameter can be 0 or 1")
+
+
+class ExerciseView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PathExerciseSerializer
+
+    def get_language_and_user(self):
+        language_id = self.kwargs['pk']
+        language = get_object_or_404(Language, id=language_id)
+        user = self.request.user
+        return language, user
+
+    def get_all_exercises_quantity(self):
+        language, user = self.get_language_and_user()
+        all_exercises_quantity = Exercise.objects.filter(language__user=user).filter(language=language).count()
+        done_exercises_quantity = ExerciseStatus.objects.filter(exercise__language=language).filter(user=user).filter(
+            done=True).count()
+
+        return all_exercises_quantity, done_exercises_quantity
+
+    def get_queryset_exercise_list(self, type):
+        language, user = self.get_language_and_user()
+        queryset = ExerciseStatus.objects.filter(exercise__language=language).filter(exercise__type=type).filter(
+            user=user).all()
+        exercise_quantity = Exercise.objects.filter(language=language).filter(type=type).filter(
+            language__user=user).count()
+        done_exercise_quantity = queryset.filter(done=True).count()
+
+        return queryset, exercise_quantity, done_exercise_quantity
+
+    def list(self, request, *args, **kwargs):
+        all_exercises_quantity, done_exercises_quantity = self.get_all_exercises_quantity()
+        easy_exercises, easy_exercises_quantity, done_easy_exercises_quantity = self.get_queryset_exercise_list(
+            type="EASY")
+        medium_exercises, medium_exercises_quantity, done_medium_exercises_quantity = self.get_queryset_exercise_list(
+            type="MEDIUM")
+        hard_exercises, hard_exercises_quantity, done_hard_exercises_quantity = self.get_queryset_exercise_list(
+            type="HARD")
+
+        return Response({
+            "quantity": {
+                "all_exercises_quantity": all_exercises_quantity,
+                "done_exercises_quantity": done_exercises_quantity,
+                "easy_exercises_quantity": easy_exercises_quantity,
+                "done_easy_exercises_quantity": done_easy_exercises_quantity,
+                "medium_exercises_quantity": medium_exercises_quantity,
+                "done_medium_exercises_quantity": done_medium_exercises_quantity,
+                "hard_exercises_quantity": hard_exercises_quantity,
+                "done_hard_exercises_quantity": done_hard_exercises_quantity,
+            },
+            "exercises": {
+                "easy": self.serializer_class(easy_exercises, many=True).data,
+                "medium": self.serializer_class(medium_exercises, many=True).data,
+                "hard": self.serializer_class(hard_exercises, many=True).data,
+            }
+        })

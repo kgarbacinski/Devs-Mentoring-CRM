@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
-class Calendar(LoginRequiredMixin, View):
+class CalendarView(LoginRequiredMixin, View):
     template_name = 'Meetings_calendar/calendar.html'
     login_url = 'login'
 

@@ -3,8 +3,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import PasswordResetView
 from django.shortcuts import render, redirect
-from django.views.generic import View
-from .forms import LoginForm, ResetRequestForm
+from django.views.generic import View, ListView
+from .forms import LoginForm, ResetRequestForm, PaymentForm
+from .models import Student, Mentor
 
 
 class LoginView(PasswordResetView):
@@ -47,20 +48,26 @@ class LoginView(PasswordResetView):
                 }
                 reset_form.save(**opts)
 
-
         return render(request, self.template_name,
                       {'login_form': LoginForm(request.POST), "reset_form": ResetRequestForm(request.POST)})
 
 
-class IndexView(LoginRequiredMixin, View):
+class IndexView(LoginRequiredMixin, ListView):
     template_name = 'Account_management/index.html'
+    context_object_name = 'students'
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.groups.filter(name='Student').exists():
+            return Mentor.objects.filter(student__user__username=user)
+        return Student.objects.filter(mentor__user__username=user)
+
+
+class PaymentView(View):
+    template_name = 'Account_management/payment.html'
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
-
-
-
-
-
-
-
+        user = request.user
+        if user.groups.filter(name='Student').exists():
+            return render(request, self.template_name, {'payment_form': PaymentForm()})
+        return redirect('index')

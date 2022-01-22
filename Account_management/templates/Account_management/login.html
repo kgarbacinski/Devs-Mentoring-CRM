@@ -31,7 +31,6 @@
             </div>
             <a class="arrow-down" href="#right-column"><i class="bi bi-chevron-down"></i></a>
             <img class="bg-logo--one" src="{% static 'Account_management/img/devs-logo.svg' %}" alt="">
-            <img class="bg-logo--two" src="{% static 'Account_management/img/devs-logo.svg' %}" alt="">
         </div>
 
         <div class="right-column col-md-7 p-0" id="right-column">
@@ -41,15 +40,13 @@
 
                     <form id="login_form" method="POST" action=''>
                         {% csrf_token %}
-
-                        {{ login_form.email.label_tag }}
                         <div class="form-box">
+                            {{ login_form.email.label_tag }}
                             {{ login_form.email }}
-                            <p>{{ login_form.email.errors}}</p>
-
                         </div>
-                        {{ login_form.password.label_tag }}
+
                         <div class="form-box">
+                            {{ login_form.password.label_tag }}
                             {{ login_form.password }}
 
                             <div class="reset-area">
@@ -57,7 +54,7 @@
                                 <span class="reset-success text-success"
                                       id="reset-success">Success! Check your email.</span>
                             </div>
-                            <p class="text-error">error</p>
+                            <p class="text-error">{{ login_form.email.errors }}</p>
                         </div>
                         <div class="control-button">
                             <button class="sign-in-btn" type="submit" name="sing_in" form="login_form">Sign in</button>
@@ -74,9 +71,10 @@
 
                             <div class="control-buttons">
                                 <button class="cancel" type="reset">Cancel</button>
-                                <button name= 'send_reset' class="reset" type="submit" form="reset_form">Send</button>
+                                <button name='send_reset' class="reset" type="submit" form="reset_form">Send</button>
                             </div>
                         </div>
+                    </form>
                 </div>
             </section>
         </div>
