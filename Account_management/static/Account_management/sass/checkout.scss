@@ -137,6 +137,7 @@ h4 {
 
     &-sum {
         background-color: #ededed;
+        border-radius: 8px;
 
         table {
             width: 100%;
@@ -205,7 +206,8 @@ a {
 }
 
 button.pay,
-button.return {
+button.return,
+button.confirm-and-pay-btn {
     padding: 10px 20px;
     width: 150px;
     border: 1px solid $gold-color;
@@ -218,13 +220,15 @@ button.return {
 }
 
 button.pay:hover,
-button.return:hover {
+button.return:hover,
+button.confirm-and-pay-btn:hover {
     color: #fff;
     background-color: #000;
     border: 1px solid #000;
 }
 
-button.return {
+button.return,
+button.confirm-and-pay-btn {
     width: auto;
     margin-top: 30px;
 
@@ -233,7 +237,8 @@ button.return {
     }
 }
 
-button.return:hover {
+button.return:hover,
+button.confirm-and-pay-btn:hover {
     a:hover {
         color: #fff;
     }
@@ -248,6 +253,30 @@ button.return:hover {
 .error-input {
     border: 1px solid #dc3545 !important;
     background-color: #dc354615;
+}
+
+.confirm-box {
+    height: auto;
+    padding: 25px 15px 50px;
+}
+.confirm-and-pay {
+    margin: 0 auto;
+    padding: 30px 30px 0px;
+    max-width: 500px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px #ccc;
+    
+    &-title {
+        text-transform: uppercase;
+    }
+    hr {
+        background-color:$border-gray;
+    }
+
+    .confirm-and-pay-btn {
+        text-align: center;
+    }
 }
 
 @media(min-width: 320px) {
@@ -266,6 +295,9 @@ button.return:hover {
             }
         }
     }
+    .confirm-box {
+        height: 73.5vh;
+    }
 }
 
 @media(min-width: 385px) {
@@ -283,6 +315,7 @@ button.return:hover {
             }
         }
     }
+    
 }
 
 @media(min-width: 490px) {

@@ -23,18 +23,18 @@ from Account_management.forms import ResetPasswordForm
 from Devs_Mentoring_CRM import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('calendar/', include('Meetings_calendar.urls')),
-    path('', include('Account_management.urls')),
-    path('exercises/', include('Exercises_checker.urls')),
-    path('files/', include('Files_organizer.urls')),
-    path('api/', include('Rest_API.urls')),
-    path('password-reset-confirm/<uidb64>/<token>/',
-         auth_views.PasswordResetConfirmView.as_view(
-             success_url=reverse_lazy('login'),
-             template_name="Account_management/password_reset_confirm.html",
-             form_class = ResetPasswordForm
-         ), name='password_reset_confirm',
+                  path('', include('Account_management.urls')),
+                  path('admin/', admin.site.urls),
+                  path('calendar/', include('Meetings_calendar.urls')),
+                  path('exercises/', include('Exercises_checker.urls')),
+                  path('files/', include('Files_organizer.urls')),
+                  path('api/', include('Rest_API.urls')),
+                  path('password-reset-confirm/<uidb64>/<token>/',
+                       auth_views.PasswordResetConfirmView.as_view(
+                           success_url=reverse_lazy('login'),
+                           template_name="Account_management/password_reset_confirm.html",
+                           form_class=ResetPasswordForm
+                       ), name='password_reset_confirm',
 
-         ),
-]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                       ),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

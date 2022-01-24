@@ -1,5 +1,6 @@
 {% extends 'Account_management/layout.html' %}
 {% load static %}
+{% load auth_extras %}
 
 {% block style %}
     <link rel="stylesheet" href="{% static 'Account_management/css/checkout.css' %}">
@@ -17,176 +18,120 @@
 
         <div class="right-column">
             <p class="sign-in-title">complete your payment</p>
-            <div class="back-section">
-                <a href="{% url 'index' %}"><span class="back-btn"><i class="bi bi-arrow-left"></i> BACK</span></a>
-            </div>
-            <form action="" class="checkout-form">
-
+            <form action="" method="POST" class="checkout-form">
+                {% csrf_token %}
                 <div class="row p-0 m-0">
                     <div class="checkout-form-fields col-xs-12 col-md-7">
                         <h4>PAYMENT DETAILS</h4>
                         <p class="checkout-form-field-name p-0">
-                            <label for="name">Name: <span class="req text-danger">*</span></label>
-                            {{ payment_form.first_name }}
+                            <label for="name">First name: <span class="req text-danger">*</span></label>
+                            {{ form.firstName }}
                         </p>
                         <p class="checkout-form-field-last-name">
                             <label for="last-name">Last name: <span class="req text-danger">*</span></label>
-                            {{ payment_form.last_name }}
-                        </p>
-                        <p class="checkout-form-field-company">
-                            <label for="company">Company: <span class="optional"><em>(optional)</em></span></label>
-                            {{ payment_form.companyName }}
+                            {{ form.lastName }}
                         </p>
                         <p class="checkout-form-field-company-nip">
                             <label for="company-nip">NIP: <span
                                     class="optional"><em>(optional - for invoice)</em></span></label>
-                            {{ payment_form.nip }}
+                            {{ form.nip }}
                         </p>
-                        <p class="checkout-form-field-adress">
-                            <label for="adress">Adress: <span class="req text-danger">*</span></label>
-                            {{ payment_form.street }}
+                        <p class="checkout-form-field-company">
+                            <label for="company">Company: <span class="optional"><em>(optional)</em></span></label>
+                            {{ form.companyName }}
+                        </p>
+                        <p class="checkout-form-field-address">
+                            <label for="address">Address: <span class="req text-danger">*</span></label>
+                            {{ form.street }}
                         </p>
                         <p class="checkout-form-field-post-code">
                             <label for="post-code">Post code: <span class="req text-danger">*</span></label>
-                            {{ payment_form.postCode }}
+                            {{ form.postCode }}
                         </p>
                         <p class="checkout-form-field-city">
                             <label for="city">City: <span class="req text-danger">*</span></label>
-                            {{ payment_form.town }}
+                            {{ form.town }}
+                        </p>
+                        <p class="checkout-form-field-country">
+                            <label for="country">Country: <span class="req text-danger">*</span></label>
+                            {{ form.country }}
                         </p>
                         <p class="checkout-form-field-phone">
                             <label for="phone">Phone: <span class="req text-danger">*</span></label>
-                            {{ payment_form.phone }}
+                            {{ form.phone }}
                         </p>
                         <p class="checkout-form-field-email">
                             <label for="email">E-mail: <span class="req text-danger">*</span></label>
-                            {{ payment_form.email }}
+                            {{ form.email }}
                         </p>
-                        <p class="error text-danger">
-                            <span id="form-element"></span>
-                        </p>
-                        <p class="checkout-form-field-seve">
-                            <label for="save">
-                                {{ payment_form.vat }}<span>Check this if you need invoice</span>
-                            </label>
-                        </p>
+                        {#                        <p class="error text-danger">#}
+                        {#                            <span id="form-element"></span>#}
+                        {#                        </p>#}
                         <h4>ADDITIONAL INFORMATION</h4>
                         <p class="checkout-form-field-information">
                             <label for="information">Comments to order: <span
                                     class="optional"><em>(optional)</em></span></label>
-                            <textarea id="information"></textarea>
+                            {{ form.comment }}
                         </p>
-
                     </div>
 
                     <div class="checkout-form-sum col-xs-12 col-md-5">
                         <h4>YOUR ORDER</h4>
 
                         <div class="table-wrapper">
-                            <table class="checkout-form-sum-table">
-                                <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <td></td>
-                                    <th>Amount</th>
-                                </tr>
-                                </thead>
-                                <tbody>
+                            {% if request.user|has_group:"Student" %}
+                                <table class="checkout-form-sum-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Course</th>
+                                        <td></td>
+                                        <th>Amount</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="cart-item">
+                                        <td class="product-name">
+                                            {{ user.student.path }}
+                                        </td>
+                                        <td></td>
+                                        <td class="product-amount">
+                                            <span class="product-price-amount">{{ user.student.path.price }}<span> zł</span></span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
 
-                                <tr class="cart-item">
-                                    <td class="product-name">
-                                        Nazwa pakietu/ścieżki
-                                    </td>
-
-                                    <td class="product-quantity">
-                                        <span><span class="product-quantity">1</span> x</span>
-                                    </td>
-
-                                    <td class="product-amount">
-                                        <span class="product-price-amount">800<span> zł</span></span>
-                                    </td>
-                                </tr>
-
-                                </tbody>
-
-                                <tfoot>
-                                <tr class="order-total">
-                                    <th>Total amount</th>
-                                    <td></td>
-                                    <td><strong><span class="total-price-amount">800<span> zł</span></span></strong>
-                                    </td>
-                                </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-
-                        <div class="payment">
-                            <div class="accordion accordion-flush" id="accordionFlushExample">
-                                <ul class="payment-methods">
-                                    <li class="payment-method">
-                                        <div class="accordion-item">
-                                            <p class="button-in-payment" type="button" data-bs-toggle="collapse"
-                                               data-bs-target="#flush-collapse1" aria-expanded="false"
-                                               aria-controls="flush-collapse1">
-                                                <input name="payment-method" type="radio" id="payment-method-basic"
-                                                       value="1" checked><label for="payment-method-basic">Bank
-                                                transfer</label>
-                                            </p>
-                                            <div id="flush-collapse1" class="accordion-collapse collapse show"
-                                                 aria-labelledby="flush-heading1"
-                                                 data-bs-parent="#accordionFlushExample">
-                                                <div class="accordion-body">
-                                                    <p class="payment-method-desc payment-method-basic">
-                                                        Please pay directly to our bank account:<br>
-                                                        66 1090 2590 0000 0001 4759 3718.<br>Please use your order
-                                                        number as
-                                                        the payment title.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-
-                                    <li class="payment-method">
-                                        <div class="accordion-item">
-                                            <p class="button-in-payment" type="button" data-bs-toggle="collapse"
-                                               data-bs-target="#flush-collapse2" aria-expanded="false"
-                                               aria-controls="flush-collapse2">
-                                                <input name="payment-method" type="radio" id="payment-method-przelewy24"
-                                                       value="2"><label
-                                                    for="payment-method-przelewy24">Przelewy24</label>
-                                            </p>
-                                            <div id="flush-collapse2" class="accordion-collapse collapse"
-                                                 aria-labelledby="flush-heading2"
-                                                 data-bs-parent="#accordionFlushExample">
-                                                <div class="accordion-body">
-                                                    <p class="payment-method-desc payment-method-przelewy24">
-                                                        Pay with Przelewy24
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+                                    <tfoot>
+                                    <tr class="order-total">
+                                        <td></td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            {% endif %}
                         </div>
 
                         <div class="complete-order">
-                            <p class="information-data-procesing">
+                            <p class="information-data-processing">
                                 Your personal data will be used to process the order, facilitate the use of the website
                                 and
                                 other purposes described on the website: <b><a href="#">privacy policy</a></b>.
-                                <!-- jeśli będzie polityka pryw to trzeba podlinkowac -->
+                                <!-- jeśli będzie polityka prywatności to trzeba podlinkować -->
                             </p>
-                            <p class="consent-wfield">
+                            <p class="consent-field">
                                 <label for="regulations">
-                                    <input id="regulations" type="checkbox" required> <span>I have read and accept the <b><a
-                                            href="#">regulations</a></b> <span class="req text-danger">*</span></span>
+                                    <input id="regulations" type="checkbox"
+                                           required><span>I have read and accept the <b>
+                                    <a href="#">regulations</a></b></span><span class="req text-danger">*</span>
                                 </label>
                             </p>
-                            <div class="payment-btn">
-                                <button class="pay">pay</button>
-                            </div>
+                            {% if request.user|has_group:"Student" %}
+                                <div class="payment-btn">
+                                    <button type="submit" class="pay">pay</button>
+                                </div>
+                            {% else %}
+                                <div class="payment-btn">
+                                    <button disabled type="submit" class="pay" style="background: #dbc11050;  border: 1px solid #dbc11050;">pay</button>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

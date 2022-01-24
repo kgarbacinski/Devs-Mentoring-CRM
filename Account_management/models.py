@@ -1,8 +1,17 @@
+import uuid
+from decimal import Decimal
+
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.contrib.auth.models import User
 from dateutil import relativedelta
+from django.urls import reverse
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import datetime
+from payments import PurchasedItem
+from payments.models import BasePayment
+from decouple import config
+
 
 class Path(models.Model):
     name = models.CharField(max_length=50)
@@ -30,9 +39,9 @@ class Mentor(models.Model):
     def save(self, *args, **kwargs):
         try:
             this = Mentor.objects.get(id=self.id)
-            if this.user_image != self.user_image and self.user_image.name != 'user.png':
+            if this.user_image != self.user_image:
                 this.user_image.delete(save=False)
-        except:
+        except ObjectDoesNotExist:
             pass
         super().save(*args, **kwargs)
 
@@ -45,7 +54,7 @@ class Student(models.Model):
     mentor = models.ManyToManyField(Mentor)
     enrollmentDate = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     path = models.ForeignKey(Path, on_delete=models.PROTECT)
-    user_image = models.ImageField(upload_to='user_images/', default='user.png',  null=True, blank=True)
+    user_image = models.ImageField(upload_to='user_images/', default='user.png', null=True, blank=True)
     no_month = models.IntegerField(default=1)
 
     def get_next_payment(self):
@@ -75,9 +84,9 @@ class Student(models.Model):
     def save(self, *args, **kwargs):
         try:
             this = Student.objects.get(id=self.id)
-            if this.user_image != self.user_image and self.user_image.name != 'user.png':
+            if this.user_image != self.user_image:
                 this.user_image.delete(save=False)
-        except:
+        except ObjectDoesNotExist:
             pass
         super().save(*args, **kwargs)
 
@@ -94,6 +103,7 @@ class PaymentInfo(models.Model):
     street = models.CharField(max_length=200)
     postCode = models.CharField(max_length=6)
     town = models.CharField(max_length=20)
+    country = models.CharField(max_length=20, default='Poland')
     phone = PhoneNumberField()
     email = models.EmailField()
     comment = models.TextField(null=True, blank=True)
@@ -110,3 +120,28 @@ class Payment(models.Model):
     @property
     def next_payment(self):
         return self.paymentDate + relativedelta.relativedelta(months=1)
+
+
+class CoursePayment(BasePayment):
+    id = models.CharField(
+        primary_key=True, editable=False, default=uuid.uuid4, max_length=50
+    )
+
+    # TODO change urls
+    def get_failure_url(self):
+        print(reverse('failure'))
+        return f"{config('HOST')}{reverse('failure')}"  # "https://przelewy24.source.net.pl/fail"
+
+    def get_success_url(self):
+        print(reverse('success'))
+        return f"{config('HOST')}{reverse('success')}"  # "https://przelewy24.source.net.pl/success"
+
+    def get_purchased_items(self):
+        # you'll probably want to retrieve these from an associated order
+        yield PurchasedItem(
+            name="The Hound of the Baskervilles",
+            sku="BSKV",
+            quantity=9,
+            price=Decimal(10),
+            currency="USD",
+        )

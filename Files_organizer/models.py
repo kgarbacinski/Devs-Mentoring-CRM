@@ -42,7 +42,6 @@ class SubTopic(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.PROTECT)
     description = models.TextField()
 
-
     def __str__(self) -> str:
         return self.name
 
@@ -62,11 +61,9 @@ class Document(models.Model):
         EXERCISE = 'EXERCISE'
         EXTRA = "EXTRA"
 
-
     type = models.CharField(
         max_length=10,
         choices=Type.choices)
 
     def __str__(self):
         return self.name
-

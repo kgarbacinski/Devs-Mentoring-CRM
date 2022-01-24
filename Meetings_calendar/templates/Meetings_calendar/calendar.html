@@ -18,25 +18,30 @@
         <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Add new event:</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">Add new meeting:</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form onsubmit="">
+                    <form id="addEvent">
                         <div class="selection-area">
                             <label for="add-event-date">Day:</label>
                             <input type="date" id="add-event-date" min="">
                             <label for="add-event-time">Hour:</label>
-                            <input type="time" name="" id="add-event-time">
+                            <input required type="time" name="" id="add-event-time">
                             <label for="add-event-student">Student:</label>
-                            <select id="add-event-student" onchange="studentOncChange(this)"></select>
+                            <select required id="add-event-student" onchange="studentOncChange(this)"></select>
                         </div>
                         <div class="note-area">
-                            <button onclick="newMeeting()" class="save-event-btn" id="save-event-btn">Add</button>
+                            <div class="note">
+                                <label for="add-event-note">Note:</label>
+                                <textarea id="add-event-note" cols="" rows="5"></textarea>
+                            </div>
+                            <div class="control-buttons">
+                                <button type="submit" class="save-event-btn" id="save-event-btn">Add</button>
+                            </div>
                         </div>
-
                     </form>
                 </div>
 
@@ -46,65 +51,99 @@
     <!-- stop: add event modal -->
 
     <!-- MU: start: edit and delete event modal -->
-    <div class="modal fade edit-event" id="editEventModal" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+    <div class="modal fade edit-event" id="editEventModal" aria-hidden="true" aria-labelledby="editEventModalLabel"
+         tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Edit event:</h5>
+                    <h5 class="modal-title" id="editEventModalLabel">
+                        Date: <span class="view-date"></span>
+                    </h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+                <div class="modal-body">
+                    <div class="preview-event">
+                        <label for="view-note">
+                            <span class="view-time"></span> <span class="view-student"></span>
+                        </label>
+                        <p class="view-note" id="view-note"></p>
+                        <div class="control-buttons">
+                            <button type="submit" onclick="saveNote()"
+                                    class="delete-note-btn" id="delete-note-btn" data-bs-dismiss="modal">Delete
+                            </button>
+                            <button onclick="editNote(this.id)" class="edit-event-btn" data-bs-target="#editEventModal2"
+                                    data-bs-toggle="modal" data-bs-dismiss="modal">Edit
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                {% if request.user|has_group:"Mentor" %}
+                    <div class="modal-footer">
+                        <span id="delete-note-txt">Delete meeting:</span>
+                        <button onclick="eraseMeeting(this.value)" class="delete-event-btn" data-bs-dismiss="modal">
+                            <i class="bi bi-trash-fill"></i></button>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade edit-event" id="editEventModal2" aria-hidden="true" aria-labelledby="editEventModalLabel2"
+         tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEventModalLabel2">Edit meeting:</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="preview-event">
-                        <span class="view-time" id="note-hour"></span><span class="view-student">{% if user.is_authenticated %}{{ user.first_name }} {{ user.last_name }}{% endif %}</span>
-                        <textarea class="view-note" id="view-note" rows="5" disabled="disabled"></textarea>
-                        <button onclick="editNote(this.id)" class="edit-event-btn">Edit</button>
-                    </div>
-
-
-                    <form class="editing-form" onsubmit="">
+                    <form class="editing-form" id="editing-form">
                         {% if request.user|has_group:"Mentor" %}
-                        <div class="selection-area">
-                            <label for="edit-event-date">Day:</label>
-                            <input type="date" id="edit-event-date" min="">
-                            <label for="edit-event-time">Hour:</label>
-                            <input type="time" name="" id="edit-event-time">
-                            <label for="edit-event-student">Student:</label>
-                            <select id="edit-event-student" onchange="studentOncChange(this)"></select>
-                        </div>
+                            <div class="selection-area">
+                                <label for="edit-event-date">Day:</label>
+                                <input required type="date" id="edit-event-date" min="">
+                                <label for="edit-event-time">Hour:</label>
+                                <input required type="time" name="" id="edit-event-time">
+                                <label for="edit-event-student">Student:</label>
+                                <select required id="edit-event-student" onchange="studentOncChange(this)"></select>
+                            </div>
                         {% endif %}
                         <div class="note-area">
                             <div class="note">
-                                <label for="edit-event-note">Note:</label>
+                                <label for="edit-event-note" id="edit-event-note_label">
+                                    <span class="edit-event-time-hour" id="edit-event-time-hour"></span> <span
+                                        class="edit-event-student-name"></span>
+                                </label>
                                 <textarea id="edit-event-note" cols="" rows="5"></textarea>
                             </div>
                             <div class="control-buttons">
-                                <button class="edit-cancel-event-btn" id="edit-cancel-event-btn" data-bs-dismiss="modal">
-                                    Cancel
+                                <button type="button" class="edit-cancel-event-btn"
+                                        id="edit-cancel-event-btn"
+                                        data-bs-target="#editEventModal" data-bs-toggle="modal"
+                                        data-bs-dismiss="modal">Cancel
                                 </button>
-                                <button onclick="saveNote()" class="edit-save-event-btn" id="edit-save-event-btn">Save</button>
+                                <button type="submit" class="edit-save-event-btn"
+                                        id="edit-save-event-btn" data-bs-dismiss="modal">Save
+                                </button>
                             </div>
-
                         </div>
 
                     </form>
-
-                </div>
-                <div class="modal-footer">
-                    <span id="delete-event-txt"></span>
-                    <button type="button" onclick="deleteEvent(this.value)" class="delete-event-btn" id="delete-event-btn"><i
-                            class="bi bi-trash-fill"></i></button>
                 </div>
             </div>
         </div>
     </div>
+
 {% endblock main_content %}
 
 {% block script %}
     <script src="{% static 'Meetings_calendar/js/calendar.js' %}"></script>
-    <script src="{% static 'Meetings_calendar/js/calendar-generator.js' %}"></script>
     {% if request.user|has_group:"Mentor" %}
         <script>sessionStorage.setItem("isMentor", 'true');</script>
         <script>sessionStorage.setItem("userId", "{{ user.id }}");</script>
