@@ -26,7 +26,7 @@ urlpatterns = [
                   path('', include('Account_management.urls')),
                   path('admin/', admin.site.urls),
                   path('calendar/', include('Meetings_calendar.urls')),
-                  # path('exercises/', include('Exercises_checker.urls')),
+                  path('exercises/', include('Exercises_checker.urls')),
                   path('files/', include('Files_organizer.urls')),
                   path('api/', include('Rest_API.urls')),
                   path('password-reset-confirm/<uidb64>/<token>/',

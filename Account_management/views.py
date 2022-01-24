@@ -10,6 +10,7 @@ from django.template.response import TemplateResponse
 
 from .forms import LoginForm, ResetRequestForm, PaymentForm
 from .models import Student, Mentor, PaymentInfo
+from Meetings_calendar.models import Meeting
 from payments import RedirectNeeded, get_payment_model
 
 
@@ -66,6 +67,24 @@ class IndexView(LoginRequiredMixin, ListView):
         if user.groups.filter(name='Student').exists():
             return Mentor.objects.filter(student__user__username=user)
         return Student.objects.filter(mentor__user__username=user)
+
+
+class MentorsSummaryView(LoginRequiredMixin, ListView):
+    template_name = 'Account_management/mentors-summary.html'
+    context_object_name = 'mentors'
+
+
+    # @register.filter
+    # def filter_mentors(self):
+    #     pass
+
+    def get_queryset(self):
+        return Mentor.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["meetings"] = Meeting.objects.all().order_by('date').order_by('student')
+        return context
 
 
 class PaymentView(LoginRequiredMixin, View):

@@ -6,18 +6,20 @@ import re
 from typing import Dict, Tuple
 from rest_framework.viewsets import generics
 from rest_framework.parsers import FormParser
+from rest_framework.renderers import JSONRenderer
+from Exercises_checker.models import Language, Exercise, ExerciseStatus
 from Meetings_calendar.models import Meeting, Note
 from Account_management.models import Student, Mentor
 from .permissions import MentorCreate
 from .serializers import NoteSerializer, StudentsSerializer, AddMeetingSerializer, AddNoteSerializer, \
     GetMeetingSerializer, ChangeStudentAvatarSerializer, ChangeMentorAvatarSerializer, \
-    MeetingSerializer
+    MeetingSerializer, PathExerciseSerializer
 from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from django.http import Http404
 from rest_framework import generics, mixins, status
 from rest_framework.exceptions import PermissionDenied, ValidationError
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -447,3 +449,59 @@ class UserSearchBoxSubjectView(generics.ListAPIView):
             return self.no_access(text, subject)
 
         raise ValidationError(detail="Access parameter can be 0 or 1")
+
+
+class ExerciseView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PathExerciseSerializer
+
+    def get_language_and_user(self):
+        language_id = self.kwargs['pk']
+        language = get_object_or_404(Language, id=language_id)
+        user = self.request.user
+        return language, user
+
+    def get_all_exercises_quantity(self):
+        language, user = self.get_language_and_user()
+        all_exercises_quantity = Exercise.objects.filter(language__user=user).filter(language=language).count()
+        done_exercises_quantity = ExerciseStatus.objects.filter(exercise__language=language).filter(user=user).filter(
+            done=True).count()
+
+        return all_exercises_quantity, done_exercises_quantity
+
+    def get_queryset_exercise_list(self, type):
+        language, user = self.get_language_and_user()
+        queryset = ExerciseStatus.objects.filter(exercise__language=language).filter(exercise__type=type).filter(
+            user=user).all()
+        exercise_quantity = Exercise.objects.filter(language=language).filter(type=type).filter(
+            language__user=user).count()
+        done_exercise_quantity = queryset.filter(done=True).count()
+
+        return queryset, exercise_quantity, done_exercise_quantity
+
+    def list(self, request, *args, **kwargs):
+        all_exercises_quantity, done_exercises_quantity = self.get_all_exercises_quantity()
+        easy_exercises, easy_exercises_quantity, done_easy_exercises_quantity = self.get_queryset_exercise_list(
+            type="EASY")
+        medium_exercises, medium_exercises_quantity, done_medium_exercises_quantity = self.get_queryset_exercise_list(
+            type="MEDIUM")
+        hard_exercises, hard_exercises_quantity, done_hard_exercises_quantity = self.get_queryset_exercise_list(
+            type="HARD")
+
+        return Response({
+            "quantity": {
+                "all_exercises_quantity": all_exercises_quantity,
+                "done_exercises_quantity": done_exercises_quantity,
+                "easy_exercises_quantity": easy_exercises_quantity,
+                "done_easy_exercises_quantity": done_easy_exercises_quantity,
+                "medium_exercises_quantity": medium_exercises_quantity,
+                "done_medium_exercises_quantity": done_medium_exercises_quantity,
+                "hard_exercises_quantity": hard_exercises_quantity,
+                "done_hard_exercises_quantity": done_hard_exercises_quantity,
+            },
+            "exercises": {
+                "easy": self.serializer_class(easy_exercises, many=True).data,
+                "medium": self.serializer_class(medium_exercises, many=True).data,
+                "hard": self.serializer_class(hard_exercises, many=True).data,
+            }
+        })

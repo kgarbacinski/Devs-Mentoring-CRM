@@ -1,7 +1,9 @@
-from Meetings_calendar.models import Meeting, Note
-from Account_management.models import Mentor, Student
 from django.contrib.auth.models import User
 from rest_framework import serializers
+
+from Meetings_calendar.models import Meeting, Note
+from Account_management.models import Mentor, Student
+from Exercises_checker.models import ExerciseStatus
 from Files_organizer.models import Document, SubTopic, Subject
 
 
@@ -172,3 +174,15 @@ class UserSearchBoxSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name']
+
+
+class PathExerciseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExerciseStatus
+        fields = ['done']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['id'] = instance.exercise.id
+        representation['name'] = instance.exercise.name
+        return representation

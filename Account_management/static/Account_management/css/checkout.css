@@ -1,34 +1,22 @@
 @import url("sign-in-style.css");
 * {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 .left-column {
   position: unset;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   background-color: #f7f7f7;
   height: 130px;
 }
-
 .left-column .header-text {
   margin: 0;
 }
-
 .left-column .header-text .company-name {
   margin: 50px 0;
 }
@@ -60,33 +48,21 @@ h4 {
   margin: 0 auto;
   padding: 10px 30px;
 }
-
 .back-section a {
   color: #bbb;
 }
 
 .thank-you {
   height: 70vh;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
-
 .thank-you .thank-you-desc {
   font-size: 1.4rem;
   margin-bottom: 40px;
 }
-
 .thank-you .payment-method-desc {
   text-align: center;
 }
@@ -96,14 +72,12 @@ h4 {
   max-width: 1200px;
   margin: 0 auto;
 }
-
 .checkout-form-fields label, .checkout-form-sum label,
 .thank-you-fields label,
 .thank-you-sum label {
   display: block;
   font-size: 0.9rem;
 }
-
 .checkout-form-fields input,
 .checkout-form-fields textarea, .checkout-form-sum input,
 .checkout-form-sum textarea,
@@ -116,37 +90,16 @@ h4 {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-
-.checkout-form-fields ::-webkit-input-placeholder, .checkout-form-sum ::-webkit-input-placeholder,
-.thank-you-fields ::-webkit-input-placeholder,
-.thank-you-sum ::-webkit-input-placeholder {
-  font-size: 0.8rem;
-}
-
-.checkout-form-fields :-ms-input-placeholder, .checkout-form-sum :-ms-input-placeholder,
-.thank-you-fields :-ms-input-placeholder,
-.thank-you-sum :-ms-input-placeholder {
-  font-size: 0.8rem;
-}
-
-.checkout-form-fields ::-ms-input-placeholder, .checkout-form-sum ::-ms-input-placeholder,
-.thank-you-fields ::-ms-input-placeholder,
-.thank-you-sum ::-ms-input-placeholder {
-  font-size: 0.8rem;
-}
-
 .checkout-form-fields ::placeholder, .checkout-form-sum ::placeholder,
 .thank-you-fields ::placeholder,
 .thank-you-sum ::placeholder {
   font-size: 0.8rem;
 }
-
 .checkout-form-fields .optional, .checkout-form-sum .optional,
 .thank-you-fields .optional,
 .thank-you-sum .optional {
   font-size: 0.8rem;
 }
-
 .checkout-form-field-name, .checkout-form-field-last-name, .checkout-form-field-post-code, .checkout-form-field-city, .checkout-form-field-phone, .checkout-form-field-email,
 .thank-you-field-name,
 .thank-you-field-last-name,
@@ -155,29 +108,22 @@ h4 {
 .thank-you-field-phone,
 .thank-you-field-email {
   display: inline-block;
-  width: 49.60%;
+  width: 49.6%;
 }
-
 .checkout-form-field-seve,
 .checkout-form .consent-field,
 .thank-you-field-seve,
 .thank-you .consent-field {
   margin-bottom: 40px;
 }
-
 .checkout-form-field-seve label,
 .checkout-form .consent-field label,
 .thank-you-field-seve label,
 .thank-you .consent-field label {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: baseline;
-      -ms-flex-align: baseline;
-          align-items: baseline;
+  align-items: baseline;
   width: auto;
 }
-
 .checkout-form-field-seve label input,
 .checkout-form .consent-field label input,
 .thank-you-field-seve label input,
@@ -185,61 +131,50 @@ h4 {
   width: auto;
   margin-right: 8px;
 }
-
 .checkout-form-sum,
 .thank-you-sum {
   background-color: #ededed;
   border-radius: 8px;
 }
-
 .checkout-form-sum table,
 .thank-you-sum table {
   width: 100%;
 }
-
 .checkout-form-sum table th,
 .checkout-form-sum table td,
 .thank-you-sum table th,
 .thank-you-sum table td {
   padding: 15px 0;
 }
-
 .checkout-form-sum table tfoot,
 .thank-you-sum table tfoot {
   border-top: 1px solid #ccc;
 }
-
 .checkout-form-sum .payment,
 .thank-you-sum .payment {
   margin: 30px 0;
 }
-
 .checkout-form-sum .payment .accordion-item,
 .thank-you-sum .payment .accordion-item {
   background-color: transparent;
 }
-
 .checkout-form-sum .payment .accordion-item .payment-method-desc,
 .thank-you-sum .payment .accordion-item .payment-method-desc {
   font-size: 0.8rem;
   margin-bottom: 0;
 }
-
 .checkout-form-sum .payment .accordion-item .button-in-payment,
 .thank-you-sum .payment .accordion-item .button-in-payment {
   margin-bottom: 0;
 }
-
 .checkout-form-sum .payment ul,
 .thank-you-sum .payment ul {
   padding-left: 0;
 }
-
 .checkout-form-sum .payment li,
 .thank-you-sum .payment li {
   list-style: none;
 }
-
 .checkout-form-sum .payment li input,
 .checkout-form-sum .payment li label,
 .thank-you-sum .payment li input,
@@ -247,25 +182,18 @@ h4 {
   width: auto;
   display: inline;
 }
-
 .checkout-form-sum .payment li label,
 .thank-you-sum .payment li label {
   margin-left: 8px;
 }
-
 .checkout-form-sum .information-data-procesing,
 .thank-you-sum .information-data-procesing {
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
-
 .checkout-form-sum .payment-btn,
 .thank-you-sum .payment-btn {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
 }
 
 a {
@@ -283,8 +211,7 @@ button.confirm-and-pay-btn {
   border-radius: 25px;
   text-transform: uppercase;
   font-weight: bold;
-  -webkit-transition: color .3s, background-color .3s, border .3s;
-  transition: color .3s, background-color .3s, border .3s;
+  transition: color 0.3s, background-color 0.3s, border 0.3s;
   margin: 15px 0 30px;
 }
 
@@ -301,11 +228,9 @@ button.confirm-and-pay-btn {
   width: auto;
   margin-top: 30px;
 }
-
 button.return a,
 button.confirm-and-pay-btn a {
-  -webkit-transition: color .3s;
-  transition: color .3s;
+  transition: color 0.3s;
 }
 
 button.return:hover a:hover,
@@ -335,18 +260,14 @@ button.confirm-and-pay-btn:hover a:hover {
   max-width: 500px;
   background-color: #fff;
   border-radius: 8px;
-  -webkit-box-shadow: 0px 0px 5px #ccc;
-          box-shadow: 0px 0px 5px #ccc;
+  box-shadow: 0px 0px 5px #ccc;
 }
-
 .confirm-and-pay-title {
   text-transform: uppercase;
 }
-
 .confirm-and-pay hr {
   background-color: #ccc;
 }
-
 .confirm-and-pay .confirm-and-pay-btn {
   text-align: center;
 }
@@ -358,33 +279,31 @@ button.confirm-and-pay-btn:hover a:hover {
   .checkout-form-field-name, .checkout-form-field-last-name, .checkout-form-field-post-code, .checkout-form-field-city, .checkout-form-field-phone, .checkout-form-field-email {
     width: 49.2%;
   }
+
   .confirm-box {
     height: 73.5vh;
   }
 }
-
 @media (min-width: 385px) {
   .checkout-form-field-name, .checkout-form-field-last-name, .checkout-form-field-post-code, .checkout-form-field-city, .checkout-form-field-phone, .checkout-form-field-email {
     width: 49.3%;
   }
 }
-
 @media (min-width: 490px) {
   .checkout-form-field-name, .checkout-form-field-last-name, .checkout-form-field-post-code, .checkout-form-field-city, .checkout-form-field-phone, .checkout-form-field-email {
     width: 49.5%;
   }
 }
-
 @media (min-width: 600px) {
   .checkout-form-field-name, .checkout-form-field-last-name, .checkout-form-field-post-code, .checkout-form-field-city, .checkout-form-field-phone, .checkout-form-field-email {
     width: 49.6%;
   }
 }
-
 @media (min-width: 768px) {
   .back-section {
     padding: 10px 40px;
   }
+
   .checkout-form {
     padding: 40px 30px;
   }
@@ -392,22 +311,20 @@ button.confirm-and-pay-btn:hover a:hover {
     width: 49.44%;
   }
 }
-
 @media (min-width: 850px) {
   .checkout-form-field-name, .checkout-form-field-last-name, .checkout-form-field-post-code, .checkout-form-field-city, .checkout-form-field-phone, .checkout-form-field-email {
     width: 49.51%;
   }
 }
-
 @media (min-width: 999px) {
   .checkout-form-field-name, .checkout-form-field-last-name, .checkout-form-field-post-code, .checkout-form-field-city, .checkout-form-field-phone, .checkout-form-field-email {
     width: 49.6%;
   }
 }
-
 @media (min-width: 1102px) {
   .checkout-form-field-name, .checkout-form-field-last-name, .checkout-form-field-post-code, .checkout-form-field-city, .checkout-form-field-phone, .checkout-form-field-email {
     width: 49.63%;
   }
 }
+
 /*# sourceMappingURL=checkout.css.map */
