@@ -1,0 +1,336 @@
+main {
+  position: relative;
+  padding: 0;
+}
+main .icon-title {
+  position: absolute;
+  top: 25px;
+  left: 15px;
+  height: 55px;
+  width: auto;
+  animation: moveUp 4s linear infinite;
+}
+main .page-title {
+  display: inline-block;
+  margin-left: 70px;
+  padding: 55px 15px 0;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+main hr {
+  background-color: #dbc110;
+  opacity: 1;
+  margin-left: 85px;
+  width: 100px;
+  margin-top: -7px;
+  margin-bottom: 50px;
+}
+main hr:not([size]) {
+  height: 4px;
+}
+main .mentor-page-block.students-cards-block {
+  padding: 0;
+  background-color: transparent;
+  box-shadow: none;
+}
+main .mentor-page-block.students-cards-block .card {
+  background: #dbc110;
+  background: linear-gradient(107deg, #95851a 0%, #dbc110 30%, #ebd020 50%, #d7bf1f 70%, #95851a 100%);
+  border-radius: 8px;
+  border: 1px solid #95851a;
+  box-shadow: 0px 0px 5px #ccc;
+}
+main .mentor-page-block.students-cards-block .card .card-body {
+  padding: 10px;
+}
+main .mentor-page-block.students-cards-block .card .card-text {
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+}
+main .mentor-page-block.students-cards-block .card .student-sign-up,
+main .mentor-page-block.students-cards-block .card .meetings,
+main .mentor-page-block.students-cards-block .card .end-of-sub {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+main .mentor-page-block.students-cards-block .avatar-box {
+  padding: 10px;
+}
+main .mentor-page-block.students-cards-block .avatar-box img {
+  border-radius: 50%;
+  height: 70px;
+  width: 70px;
+}
+main .mentor-page-block.students-cards-block .student-name,
+main .mentor-page-block.students-cards-block .student-mail {
+  font-size: 0.8rem;
+  padding: 0 5px;
+}
+main .mentor-page-block.students-cards-block .student-name {
+  font-weight: bold;
+}
+main .mentor-page-block.students-cards-block .student-mail a {
+  text-decoration: none;
+  color: black;
+  transition: color 0.3s;
+}
+main .mentor-page-block.students-cards-block .student-mail a:hover {
+  color: #fff;
+}
+main .student-page-block,
+main .mentor-page-block {
+  padding: 15px;
+  box-shadow: 0px 0px 5px #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+}
+main .student-page-block h3,
+main .mentor-page-block h3 {
+  font-size: 1.1rem;
+}
+main .student-page-block hr,
+main .mentor-page-block hr {
+  margin-left: 0;
+  margin-top: 0;
+  margin-bottom: 20px;
+  width: 100%;
+  background-color: #ccc;
+}
+main .student-page-block hr:not([size]),
+main .mentor-page-block hr:not([size]) {
+  height: 1px;
+}
+main .student-page-block .path-name,
+main .mentor-page-block .path-name {
+  padding: 5px 0;
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+main .student-page-block .mentor-details,
+main .mentor-page-block .mentor-details {
+  text-align: right;
+}
+main .student-page-block .mentor-mail,
+main .mentor-page-block .mentor-mail {
+  font-size: 10px;
+  text-decoration: none;
+  color: #dbc110;
+  transition: color 0.3s;
+}
+main .student-page-block .mentor-mail:hover,
+main .mentor-page-block .mentor-mail:hover {
+  color: black;
+}
+main .student-page-block .meet-box,
+main .mentor-page-block .meet-box {
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #f7f7f7;
+}
+main .student-page-block .meet-box .bi-person-square,
+main .mentor-page-block .meet-box .bi-person-square {
+  margin-right: 10px;
+}
+main .student-page-block .meet-box .meet-details,
+main .mentor-page-block .meet-box .meet-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+main .student-page-block .meet-box .meet-details .bi-clock,
+main .mentor-page-block .meet-box .meet-details .bi-clock {
+  margin-left: 10px;
+}
+main .student-page-block .meet-box .meet-details .bi-calendar-check,
+main .mentor-page-block .meet-box .meet-details .bi-calendar-check {
+  margin-right: 10px;
+}
+main .student-page-block .meet-box:last-child,
+main .mentor-page-block .meet-box:last-child {
+  border-bottom: none;
+}
+main .student-page-block .left-meetings-title,
+main .student-page-block .left-meetings-count,
+main .student-page-block .meetings-held-title,
+main .student-page-block .meetings-held-count,
+main .student-page-block .your-students,
+main .student-page-block .students-capacity,
+main .mentor-page-block .left-meetings-title,
+main .mentor-page-block .left-meetings-count,
+main .mentor-page-block .meetings-held-title,
+main .mentor-page-block .meetings-held-count,
+main .mentor-page-block .your-students,
+main .mentor-page-block .students-capacity {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+main .student-page-block .left-meetings-title p,
+main .student-page-block .left-meetings-count p,
+main .student-page-block .meetings-held-title p,
+main .student-page-block .meetings-held-count p,
+main .student-page-block .your-students p,
+main .student-page-block .students-capacity p,
+main .mentor-page-block .left-meetings-title p,
+main .mentor-page-block .left-meetings-count p,
+main .mentor-page-block .meetings-held-title p,
+main .mentor-page-block .meetings-held-count p,
+main .mentor-page-block .your-students p,
+main .mentor-page-block .students-capacity p {
+  text-align: center;
+  padding: 0 10px;
+}
+main .student-page-block .your-students,
+main .student-page-block .students-capacity,
+main .mentor-page-block .your-students,
+main .mentor-page-block .students-capacity {
+  flex-direction: column;
+}
+main .student-page-block .left-meetings-count span,
+main .student-page-block .meetings-held-count span,
+main .student-page-block .your-students span,
+main .student-page-block .students-capacity span,
+main .mentor-page-block .left-meetings-count span,
+main .mentor-page-block .meetings-held-count span,
+main .mentor-page-block .your-students span,
+main .mentor-page-block .students-capacity span {
+  font-size: 4rem;
+  color: #dbc110;
+}
+main .student-page-block .your-students,
+main .student-page-block .students-capacity,
+main .mentor-page-block .your-students,
+main .mentor-page-block .students-capacity {
+  margin-left: -7px;
+  transform: skew(-15deg);
+}
+main .student-page-block .your-students p,
+main .student-page-block .students-capacity p,
+main .mentor-page-block .your-students p,
+main .mentor-page-block .students-capacity p {
+  margin-top: 10px;
+  height: 60px;
+  font-size: 0.8rem;
+}
+main .student-page-block .your-students p,
+main .student-page-block .your-students span,
+main .student-page-block .students-capacity p,
+main .student-page-block .students-capacity span,
+main .mentor-page-block .your-students p,
+main .mentor-page-block .your-students span,
+main .mentor-page-block .students-capacity p,
+main .mentor-page-block .students-capacity span {
+  transform: skew(15deg);
+}
+main .student-page-block .your-students span,
+main .student-page-block .students-capacity span,
+main .mentor-page-block .your-students span,
+main .mentor-page-block .students-capacity span {
+  margin-left: 40px;
+}
+main .student-page-block .your-students,
+main .mentor-page-block .your-students {
+  background-color: #f7f7f7;
+}
+main .student-page-block .students-capacity,
+main .mentor-page-block .students-capacity {
+  background: linear-gradient(to right, #e0e0e0, #f7f7f7);
+  background-color: #e0e0e0;
+}
+main .student-page-block .next-payment,
+main .mentor-page-block .next-payment {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+main .control-btn {
+  display: flex;
+  justify-content: center;
+}
+main .button {
+  padding: 10px 20px;
+  width: auto;
+  border: 1px solid #dbc110;
+  background: transparent;
+  border-radius: 25px;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s, background-color 0.3s, border 0.3s;
+  margin: 15px 0 30px;
+  font-size: 0.8rem;
+  line-height: 0.8rem;
+  color: black;
+}
+main .button:hover {
+  color: #fff;
+  background-color: #000;
+  border: 1px solid #000;
+}
+main .button-pay {
+  background: #dbc110;
+  width: 120px;
+  text-align: center;
+}
+
+@media (min-width: 576px) {
+  main .mentor-page-block .your-students p,
+main .mentor-page-block .students-capacity p {
+    margin-top: 15px;
+    height: 40px;
+    font-size: 0.9rem;
+  }
+  main .mentor-page-block.students-cards-block .avatar-box img {
+    height: 60px;
+    width: 60px;
+  }
+}
+@media (min-width: 768px) {
+  main .mentor-page-block.students-cards-block .avatar-box img {
+    height: 35px;
+    width: 35px;
+  }
+}
+@media (min-width: 768px) {
+  main .mentor-page-block.students-cards-block .avatar-box img {
+    height: 45px;
+    width: 45px;
+  }
+}
+@media (min-width: 992px) {
+  main .mentor-page-block .meetings-held-title,
+main .mentor-page-block .meetings-held-count {
+    height: 167px;
+  }
+  main .student-page-block .mentor-mail {
+    font-size: 14px;
+  }
+}
+@media (min-width: 1300px) {
+  main .mentor-page-block.students-cards-block .avatar-box img {
+    height: 65px;
+    width: 65px;
+  }
+}
+@media (min-width: 1400px) {
+  main .mentor-page-block.students-cards-block .avatar-box img {
+    height: 75px;
+    width: 75px;
+  }
+}
+@keyframes moveUp {
+  0% {
+    top: 45px;
+  }
+  50% {
+    top: 30px;
+  }
+  100% {
+    top: 45px;
+  }
+}
+
+/*# sourceMappingURL=index-page.css.map */

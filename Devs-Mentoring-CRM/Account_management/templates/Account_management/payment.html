@@ -1,0 +1,144 @@
+{% extends 'Account_management/layout.html' %}
+{% load static %}
+{% load auth_extras %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'Account_management/css/checkout.css' %}">
+{% endblock style %}
+
+
+{% block main_content %}
+    <div class="container-fluid p-0">
+        <div class="left-column">
+            <div class="header-text align-items-center">
+                <h1 class=" company-name">Devs Mentoring <span>CRM</span>
+                </h1>
+            </div>
+        </div>
+
+        <div class="right-column">
+            <p class="sign-in-title">complete your payment</p>
+            <form action="" method="POST" class="checkout-form">
+                {% csrf_token %}
+                <div class="row p-0 m-0">
+                    <div class="checkout-form-fields col-xs-12 col-md-7">
+                        <h4>PAYMENT DETAILS</h4>
+                        <p class="checkout-form-field-name p-0">
+                            <label for="name">First name: <span class="req text-danger">*</span></label>
+                            {{ form.firstName }}
+                        </p>
+                        <p class="checkout-form-field-last-name">
+                            <label for="last-name">Last name: <span class="req text-danger">*</span></label>
+                            {{ form.lastName }}
+                        </p>
+                        <p class="checkout-form-field-company-nip">
+                            <label for="company-nip">NIP: <span
+                                    class="optional"><em>(optional - for invoice)</em></span></label>
+                            {{ form.nip }}
+                        </p>
+                        <p class="checkout-form-field-company">
+                            <label for="company">Company: <span class="optional"><em>(optional)</em></span></label>
+                            {{ form.companyName }}
+                        </p>
+                        <p class="checkout-form-field-address">
+                            <label for="address">Address: <span class="req text-danger">*</span></label>
+                            {{ form.street }}
+                        </p>
+                        <p class="checkout-form-field-post-code">
+                            <label for="post-code">Post code: <span class="req text-danger">*</span></label>
+                            {{ form.postCode }}
+                        </p>
+                        <p class="checkout-form-field-city">
+                            <label for="city">City: <span class="req text-danger">*</span></label>
+                            {{ form.town }}
+                        </p>
+                        <p class="checkout-form-field-country">
+                            <label for="country">Country: <span class="req text-danger">*</span></label>
+                            {{ form.country }}
+                        </p>
+                        <p class="checkout-form-field-phone">
+                            <label for="phone">Phone: <span class="req text-danger">*</span></label>
+                            {{ form.phone }}
+                        </p>
+                        <p class="checkout-form-field-email">
+                            <label for="email">E-mail: <span class="req text-danger">*</span></label>
+                            {{ form.email }}
+                        </p>
+                        {#                        <p class="error text-danger">#}
+                        {#                            <span id="form-element"></span>#}
+                        {#                        </p>#}
+                        <h4>ADDITIONAL INFORMATION</h4>
+                        <p class="checkout-form-field-information">
+                            <label for="information">Comments to order: <span
+                                    class="optional"><em>(optional)</em></span></label>
+                            {{ form.comment }}
+                        </p>
+                    </div>
+
+                    <div class="checkout-form-sum col-xs-12 col-md-5">
+                        <h4>YOUR ORDER</h4>
+
+                        <div class="table-wrapper">
+                            {% if request.user|has_group:"Student" %}
+                                <table class="checkout-form-sum-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Course</th>
+                                        <td></td>
+                                        <th>Amount</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="cart-item">
+                                        <td class="product-name">
+                                            {{ user.student.path }}
+                                        </td>
+                                        <td></td>
+                                        <td class="product-amount">
+                                            <span class="product-price-amount">{{ user.student.path.price }}<span> zł</span></span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+
+                                    <tfoot>
+                                    <tr class="order-total">
+                                        <td></td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            {% endif %}
+                        </div>
+
+                        <div class="complete-order">
+                            <p class="information-data-processing">
+                                Your personal data will be used to process the order, facilitate the use of the website
+                                and
+                                other purposes described on the website: <b><a href="#">privacy policy</a></b>.
+                                <!-- jeśli będzie polityka prywatności to trzeba podlinkować -->
+                            </p>
+                            <p class="consent-field">
+                                <label for="regulations">
+                                    <input id="regulations" type="checkbox"
+                                           required><span>I have read and accept the <b>
+                                    <a href="#">regulations</a></b></span><span class="req text-danger">*</span>
+                                </label>
+                            </p>
+                            {% if request.user|has_group:"Student" %}
+                                <div class="payment-btn">
+                                    <button type="submit" class="pay">pay</button>
+                                </div>
+                            {% else %}
+                                <div class="payment-btn">
+                                    <button disabled type="submit" class="pay" style="background: #dbc11050;  border: 1px solid #dbc11050;">pay</button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock main_content %}
+
+{% block script %}
+{% endblock script %}

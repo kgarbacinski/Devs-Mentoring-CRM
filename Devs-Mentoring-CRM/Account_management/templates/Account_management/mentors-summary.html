@@ -1,0 +1,32 @@
+{% extends 'Account_management/layout.html' %}
+{% load static %}
+{% load auth_extras %}
+
+{% block style %}
+{% endblock style %}
+
+{% block main_content %}
+    {#    <img class="icon-title" src="{% static 'Account_management/img/icon-wing.svg' %}" alt="">#}
+    <h2 class="page-title">Mentors Summary</h2>
+    <hr>
+
+    <table>
+        {% for mentor in mentors %}
+            <tr>
+                <th>{{ mentor }}</th>
+            </tr>
+
+            {% for meeting in meetings|mentor_filter:mentor %}
+                <tr>
+                    <td>{{ meeting.student }}</td>
+
+                    {% for test in meetings|mentor_filter:mentor|student_filter:meeting.student %}
+                        <td> {{ test.date.date }} </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+
+        {% endfor %}
+    </table>
+
+{% endblock main_content %}

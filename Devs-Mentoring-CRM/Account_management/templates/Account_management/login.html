@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Mentoring CRM</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spartan:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'Account_management/css/sign-in-style.css' %}">
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="left-column col-md-5">
+            <div class="header-text">
+                <h1 class="company-name">Devs Mentoring <span>CRM</span>
+                </h1>
+                <p>This is the place where you can acquire unlimited access to our training materials, challenge
+                    yourself with online programming judge system and track your progress with mentoring calendar.</p>
+            </div>
+            <a class="arrow-down" href="#right-column"><i class="bi bi-chevron-down"></i></a>
+            <img class="bg-logo--one" src="{% static 'Account_management/img/devs-logo.svg' %}" alt="">
+            <img class="bg-logo--two" src=" {% static 'Account_management/img/devs-logo.svg' %}" alt="">
+        </div>
+
+        <div class="right-column col-md-7 p-0" id="right-column">
+            <section class="authentication-panel">
+                <p class="sign-in-title">SIGN IN</p>
+                <div class="sign-in-form">
+
+                    <form id="login_form" method="POST" action=''>
+                        {% csrf_token %}
+                        <div class="form-box">
+                            {{ login_form.email.label_tag }}
+                            {{ login_form.email }}
+                        </div>
+
+                        <div class="form-box">
+                            {{ login_form.password.label_tag }}
+                            {{ login_form.password }}
+
+                            <div class="reset-area">
+                                <span class="reset-link" id="reset-link">Reset your password</span>
+                                <span class="reset-success text-success"
+                                      id="reset-success">Success! Check your email.</span>
+                            </div>
+                            <p class="text-error">{{ login_form.email.errors}}</p>
+                        </div>
+                        <div class="control-button">
+                            <button class="sign-in-btn" type="submit" name="sing_in" form="login_form">Sign in</button>
+                        </div>
+                    </form>
+                    <form id="reset_form" method="POST" action="">
+                        {% csrf_token %}
+                        <div class="popup">
+                            <p>Enter your e-mail address and click "send". If your email is registered, a link to
+                                reset your password will be sent.</p>
+                            {{ reset_form.email.label_tag }}
+                            {{ reset_form.email }}
+                            <p>{{ reset_form.email.errors }}</p>
+
+                            <div class="control-buttons">
+                                <button class="cancel" type="reset">Cancel</button>
+                                <button name= 'send_reset' class="reset" type="submit" form="reset_form">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
+</script>
+<script src="{% static 'Account_management/js/sign-in-script.js' %}"></script>
+</body>
+
+</html>

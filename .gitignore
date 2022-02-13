@@ -1,0 +1,8 @@
+Devs-Mentoring-CRM/.env
+venv/
+.idea/
+__pycache__/
+migrations/
+db.sqlite3
+materials/user_images/
+/**/migrations/
