@@ -36,9 +36,9 @@ async function getJson(url) {
 }
 
 function getFutureDates(days) {
-    let start = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()} ${today.getHours()}:${today.getMinutes()}`
+    let start = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()} ${today.getHours()}:${today.getMinutes()}`;
     let end = addDays(today, days);
-    let end_date = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`
+    let end_date = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
     return {start_date: start, end_date: end_date}
 }
 

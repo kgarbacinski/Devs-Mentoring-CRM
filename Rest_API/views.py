@@ -81,8 +81,11 @@ class ListMeetingsByDates(generics.ListAPIView):
     serializer_class = MeetingSerializer
 
     def get_queryset(self):
-        start_date = self.request.GET.get('start_date')
-        end_date = self.request.GET.get('end_date')
+        start_date = timezone.make_aware(
+            datetime.datetime.strptime(self.request.GET.get('start_date'), '%Y-%m-%d %H:%M'),
+            timezone.get_current_timezone())
+        end_date = timezone.make_aware(datetime.datetime.strptime(self.request.GET.get('end_date'), '%Y-%m-%d'),
+                                       timezone.get_current_timezone())
         user = self.request.user
         if user.groups.filter(name='Student').exists():
             return Meeting.objects.filter(student__user=user).filter(date__range=[start_date, end_date]).order_by(
@@ -208,7 +211,8 @@ class GetMeetingDates(generics.ListAPIView):
             return Meeting.objects.dates('date', 'year')
 
         if year and month:
-            return Meeting.objects.filter(mentor__user=user).filter(date__year=year).filter(date__month=month).dates('date', 'day')
+            return Meeting.objects.filter(mentor__user=user).filter(date__year=year).filter(date__month=month).dates(
+                'date', 'day')
         if year:
             return Meeting.objects.filter(mentor__user=user).filter(date__year=year).dates('date', 'month')
         return Meeting.objects.filter(mentor__user=user).dates('date', 'year')

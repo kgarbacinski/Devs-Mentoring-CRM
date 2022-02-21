@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from Account_management.models import Mentor, Student, Path
 
 
-
 # Create your models here.
 class Meeting(models.Model):
     mentor = models.ForeignKey(Mentor, on_delete=models.CASCADE)
