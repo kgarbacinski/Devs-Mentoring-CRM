@@ -38,15 +38,27 @@ async function getJson(url) {
 function getFutureDates(days) {
     let start = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()} ${today.getHours()}:${today.getMinutes()}`;
     let end = addDays(today, days);
-    let end_date = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
+    let end_date = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()} ${end.getHours()}:${end.getMinutes()}`;
     return {start_date: start, end_date: end_date}
 }
 
 function getBackDates(days) {
     let start = subDays(today, days)
-    let start_date = `${start.getFullYear()}-${start.getMonth() + 1}-${start.getDate()}`
+    let start_date = `${start.getFullYear()}-${start.getMonth() + 1}-${start.getDate()} ${start.getHours()}:${start.getMinutes()}`
     let end_date = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()} ${today.getHours()}:${today.getMinutes()}`
     return {start_date: start_date, end_date: end_date}
+}
+
+function addDays(date, days) {
+    let result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
+
+function subDays(date, days) {
+    let result = new Date(date);
+    result.setDate(result.getDate() - days);
+    return result;
 }
 
 function getBaseUrl(path) {
@@ -66,18 +78,6 @@ function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
-}
-
-function addDays(date, days) {
-    let result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
-}
-
-function subDays(date, days) {
-    let result = new Date(date);
-    result.setDate(result.getDate() - days);
-    return result;
 }
 
 function showYear() {

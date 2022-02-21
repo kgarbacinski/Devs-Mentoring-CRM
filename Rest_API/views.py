@@ -84,7 +84,7 @@ class ListMeetingsByDates(generics.ListAPIView):
         start_date = timezone.make_aware(
             datetime.datetime.strptime(self.request.GET.get('start_date'), '%Y-%m-%d %H:%M'),
             timezone.get_current_timezone())
-        end_date = timezone.make_aware(datetime.datetime.strptime(self.request.GET.get('end_date'), '%Y-%m-%d'),
+        end_date = timezone.make_aware(datetime.datetime.strptime(self.request.GET.get('end_date'), '%Y-%m-%d %H:%M'),
                                        timezone.get_current_timezone())
         user = self.request.user
         if user.groups.filter(name='Student').exists():

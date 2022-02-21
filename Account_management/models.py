@@ -1,5 +1,6 @@
 import uuid
 from decimal import Decimal
+from django.utils import timezone
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
@@ -27,7 +28,7 @@ class Mentor(models.Model):
     max_students = models.IntegerField(default=1)
 
     def count_all_meetings(self):
-        current_hour = datetime.now()
+        current_hour = timezone.make_aware(datetime.now(), timezone.get_current_timezone())
         return self.meeting_set.filter(date__lte=current_hour).count()
 
     def count_meetings_in_current_month(self):
@@ -67,7 +68,7 @@ class Student(models.Model):
         return "not paid"
 
     def count_all_meetings(self):
-        current_hour = datetime.now()
+        current_hour = timezone.make_aware(datetime.now(), timezone.get_current_timezone())
         return self.meeting_set.filter(date__lte=current_hour).count()
 
     def get_remaining_meetings(self):
