@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from Meetings_calendar.models import Meeting, Note
-from Account_management.models import Mentor, Student
+from Account_management.models import Mentor, Student, Path
 from Exercises_checker.models import ExerciseStatus
 from Files_organizer.models import Document, SubTopic, Subject
 
@@ -33,18 +33,18 @@ class AddNoteSerializer(serializers.ModelSerializer):
         return representation
 
 
-# class AllMeetingSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Meeting
-#         fields = '__all__'
-#
-#     def to_representation(self, instance):
-#         representation = super().to_representation(instance)
-#         representation['mentor'] = instance.mentor.__str__()
-#         representation['student'] = instance.student.__str__()
-#         representation['date'] = instance.date.strftime("%d-%m-%Y")
-#         representation['hour'] = instance.date.strftime("%H:%M")
-#         return representation
+class AllMeetingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Meeting
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['mentor'] = instance.mentor.__str__()
+        representation['student'] = instance.student.__str__()
+        representation['path'] = instance.path.name
+        representation['date'] = instance.date.strftime("%d-%m-%Y")
+        return representation
 
 
 class GetMeetingSerializer(serializers.ModelSerializer):
@@ -71,6 +71,7 @@ class MeetingSerializer(serializers.ModelSerializer):
         representation['mentor_name'] = instance.mentor.__str__()
         representation['student'] = instance.student.id
         representation['student_name'] = instance.student.__str__()
+        representation['path'] = instance.path.id
         representation['date'] = instance.date.strftime("%Y-%m-%d")
         representation['hour'] = instance.date.strftime("%H:%M")
         return representation
@@ -90,8 +91,49 @@ class StudentsSerializer(serializers.ModelSerializer):
         return representation
 
 
-class AddMeetingSerializer(serializers.ModelSerializer):
+class GetMeetingDatesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Meeting
+        fields = []
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['year'] = int(instance.strftime("%Y"))
+        representation['month'] = int(instance.strftime("%m"))
+        representation['day'] = int(instance.strftime("%d"))
+        return representation
+
+
+class GetMentorsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mentor
+        fields = ['id']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['name'] = instance.user.mentor.__str__()
+        return representation
+
+
+class GetStudentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ['id']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['name'] = instance.user.student.__str__()
+        return representation
+
+
+class GetPathsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Path
+        fields = ['id', 'name']
+
+
+class AddMeetingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meeting
         fields = '__all__'

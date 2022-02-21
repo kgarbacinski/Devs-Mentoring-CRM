@@ -30,6 +30,10 @@ class Mentor(models.Model):
         current_hour = datetime.now()
         return self.meeting_set.filter(date__lte=current_hour).count()
 
+    def count_meetings_in_current_month(self):
+        current_month = datetime.now().month
+        return self.meeting_set.filter(date__month=current_month).count()
+
     def count_all_students(self):
         return self.student_set.count()
 

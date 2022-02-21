@@ -1,10 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
 from Files_organizer.models import ProgrammingPath, Subject, SubTopic
 
 
-class ProgramPathView(LoginRequiredMixin,ListView):
+class ProgramPathView(LoginRequiredMixin, ListView):
     model = ProgrammingPath
     template_name = 'Files_organizer/files-start.html'
     context_object_name = "paths"

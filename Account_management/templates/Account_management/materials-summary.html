@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'Account_management/layout.html' %}
+{% load static %}
+{% load auth_extras %}
 
-</body>
-</html>
+{% block style %}
+{% endblock style %}
+
+{% block main_content %}
+    <h1>List of subjects to which student has access:</h1>
+
+    {% for student in students %}
+        <ul>
+            <li>{{ student }}
+                <ul>
+                    {% for subtopic in subtopics|user_filter:student.id %}
+                        {% for subject in subjects|subject_filter:subtopic.id %}
+                            <li> {{ subject.name }}</li>
+                                <ol>
+                                        <li>{{ subtopic.name }}</li>
+                                </ol>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </li>
+        </ul>
+    {% endfor %}
+{% endblock main_content %}

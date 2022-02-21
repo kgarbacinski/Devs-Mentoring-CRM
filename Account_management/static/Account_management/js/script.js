@@ -1,4 +1,3 @@
-
 let today = new Date(),
     currentMonth = today.getMonth(),
     currentYear = today.getFullYear();
@@ -7,9 +6,29 @@ const footerYear = document.querySelector('.year');
 const myFileBtn = document.getElementById('myFile');
 const fileChosen = document.getElementById('file-chosen');
 
+const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+];
+
+
 myFileBtn.addEventListener('change', function () {
     fileChosen.textContent = this.files[0].name;
 })
+
+function daysInMonth(iMonth, iYear) {
+    return 32 - new Date(iYear, iMonth, 32).getDate();
+}
 
 async function getJson(url) {
     const response = await fetch(getBaseUrl(url));
@@ -132,3 +151,49 @@ function changeAvatar() {
         })
         .catch(error => {console.log(error)})
         .then(() => {window.location.reload()})}
+
+function setOptionsToNull() {
+    Array.from(arguments).forEach(argument => {
+        for (let option = argument.options.length - 1; option >= 0; option--) {
+            argument.options[option] = null;
+        }
+    })
+}
+
+function removeAttribute(elem, attr) {
+    Array.from(elem.options).forEach(option => {
+        option.removeAttribute(attr)
+    })
+}
+
+function setOptionToSelected(elem, attr){
+    Array.from(elem.options).forEach(option => {
+        if (option.value === attr){
+            option.setAttribute('selected', 'selected')
+        }
+    })
+}
+
+function setAttributes(elem, attrs) {
+    for (let key in attrs) {
+        elem.setAttribute(key, attrs[key]);
+    }
+}
+
+function cleanSendData(value = null) {
+    if (!value) {
+        for (let element in sendData) {sendData[element] = ''}
+        return
+    }
+    sendData[value] = '';
+}
+function getApiUrl() {
+    let url = '?'
+    for (let sendDataKey in sendData) {
+        if (sendData[sendDataKey]) {
+            url += `${sendDataKey}=${sendData[sendDataKey]}&`
+        }
+    }
+    return url
+}
+

@@ -8,35 +8,24 @@ const weekdays = [
     "Sunday"
 ];
 
-const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-];
+
 
 const API_URLS = {
     note: "/api/notes/?id=",
     addNote: "/api/add-note/",
     editNote: "/api/edit-note/",
     meeting: "/api/meeting/?id=",
-    allMeetings: "/api/meetings/?date=",
+    allMeetings: "/api/meetings/?year=",
     addMeeting: "/api/add-meeting/",
     editMeeting: "/api/edit-meeting/",
     allStudents: "/api/students/",
 }
 
-const SELECTORS = {
+
+const CALENDAR_SELECTORS = {
     newEvent: document.querySelector('#addEvent'),
     saveEvent: document.querySelector('#editing-form'),
+    addEventModal: document.querySelector('#addEventModal'),
     addEventDate: document.querySelector('#add-event-date'),
     addEventTime: document.querySelector('#add-event-time'),
     editEventBtn: document.querySelector('.edit-event-btn'),
@@ -55,20 +44,21 @@ const SELECTORS = {
     studentName: document.querySelector('.view-student'),
     deleteEventBtn: document.querySelector('.delete-event-btn'),
     deleteNoteBtn: document.querySelector('#delete-note-btn'),
-
 }
 
-SELECTORS.newEvent.addEventListener('submit', (event) => {
+CALENDAR_SELECTORS.newEvent.addEventListener('submit', (event) => {
     event.preventDefault();
     newMeeting();
+    let modal = bootstrap.Modal.getInstance(CALENDAR_SELECTORS.addEventModal);
+    modal.hide()
 })
 
-SELECTORS.saveEvent.addEventListener('submit', (event) => {
+CALENDAR_SELECTORS.saveEvent.addEventListener('submit', (event) => {
     event.preventDefault();
     saveMeeting();
 })
 
-SELECTORS.editEventModal2.addEventListener('hidden.bs.modal',  () => {
+CALENDAR_SELECTORS.editEventModal2.addEventListener('hidden.bs.modal',  () => {
     document.getElementById('editing-form').reset();
 })
 
@@ -111,7 +101,7 @@ function showCalendar(month, year) {
             } else if (date > daysInMonth(month, year)) {
                 break;
             } else {
-                let li = createElement("li", daysBody, {});
+                let li = createElement("li", daysBody);
                     createElement("div", li, {className: "date", textContent: date});
                 if (
                     date === today.getDate() &&
@@ -129,16 +119,10 @@ function showCalendar(month, year) {
 
 
 function getAllMeetings(args) {
-    getJson(API_URLS.allMeetings + (currentMonth + 1))
+    getJson(`${API_URLS.allMeetings}${currentYear}&month=${(currentMonth + 1)}`)
         .then(data => {
             viewMeetings(data, args)
         }).catch((error) => {console.log(error)})
-}
-
-function setAttributes(elem, attrs) {
-    for (let key in attrs) {
-        elem.setAttribute(key, attrs[key]);
-    }
 }
 
 function viewMeetings(data, args) {
@@ -152,10 +136,10 @@ function viewMeetings(data, args) {
         }
 
         data.forEach(meeting => {
-            let meeting_date = meeting.date.split('-'),
-                year = parseInt(meeting_date[0]),
-                month = parseInt(meeting_date[1]),
-                day = parseInt(meeting_date[2]);
+            let meetingDate = meeting.date.split('-'),
+                year = parseInt(meetingDate[0]),
+                month = parseInt(meetingDate[1]),
+                day = parseInt(meetingDate[2]);
 
             if (year === args[0] && month === args[1] && day === date) {
                 let event = createElement("button", elem.parentElement, {
@@ -190,40 +174,45 @@ function prev() {
     showCalendar(currentMonth, currentYear);
 }
 
-function daysInMonth(iMonth, iYear) {
-    return 32 - new Date(iYear, iMonth, 32).getDate();
-}
+
+// function daysInMonth(iMonth, iYear) {
+//     return 32 - new Date(iYear, iMonth, 32).getDate();
+// }
 
 function showNote(id_obj) {
     getJson(API_URLS.note + id_obj)
         .then(data => {
             if (data.length > 0) {
-                SELECTORS.noteHour.innerHTML = `${data[0].hour}`
-                SELECTORS.noteDate.innerHTML = `${data[0].date} `
-                SELECTORS.editEventBtn.setAttribute('id', id_obj);
-                SELECTORS.editEventBtn.innerHTML = 'Edit';
+                CALENDAR_SELECTORS.noteHour.innerHTML = `${data[0].hour}`
+                CALENDAR_SELECTORS.noteDate.innerHTML = `${data[0].date} `
+                CALENDAR_SELECTORS.editEventBtn.setAttribute('id', id_obj);
+                CALENDAR_SELECTORS.editEventBtn.innerHTML = 'Edit';
                 if (sessionStorage.getItem('isMentor') === 'true') {
-                    SELECTORS.deleteEventBtn.value = data[0].meeting
-                    SELECTORS.studentName.innerHTML = data[0].student
+                    CALENDAR_SELECTORS.deleteEventBtn.value = data[0].meeting
+                    CALENDAR_SELECTORS.deleteEventBtn.id = data[0].date
+                    CALENDAR_SELECTORS.studentName.innerHTML = data[0].student
                 } else {
-                     SELECTORS.studentName.innerHTML = data[0].mentor
+                     CALENDAR_SELECTORS.studentName.innerHTML = data[0].mentor
                 }
                 if (data[0].text === "") {
-                    SELECTORS.viewNote.textContent = "There is no note for this meeting yet"
-                    SELECTORS.deleteNoteBtn.style.display = 'none'
+                    CALENDAR_SELECTORS.viewNote.textContent = "There is no note for this meeting yet"
+                    CALENDAR_SELECTORS.deleteNoteBtn.style.display = 'none'
 
                 } else {
-                    SELECTORS.viewNote.textContent = data[0].text
+                    CALENDAR_SELECTORS.viewNote.textContent = data[0].text
+                    CALENDAR_SELECTORS.deleteNoteBtn.style.display = 'block'
+                    CALENDAR_SELECTORS.deleteNoteBtn.value = data[0].date
                 }
             }
         }).catch(error => {console.log(error)})
 }
 
 function addEvent(date) {
-    SELECTORS.addEventDate.value = new Date(currentYear, currentMonth, date + 1).toISOString().substr(0, 10)
-    SELECTORS.addEventTime.value = ""
-    let elem = SELECTORS.addEventStudent;
-    set_options_to_null(elem)
+    CALENDAR_SELECTORS.addEventDate.value = new Date(currentYear, currentMonth, date + 1).toISOString().substr(0, 10)
+    CALENDAR_SELECTORS.addEventTime.value = ""
+    CALENDAR_SELECTORS.addEventNote.value = ""
+    let elem = CALENDAR_SELECTORS.addEventStudent;
+    setOptionsToNull(elem)
     let option = document.createElement('option');
     option.setAttribute('value', '');
     option.innerHTML = '-- choose --';
@@ -243,13 +232,13 @@ function addEvent(date) {
 
 function editNote(id_obj) {
     if (sessionStorage.getItem('isMentor') === 'true') {
-        let elem = SELECTORS.editEventStudent;
-        set_options_to_null(elem);
+        let elem = CALENDAR_SELECTORS.editEventStudent;
+        setOptionsToNull(elem);
         getJson(API_URLS.meeting + id_obj)
             .then(data => {
                 if (data.length > 0) {
-                    SELECTORS.editEventDate.value = new Date(data[0].date).toISOString().substr(0, 10);
-                    SELECTORS.editEventTime.value = data[0].hour;
+                    CALENDAR_SELECTORS.editEventDate.value = new Date(data[0].date).toISOString().substr(0, 10);
+                    CALENDAR_SELECTORS.editEventTime.value = data[0].hour;
                     return data[0].student
                 }
             })
@@ -269,38 +258,38 @@ function editNote(id_obj) {
                                 }
                             })
                         }
-                        SELECTORS.editEventNoteLabel.textContent = 'Note:'
+                        CALENDAR_SELECTORS.editEventNoteLabel.textContent = 'Note:'
                     })
             })
             .catch(error => {console.log(error)})
     }else {
-        SELECTORS.editEventModalLabel2.textContent = 'Edit note:'
-        SELECTORS.editEventNote.style.marginTop = '15px'
+        CALENDAR_SELECTORS.editEventModalLabel2.textContent = 'Edit note:'
+        CALENDAR_SELECTORS.editEventNote.style.marginTop = '15px'
     }
         getJson(API_URLS.note + id_obj)
         .then(data => {
             if (data.length > 0) {
-                SELECTORS.editEventNote.value = data[0].text;
+                CALENDAR_SELECTORS.editEventNote.value = data[0].text;
             } else {
-                SELECTORS.editEventNote.value = ""
+                CALENDAR_SELECTORS.editEventNote.value = ""
             }})
             .catch(error => {console.log(error)})
 }
 
 function saveMeeting() {
-    let meeting_data = SELECTORS.editEventBtn.id;
+    let meetingId = CALENDAR_SELECTORS.editEventBtn.id;
     if (sessionStorage.getItem('isMentor') === 'true') {
-        let hour = SELECTORS.editEventTime.value;
-        let date = SELECTORS.editEventDate.value;
-        let note_time = `${date} ${hour}`;
-        let student = SELECTORS.editEventStudent;
-        let student_id = student.options[student.selectedIndex].id;
+        let date = CALENDAR_SELECTORS.editEventDate.value;
+        let hour = CALENDAR_SELECTORS.editEventTime.value;
+        let noteTime = `${date} ${hour}`;
+        let student = CALENDAR_SELECTORS.editEventStudent;
+        let studentId = student.options[student.selectedIndex].id;
         const meeting = {
-            'id': meeting_data,
-            'student': student_id,
-            'date': note_time,
+            'id': meetingId,
+            'student': studentId,
+            'date': noteTime,
         }
-        fetch(getBaseUrl(API_URLS.editMeeting + meeting_data + '/'),
+        fetch(getBaseUrl(API_URLS.editMeeting + meetingId + '/'),
             {
                 method: "PATCH",
                 credentials: 'same-origin',
@@ -318,8 +307,8 @@ function saveMeeting() {
 }
 
 function saveNote() {
-    let meeting_data = SELECTORS.editEventBtn.id;
-    let note_text = SELECTORS.editEventNote.value
+    let meeting_data = CALENDAR_SELECTORS.editEventBtn.id;
+    let note_text = CALENDAR_SELECTORS.editEventNote.value
     getJson(API_URLS.note + meeting_data)
         .then(data => {
             return data[0].id
@@ -341,23 +330,32 @@ function saveNote() {
                     body: JSON.stringify(editNote)
                 })
                 .catch(error => {console.log(error);})
-                .then(() =>{window.location.reload()})
+                .then(() =>{updateCalendarView()})
         })
 }
 
+function updateCalendarView(){
+    let meeting = document.querySelectorAll('.ev')
+    meeting.forEach(element =>{
+        element.remove();
+    })
+    getAllMeetings([currentYear, currentMonth + 1])
+}
+
+
 function newMeeting() {
-    let meeting_date = SELECTORS.addEventDate.value;
-    let meeting_hour = SELECTORS.addEventTime.value;
-    let meeting_time = `${meeting_date} ${meeting_hour}`;
-    let student = SELECTORS.addEventStudent;
-    let student_id = student.options[student.selectedIndex].id;
-    let mentor_id = sessionStorage.getItem('mentorId');
-    let note = SELECTORS.addEventNote.value;
+    let meetingDate = CALENDAR_SELECTORS.addEventDate.value;
+    let meetingHour = CALENDAR_SELECTORS.addEventTime.value;
+    let meetingTime = `${meetingDate} ${meetingHour}`;
+    let student = CALENDAR_SELECTORS.addEventStudent;
+    let studentId = student.options[student.selectedIndex].id;
+    let mentorId = sessionStorage.getItem('mentorId');
+    let note = CALENDAR_SELECTORS.addEventNote.value;
     const meeting = {
-        'date': meeting_time,
-        'mentor': mentor_id,
-        'student': student_id,
-        'note': note
+        'date': meetingTime,
+        'mentor': mentorId,
+        'student': studentId,
+        'note': note,
     };
     fetch(getBaseUrl(API_URLS.addMeeting),
         {
@@ -371,7 +369,7 @@ function newMeeting() {
             body: JSON.stringify(meeting),
         })
         .catch(error => {console.log(error);})
-        .then(() => {window.location.reload();})
+        .then(() => {updateCalendarView()})
 }
 
 function deleteData(url) {
@@ -387,7 +385,7 @@ function deleteData(url) {
             body: null,
         })
         .catch(error => {console.log(error);})
-        .then(() => {window.location.reload();})
+        .then(() => {updateCalendarView()})
 }
 
 function eraseMeeting(meetingId) {
@@ -398,10 +396,10 @@ function studentOncChange(student_obj) {
     student_obj.options[student_obj.selectedIndex].setAttribute('selected', 'selected');
 }
 
-function set_options_to_null() {
-    Array.from(arguments).forEach(argument => {
-        for (let option = argument.options.length - 1; option >= 0; option--) {
-            argument.options[option] = null;
-        }
-    })
-}
+// function set_options_to_null() {
+//     Array.from(arguments).forEach(argument => {
+//         for (let option = argument.options.length - 1; option >= 0; option--) {
+//             argument.options[option] = null;
+//         }
+//     })
+// }

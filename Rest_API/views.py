@@ -2,18 +2,17 @@ from __future__ import annotations
 import datetime
 import enum
 import re
+from django.utils import timezone
 
 from typing import Dict, Tuple
-from rest_framework.viewsets import generics
-from rest_framework.parsers import FormParser
-from rest_framework.renderers import JSONRenderer
 from Exercises_checker.models import Language, Exercise, ExerciseStatus
 from Meetings_calendar.models import Meeting, Note
-from Account_management.models import Student, Mentor
-from .permissions import MentorCreate
+from Account_management.models import Student, Mentor, Path
+from .permissions import MentorCreate, MentorAccess
 from .serializers import NoteSerializer, StudentsSerializer, AddMeetingSerializer, AddNoteSerializer, \
     GetMeetingSerializer, ChangeStudentAvatarSerializer, ChangeMentorAvatarSerializer, \
-    MeetingSerializer, PathExerciseSerializer
+    MeetingSerializer, PathExerciseSerializer, AllMeetingSerializer, GetMentorsSerializer, GetStudentsSerializer, \
+    GetPathsSerializer, GetMeetingDatesSerializer
 from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from django.http import Http404
@@ -34,11 +33,48 @@ class ListMeetings(generics.ListAPIView):
     serializer_class = MeetingSerializer
 
     def get_queryset(self):
-        month = self.request.GET.get('date')
+        year = self.request.GET.get('year')
+        month = self.request.GET.get('month')
         user = self.request.user
         if user.groups.filter(name='Student').exists():
-            return Meeting.objects.filter(student__user=user).filter(date__month=month).order_by('date')
-        return Meeting.objects.filter(mentor__user=user).filter(date__month=month).order_by('date')
+            return Meeting.objects.filter(student__user=user).filter(date__year=year).filter(
+                date__month=month).order_by('date')
+        return Meeting.objects.filter(mentor__user=user).filter(date__year=year).filter(date__month=month).order_by(
+            'date')
+
+
+class ListAllMeetings(generics.ListAPIView):
+    permission_classes = [MentorAccess]
+    serializer_class = AllMeetingSerializer
+
+    def get_queryset(self):
+        query_list = Meeting.objects.all()
+        user = self.request.user
+
+        if user.groups.filter(name='Moderator').exists():
+            mentor = self.request.query_params.get('mentor', None)
+        else:
+            mentor = Mentor.objects.get(user=user)
+
+        year = self.request.query_params.get('year', None)
+        month = self.request.query_params.get('month', None)
+        day = self.request.query_params.get('day', None)
+        student = self.request.query_params.get('student', None)
+        path = self.request.query_params.get('path', None)
+
+        if year:
+            query_list = query_list.filter(date__year=year)
+        if month:
+            query_list = query_list.filter(date__month=month)
+        if day:
+            query_list = query_list.filter(date__day=day)
+        if mentor:
+            query_list = query_list.filter(mentor=mentor)
+        if student:
+            query_list = query_list.filter(student=student)
+        if path:
+            query_list = query_list.filter(path=path)
+        return query_list.order_by('date')
 
 
 class ListMeetingsByDates(generics.ListAPIView):
@@ -63,16 +99,6 @@ class MeetingDetail(generics.ListAPIView):
         return Meeting.objects.filter(mentor__user=user).filter(id=meeting)
 
 
-# class ListAllMeetings(generics.ListAPIView):
-#     serializer_class = AllMeetingSerializer
-#
-#     def get_queryset(self):
-#         # month = self.request.GET.get('date')
-#         user = self.request.user
-#         return Meeting.objects.filter(mentor__user=user)
-#         # return Meeting.objects.filter(date__month=month).order_by('mentor', 'date')
-
-
 class AddMeeting(generics.CreateAPIView):
     permission_classes = [MentorCreate]
     serializer_class = AddMeetingSerializer
@@ -87,7 +113,16 @@ class AddMeeting(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         data = self.request.data
-        meeting = serializer.save()
+        mentor = data['mentor']
+        student = data['student']
+        date = timezone.make_aware(datetime.datetime.strptime(data['date'], '%Y-%m-%d %H:%M'),
+                                   timezone.get_current_timezone())
+        path_id = Student.objects.get(id=student).path.id
+        meeting = serializer.save(
+            date=date,
+            mentor=Mentor.objects.get(id=mentor),
+            student=Student.objects.get(id=student),
+            path=Path.objects.get(id=path_id))
         Note.objects.create(
             meeting=meeting,
             author=User.objects.get(id=Mentor.objects.get(id=data['mentor']).user.id),
@@ -112,6 +147,19 @@ class EditDeleteMeeting(generics.RetrieveUpdateDestroyAPIView):
             if not permission.has_permission(request, self):
                 self.permission_denied(request)
 
+    def perform_update(self, serializer):
+        data = self.request.data
+        meeting_id = data['id']
+        student_id = data['student']
+        date = timezone.make_aware(datetime.datetime.strptime(data['date'], '%Y-%m-%d %H:%M'),
+                                   timezone.get_current_timezone())
+        path_id = Student.objects.get(id=student_id).path.id
+        serializer.save(
+            id=meeting_id,
+            date=date,
+            student=Student.objects.get(id=student_id),
+            path=Path.objects.get(id=path_id))
+
     def get_queryset(self):
         user = self.request.user
         return Meeting.objects.filter(mentor__user=user)
@@ -120,21 +168,16 @@ class EditDeleteMeeting(generics.RetrieveUpdateDestroyAPIView):
 class ListNotes(generics.ListAPIView):
     serializer_class = NoteSerializer
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Note]:
         meeting = self.request.GET.get('id')
         user = self.request.user
         return Note.objects.filter(author_id=user).filter(meeting_id=meeting)
-
-
-# class AddNote(generics.CreateAPIView):
-#     serializer_class = AddNoteSerializer
 
 
 class EditDeleteNote(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AddNoteSerializer
 
     def get_queryset(self, pk=None):
-        user = self.request.user
         return Note.objects.all()
 
     def perform_update(self, serializer):
@@ -147,6 +190,128 @@ class ListStudents(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return Student.objects.filter(mentor__user__username=user)
+
+
+class GetMeetingDates(generics.ListAPIView):
+    serializer_class = GetMeetingDatesSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        year = self.request.query_params.get('year', None)
+        month = self.request.query_params.get('month', None)
+
+        if user.groups.filter(name='Moderator').exists():
+            if year and month:
+                return Meeting.objects.filter(date__year=year).filter(date__month=month).dates('date', 'day')
+            if year:
+                return Meeting.objects.filter(date__year=year).dates('date', 'month')
+            return Meeting.objects.dates('date', 'year')
+
+        if year and month:
+            return Meeting.objects.filter(mentor__user=user).filter(date__year=year).filter(date__month=month).dates('date', 'day')
+        if year:
+            return Meeting.objects.filter(mentor__user=user).filter(date__year=year).dates('date', 'month')
+        return Meeting.objects.filter(mentor__user=user).dates('date', 'year')
+
+
+class GetMentorsList(generics.ListAPIView):
+    serializer_class = GetMentorsSerializer
+
+    def get_queryset(self):
+        all_mentors = Meeting.objects.all()
+
+        year = self.request.query_params.get('year', None)
+        month = self.request.query_params.get('month', None)
+        day = self.request.query_params.get('day', None)
+        student = self.request.query_params.get('student', None)
+        mentor = self.request.query_params.get('mentor', None)
+
+        if year:
+            all_mentors = all_mentors.filter(date__year=year)
+        if month:
+            all_mentors = all_mentors.filter(date__month=month)
+        if day:
+            all_mentors = all_mentors.filter(date__day=day)
+        if student:
+            all_mentors = all_mentors.filter(student_id=student)
+        if mentor:
+            all_mentors = all_mentors.filter(mentor_id=mentor)
+
+        mentors_set = set(all_mentors.values_list('mentor_id'))
+
+        mentors = [i[0] for i in list(mentors_set)]
+        query_paths = Mentor.objects.filter(id__in=mentors)
+
+        return query_paths
+
+
+class GetStudentsList(generics.ListAPIView):
+    serializer_class = GetStudentsSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        all_meetings = Meeting.objects.all()
+
+        year = self.request.query_params.get('year', None)
+        month = self.request.query_params.get('month', None)
+        day = self.request.query_params.get('day', None)
+        student = self.request.query_params.get('student', None)
+
+        if user.groups.filter(name='Moderator').exists():
+            mentor = self.request.query_params.get('mentor', None)
+        else:
+            mentor = Mentor.objects.get(user=user)
+
+        if year:
+            all_meetings = all_meetings.filter(date__year=year)
+        if month:
+            all_meetings = all_meetings.filter(date__month=month)
+        if day:
+            all_meetings = all_meetings.filter(date__day=day)
+        if student:
+            all_meetings = all_meetings.filter(student_id=student)
+        if mentor:
+            all_meetings = all_meetings.filter(mentor_id=mentor)
+
+        meetings_set = set(all_meetings.values_list('student_id'))
+
+        paths = [i[0] for i in list(meetings_set)]
+        query_paths = Student.objects.filter(id__in=paths)
+        return query_paths
+
+
+class GetPathsList(generics.ListAPIView):
+    serializer_class = GetPathsSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        all_meetings = Meeting.objects.all()
+
+        year = self.request.query_params.get('year', None)
+        month = self.request.query_params.get('month', None)
+        day = self.request.query_params.get('day', None)
+        student = self.request.query_params.get('student', None)
+        if user.groups.filter(name='Moderator').exists():
+            mentor = self.request.query_params.get('mentor', None)
+        else:
+            mentor = Mentor.objects.get(user=user)
+
+        if year:
+            all_meetings = all_meetings.filter(date__year=year)
+        if month:
+            all_meetings = all_meetings.filter(date__month=month)
+        if day:
+            all_meetings = all_meetings.filter(date__day=day)
+        if student:
+            all_meetings = all_meetings.filter(student_id=student)
+        if mentor:
+            all_meetings = all_meetings.filter(mentor_id=mentor)
+
+        meetings_set = set(all_meetings.values_list('path__id'))
+
+        paths = [i[0] for i in list(meetings_set)]
+        query_paths = Path.objects.filter(id__in=paths)
+        return query_paths
 
 
 class ChangeAvatar(generics.RetrieveUpdateDestroyAPIView):
@@ -435,7 +600,7 @@ class UserSearchBoxSubjectView(generics.ListAPIView):
         access = self.request.GET.get('access')
         access = self.Access.from_str(access)
 
-        print(access)
+        # print(access)
         try:
             subject = Subject.objects.get(id=subject_id)
         except Subject.DoesNotExist:
@@ -445,7 +610,6 @@ class UserSearchBoxSubjectView(generics.ListAPIView):
             return self.with_access(text, subject)
 
         if access == self.Access.NO_ACCESS:
-            print('elo')
             return self.no_access(text, subject)
 
         raise ValidationError(detail="Access parameter can be 0 or 1")

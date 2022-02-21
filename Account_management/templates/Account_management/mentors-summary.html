@@ -3,30 +3,99 @@
 {% load auth_extras %}
 
 {% block style %}
+    <style>
+        .properties_table {
+            min-height: 540px;
+        {#font-size: 14px;#}
+        }
+
+    </style>
 {% endblock style %}
 
 {% block main_content %}
-    {#    <img class="icon-title" src="{% static 'Account_management/img/icon-wing.svg' %}" alt="">#}
-    <h2 class="page-title">Mentors Summary</h2>
-    <hr>
-
-    <table>
-        {% for mentor in mentors %}
-            <tr>
-                <th>{{ mentor }}</th>
-            </tr>
-
-            {% for meeting in meetings|mentor_filter:mentor %}
-                <tr>
-                    <td>{{ meeting.student }}</td>
-
-                    {% for test in meetings|mentor_filter:mentor|student_filter:meeting.student %}
-                        <td> {{ test.date.date }} </td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-
-        {% endfor %}
-    </table>
+    <section class="site_filter">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2 col-2">
+                    <div class="form-group">
+                        <label for="years">Year</label>
+                        <select class="form-control" id="years">
+                            <option value='all' selected>All Years</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-2">
+                    <div class="form-group">
+                        <label for="months">Month</label>
+                        <select class="form-control" id="months">
+                            <option value='all' selected>All Months</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-2">
+                    <div class="form-group">
+                        <label for="days">Day</label>
+                        <select class="form-control" id="days">
+                            <option value='all' selected>All Days</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-2">
+                    <div class="form-group">
+                        <label for="mentors">Mentors</label>
+                        <select class="form-control" id="mentors"></select>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-2">
+                    <div class="form-group">
+                        <label for="students">Student</label>
+                        <select class="form-control" id="students"></select>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-2">
+                    <div class="form-group">
+                        <label for="paths">Path</label>
+                        <select class="form-control" id="paths"></select>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-2">
+                    <div class="row justify-content-center align-self-center"
+                         style="color:white; margin-top:30px;">
+                        <a class="btn btn-secondary" id="display_all">Display all</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br/>
+    <section>
+        <div class="container-fluid">
+            {#            <div id="result-count" class="text-right">#}
+            {#                <span class='font-weight-bold'></span> results found.#}
+            {#            </div>#}
+            <div class="row properties_table justify-content-center">
+                {#                <div id="no_results">#}
+                {#                    <h5>No results found</h5>#}
+                {#                </div>#}
+                <table class="table table-bordered table-responsive table-hover table-striped"
+                       id="list_data" data-toggle="table">
+                    <thead>
+                    <tr>
+                        <th data-field="date">Date</th>
+                        <th data-field="mentor">Mentor</th>
+                        <th data-field="student">Student</th>
+                        <th data-field="path">Path</th>
+                    </tr>
+                    </thead>
+                    <tbody id="listing">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 
 {% endblock main_content %}
+{% block script %}
+    <script>const IS_MODERATOR = "{{ is_moderator|escapejs }}";</script>
+    <script src="{% static 'Account_management/js/summary.js' %}"></script>
+{% endblock script %}

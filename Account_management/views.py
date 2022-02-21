@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, ListView
 from django.template.response import TemplateResponse
 
+from Files_organizer.models import SubTopic, Subject
 from .forms import LoginForm, ResetRequestForm, PaymentForm
 from .models import Student, Mentor, PaymentInfo
 from Meetings_calendar.models import Meeting
@@ -69,21 +70,37 @@ class IndexView(LoginRequiredMixin, ListView):
         return Student.objects.filter(mentor__user__username=user)
 
 
-class MentorsSummaryView(LoginRequiredMixin, ListView):
-    template_name = 'Account_management/mentors-summary.html'
-    context_object_name = 'mentors'
+class MentorsSummaryView(LoginRequiredMixin, View):
+    template_name = 'Account_management/student-summary.html'
+    model = Meeting
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        if user.groups.filter(name='Moderator').exists():
+            template_name = 'Account_management/mentors-summary.html'
+            return render(request, template_name, context={'is_moderator': True})
+        elif user.groups.filter(name='Mentor').exists():
+            return render(request, self.template_name)
+        return redirect('index')
 
 
-    # @register.filter
-    # def filter_mentors(self):
-    #     pass
+class MaterialsSummaryView(LoginRequiredMixin, ListView):
+    template_name = 'Account_management/materials-summary.html'
+    context_object_name = 'students'
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        if user.groups.filter(name='Moderator').exists():
+            return super().get(request, *args, **kwargs)
+        return redirect('index')
 
     def get_queryset(self):
-        return Mentor.objects.all()
+        return Student.objects.all()
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["meetings"] = Meeting.objects.all().order_by('date').order_by('student')
+        context['subjects'] = Subject.objects.all()
+        context['subtopics'] = SubTopic.objects.all()
         return context
 
 
@@ -98,10 +115,11 @@ class PaymentView(LoginRequiredMixin, View):
             form = PaymentForm(instance=payment_data)
             return render(request, self.template_name, {'form': form})
         except PaymentInfo.DoesNotExist:
-            return render(request, self.template_name, {'form': PaymentForm(initial=
-                                                                            {'firstName': request.user.first_name,
-                                                                             'lastName': request.user.last_name,
-                                                                             'email': request.user.email})})
+            return render(request, self.template_name,
+                          {'form': PaymentForm(initial=
+                                               {'firstName': request.user.first_name,
+                                                'lastName': request.user.last_name,
+                                                'email': request.user.email})})
 
     def post(self, request, *args, **kwargs):
         form = PaymentForm(request.POST)

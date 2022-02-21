@@ -19,6 +19,7 @@ class ProgrammingPath(models.Model):
 
 
 class Subject(models.Model):
+    """Topic in the programming path."""
     name = models.CharField(max_length=50)
     slug = models.SlugField()
     programming_path = models.ForeignKey(ProgrammingPath, on_delete=models.PROTECT)
