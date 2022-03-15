@@ -1,8 +1,8 @@
 from django.urls import path
 
-from Exercises_checker.views import TasksListView, TestToken
+from .views import TasksListView, TaskDetailView
 
 urlpatterns = [
-    path("", TasksListView.as_view(), name="tasks_list"),
-    path("test/", TestToken.as_view(), name="token_test")
+    path("", TasksListView.as_view(), name="tasks-list"),
+    path("<pk>/", TaskDetailView.as_view(), name="task-detail"),
 ]

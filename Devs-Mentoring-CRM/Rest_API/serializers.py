@@ -1,10 +1,9 @@
-from django.contrib.auth.models import User, AnonymousUser
-from rest_framework import serializers
-from Meetings_calendar.models import Meeting, Note
 from Account_management.models import Mentor, Student
+from django.contrib.auth.models import User
 from Exercises_checker.models import ExerciseStatus
-from Files_organizer.models import Document, SubTopic, Subject
-from rest_framework_simplejwt.tokens import RefreshToken
+from Files_organizer.models import Document, Subject, SubTopic
+from Meetings_calendar.models import Meeting, Note
+from rest_framework import serializers
 
 
 class NoteSerializer(serializers.ModelSerializer):
@@ -85,7 +84,8 @@ class StudentsSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation['student'] = instance.user.student.__str__()
         representation['email'] = instance.user.email
-        representation['enrolment'] = instance.user.student.enrollmentDate.strftime("%Y-%m-%d")
+        representation['enrolment'] = instance.user.student.enrollmentDate.strftime(
+            "%Y-%m-%d")
         representation['path'] = instance.user.student.path.name
         return representation
 
@@ -116,12 +116,15 @@ class SubTopicSerializer(serializers.ModelSerializer):
 
 
 class DocumentSerializer(serializers.ModelSerializer):
-    subtopic_name = serializers.CharField(read_only=True, source="subtopic.name")
-    subtopic_description = serializers.CharField(read_only=True, source="subtopic.description")
+    subtopic_name = serializers.CharField(
+        read_only=True, source="subtopic.name")
+    subtopic_description = serializers.CharField(
+        read_only=True, source="subtopic.description")
 
     class Meta:
         model = Document
-        fields = ['name', 'docfile', 'type', 'subtopic_name', 'subtopic_description']
+        fields = ['name', 'docfile', 'type',
+                  'subtopic_name', 'subtopic_description']
 
 
 class AccessToFileSerializer(serializers.ModelSerializer):
@@ -185,7 +188,12 @@ class PathExerciseSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation['id'] = instance.exercise.id
         representation['name'] = instance.exercise.name
+        representation['slug'] = instance.exercise.slug
         return representation
 
 
+class ChangeExerciseCodeSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = ExerciseStatus
+        fields = ['code']

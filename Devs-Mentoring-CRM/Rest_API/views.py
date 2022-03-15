@@ -2,29 +2,34 @@ from __future__ import annotations
 import enum
 import re
 from typing import Dict, Tuple
-from Exercises_checker.models import Language, Exercise, ExerciseStatus
-from Meetings_calendar.models import Meeting, Note
-from Account_management.models import Student, Mentor
-from . import serializers
-from .permissions import MentorCreate
-from .serializers import NoteSerializer, StudentsSerializer, AddMeetingSerializer, AddNoteSerializer, \
-    GetMeetingSerializer, ChangeStudentAvatarSerializer, ChangeMentorAvatarSerializer, \
-    MeetingSerializer, PathExerciseSerializer
-from django.contrib.auth.models import User, AnonymousUser
+from Account_management.models import Mentor, Student
+from django.contrib.auth.models import AnonymousUser, User
 from django.db.models import QuerySet
 from django.http import Http404
+from Exercises_checker.models import Exercise, ExerciseStatus, Language
+from Files_organizer.models import Document, Subject, SubTopic
+from Meetings_calendar.models import Meeting, Note
 from rest_framework import generics, mixins, status
-from rest_framework.exceptions import PermissionDenied, ValidationError, AuthenticationFailed
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
-from Files_organizer.models import Document, SubTopic, Subject
-from Rest_API.permissions import FileAccessPermission
-from Rest_API.serializers import DocumentSerializer, AccessToFileSerializer, AccessToSubjectSerializer, \
-    UserSearchBoxSerializer
-
+from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+
+from Rest_API.permissions import FileAccessPermission
+from Rest_API.serializers import (AccessToFileSerializer,
+                                  AccessToSubjectSerializer,
+                                  DocumentSerializer, UserSearchBoxSerializer)
+
+from .permissions import ExerciseCodePermission, MentorCreate
+from .serializers import (AddMeetingSerializer, AddNoteSerializer,
+                          ChangeExerciseCodeSerializer,
+                          ChangeMentorAvatarSerializer,
+                          ChangeStudentAvatarSerializer, GetMeetingSerializer,
+                          MeetingSerializer, NoteSerializer,
+                          PathExerciseSerializer, StudentsSerializer)
 
 
 class ListMeetings(generics.ListAPIView):
@@ -87,12 +92,14 @@ class AddMeeting(generics.CreateAPIView):
         meeting = serializer.save()
         Note.objects.create(
             meeting=meeting,
-            author=User.objects.get(id=Mentor.objects.get(id=data['mentor']).user.id),
+            author=User.objects.get(
+                id=Mentor.objects.get(id=data['mentor']).user.id),
             title='',
             text=data['note'] if 'note' in data else '')
         Note.objects.create(
             meeting=meeting,
-            author=User.objects.get(id=Student.objects.get(id=data['student']).user.id),
+            author=User.objects.get(
+                id=Student.objects.get(id=data['student']).user.id),
             title='',
             text='')
 
@@ -303,14 +310,14 @@ class UserSearchBoxSubtopicView(generics.ListAPIView):
             first_text = text[:space]
             second_text = text[space + 1:]
             queryset = filter(text=first_text, subtopic=subtopic, filter_by="first_name") or \
-                       filter(text=second_text, subtopic=subtopic, filter_by="first_name") or \
-                       filter(text=first_text, subtopic=subtopic, filter_by="last_name") or \
-                       filter(text=second_text, subtopic=subtopic, filter_by='last_name')
-
+                filter(text=second_text, subtopic=subtopic, filter_by="first_name") or \
+                filter(text=first_text, subtopic=subtopic, filter_by="last_name") or \
+                filter(text=second_text, subtopic=subtopic,
+                       filter_by='last_name')
 
         else:
             queryset = filter(text=text, subtopic=subtopic, filter_by="first_name") or \
-                       filter(text=text, subtopic=subtopic, filter_by="last_name")
+                filter(text=text, subtopic=subtopic, filter_by="last_name")
 
         return queryset
 
@@ -330,13 +337,14 @@ class UserSearchBoxSubtopicView(generics.ListAPIView):
             first_text = text[:space]
             second_text = text[space + 1:]
             queryset = filter(text=first_text, subtopic=subtopic, filter_by="first_name") or \
-                       filter(text=second_text, subtopic=subtopic, filter_by="first_name") or \
-                       filter(text=first_text, subtopic=subtopic, filter_by="last_name") or \
-                       filter(text=second_text, subtopic=subtopic, filter_by='last_name')
+                filter(text=second_text, subtopic=subtopic, filter_by="first_name") or \
+                filter(text=first_text, subtopic=subtopic, filter_by="last_name") or \
+                filter(text=second_text, subtopic=subtopic,
+                       filter_by='last_name')
 
         else:
             queryset = filter(text=text, subtopic=subtopic, filter_by="first_name") or \
-                       filter(text=text, subtopic=subtopic, filter_by="last_name")
+                filter(text=text, subtopic=subtopic, filter_by="last_name")
         return queryset
 
     def get_queryset(self) -> QuerySet[User]:
@@ -408,13 +416,13 @@ class UserSearchBoxSubjectView(generics.ListAPIView):
             first_text = text[:space]
             second_text = text[space + 1:]
             queryset = filter(text=first_text, filter_by="first_name") or \
-                       filter(text=second_text, filter_by="first_name") or \
-                       filter(text=first_text, filter_by="last_name") or \
-                       filter(text=second_text, filter_by='last_name')
+                filter(text=second_text, filter_by="first_name") or \
+                filter(text=first_text, filter_by="last_name") or \
+                filter(text=second_text, filter_by='last_name')
 
         else:
             queryset = filter(text=text, filter_by="first_name") or \
-                       filter(text=text, filter_by="last_name")
+                filter(text=text, filter_by="last_name")
 
         return queryset, subtopics
 
@@ -432,7 +440,6 @@ class UserSearchBoxSubjectView(generics.ListAPIView):
         access = self.request.GET.get('access')
         access = self.Access.from_str(access)
 
-        print(access)
         try:
             subject = Subject.objects.get(id=subject_id)
         except Subject.DoesNotExist:
@@ -442,7 +449,6 @@ class UserSearchBoxSubjectView(generics.ListAPIView):
             return self.with_access(text, subject)
 
         if access == self.Access.NO_ACCESS:
-            print('elo')
             return self.no_access(text, subject)
 
         raise ValidationError(detail="Access parameter can be 0 or 1")
@@ -460,7 +466,8 @@ class ExerciseView(generics.ListAPIView):
 
     def get_all_exercises_quantity(self):
         language, user = self.get_language_and_user()
-        all_exercises_quantity = Exercise.objects.filter(language__user=user).filter(language=language).count()
+        all_exercises_quantity = Exercise.objects.filter(
+            language__user=user).filter(language=language).count()
         done_exercises_quantity = ExerciseStatus.objects.filter(exercise__language=language).filter(user=user).filter(
             done=True).count()
 
@@ -516,3 +523,21 @@ class CreateTokenBaseView(generics.GenericAPIView):
         refresh = self.get_token(user)
         data = {"access": str(refresh.access_token)}
         return Response(data, status=status.HTTP_200_OK)
+
+
+class ExerciseCodeView(APIView):
+    permission_classes = [ExerciseCodePermission]
+    serializer_class = ChangeExerciseCodeSerializer
+
+    def patch(self, request, pk):
+        exercise_status = ExerciseStatus.objects.filter(id=pk).first()
+        print(exercise_status)
+        if not exercise_status:
+            raise Http404
+        data = {"code": request.data.get('code')}
+        serializer = self.serializer_class(
+            exercise_status, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -1,9 +1,19 @@
-from django.shortcuts import render
-from django.views import View
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
+from .models import ExerciseTest
+from .permissions import TokenVerify
+from .serializers import ExerciseTestSerializer
 
 
-class TestView(APIView):
-    def get(self, *args, **kwargs):
-        return Response({"ok":'ok'})
+class ExerciseView(ListAPIView):
+    permission_classes = [TokenVerify]
+    serializer_class = ExerciseTestSerializer
+    
+    def get_queryset(self):
+        language = self.request.GET.get('language')
+        slug_name = self.request.GET.get('name')
+        return ExerciseTest.objects.filter(exercise__language__name=language).filter(exercise__slug=slug_name)
+        
+
+
+
+        

@@ -50,7 +50,7 @@ class ExercisesHandler {
     }
 
     static createExerciseHtml(exercise) {
-        return `<a class="go-to-checker" href="#">
+        return `<a class="go-to-checker" href="${window.location.href}${exercise.id}/">
                     <div class="complete-box"></div>
                     <div class="task-name">
                         <span>${exercise.name}</span>

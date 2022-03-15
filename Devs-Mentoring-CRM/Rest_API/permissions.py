@@ -47,3 +47,13 @@ class FileAccessPermission(permissions.BasePermission):
     def has_permission(self, request, view) -> bool:
         if request.user.is_authenticated:
             return request.user.groups.filter(name='Mentor').exists() or request.user.is_superuser
+
+
+
+class ExerciseCodePermission(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        return request.user == obj.user
