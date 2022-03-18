@@ -1,0 +1,303 @@
+$gold-color: #dbc110;
+$bg-gray: #f7f7f7;
+$shadow: #666;
+$border-gray: #ccc;
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    font-size: 62, 5%;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Spartan', sans-serif;
+    color: #000;
+}
+
+.wrapper {
+    margin: 0 auto;
+    max-width: 1600px;
+}
+
+#menu-toggle:checked~.sidebar {
+    width: 240px;
+}
+
+#menu-toggle:checked~.main-content {
+    margin-left: 240px;
+}
+
+#menu-toggle:checked~.sidebar .sidebar-header h3 {
+    display: block;
+    height: 20px;
+    overflow: hidden;
+}
+
+#menu-toggle:checked~.sidebar li span:last-child {
+    display: unset;
+}
+
+#menu-toggle:checked~.sidebar .footer {
+    display: flex;
+}
+
+
+.sidebar {
+    padding: .7rem 1rem 1rem;
+    height: 100%;
+    width: 55px;
+    position: fixed;
+    z-index: 100;
+    color: #fff;
+    background-color: #000;
+    overflow-y: auto;
+    transition: width .3s;
+    overflow: hidden;
+
+    &-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 60px;
+        overflow: hidden;
+
+        .sidebar-title {
+            display: none;
+            font-size: 1rem;
+            height: 20px;
+        }
+
+        .title-span-one {
+            display: inline-block;
+            height: 20px;
+        }
+
+        .title-span-two {
+            display: inline-block;
+            font-size: .7rem;
+            color: $gold-color;
+            font-weight: bold;
+            height: 20px;
+        }
+
+        .bi-list {
+            display: inline-block;
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: .5rem;
+            cursor: pointer;
+            transition: color .3s;
+        }
+
+        .bi-list:hover {
+            color: $gold-color;
+        }
+    }
+
+    &-title {
+        display: inline-block;
+        font-size: 1.1rem;
+
+    }
+
+    &-menu {
+
+        ul {
+            list-style: none;
+            padding: 0 .2rem;
+
+            li {
+                margin-top: 1.2rem;
+
+                a {
+                    text-decoration: none;
+                    color: #fff;
+                    font-size: 0.9rem;
+                    transition: color .3s;
+                    display: block;
+                    height: 1.5rem;
+                    overflow: hidden;
+
+                    span:last-child {
+                        display: none;
+                        padding-left: .6rem;
+                    }
+                }
+
+                a:hover {
+                    color: $gold-color;
+                }
+            }
+
+        }
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 208px;
+
+        .social-icons {
+            margin: 10px 0;
+
+
+            a {
+                color: $gold-color;
+                font-size: 1.5rem;
+                padding: 5px 5px;
+                transition: color .3s;
+            }
+
+            a:hover {
+                color: $bg-gray
+            }
+        }
+
+        p {
+            font-size: .8rem;
+            color: $bg-gray
+        }
+    }
+}
+
+.main-content {
+    position: relative;
+    margin-left: 55px;
+    transition: margin-left .3s;
+
+    .avatar-popup {
+        position: absolute;
+        top: 67px;
+        right: 5px;
+        height: 245px;
+        width: 295px;
+        z-index: 98;
+
+        form {
+            label {
+                margin: -1px;
+                padding: 5px 10px;
+                border: 2px solid $gold-color;
+                border-radius: 25px;
+                height: 36px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            span {
+                font-size: .9rem;
+                padding: 6px 10px;
+                line-height: 25px;
+                height: 36px;
+                width: 50%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .files-upload {
+                border: .5px solid #ebebeb;
+                border-radius: 25px;
+                height: 36px;
+            }
+
+            .send-av-button {
+                padding: 5px 10px;
+                // width: 150px;
+                border: 1px solid $gold-color;
+                background: $gold-color;
+                border-radius: 25px;
+                text-transform: uppercase;
+                font-weight: bold;
+                transition: color .3s, background-color .3s, border .3s;
+                margin: 0;
+
+                &:hover {
+                    color: #fff;
+                    background-color: #000;
+                    border: 1px solid #000;
+                }
+            }
+        }
+    }
+
+
+
+}
+
+header {
+    position: relative;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 1rem;
+    height: 70px;
+    background-color: #fff;
+    border-bottom: 1px solid $border-gray;
+    z-index: 99;
+
+    .avatar {
+        border-radius: 50%;
+        overflow: hidden;
+        margin-left: 10px;
+        z-index: 100;
+
+        img {
+            height: 50px;
+            width: 50px;
+        }
+    }
+
+    .username {
+        font-size: 1.2rem;
+    }
+
+    .log-out {
+        padding: 0 7px;
+        background: none;
+        border: none;
+        transition: transform .3s;
+
+        .bi-power {
+            font-size: 1.8rem;
+            color: #000;
+            transition: color .3s;
+        }
+
+        .bi-power:hover {
+            color: $gold-color;
+        }
+    }
+
+    .log-out:hover {
+        transform: scale(0.9);
+    }
+
+}
+
+main {
+    background-color: $bg-gray;
+    min-height: 92vh;
+    padding: 1rem;
+}
+
+
+
+@media(max-width: 992px) {
+    #menu-toggle:checked~.main-content {
+        margin-left: 55px;
+    }
+}

@@ -1,0 +1,8 @@
+**/.env
+**/venv/
+**/.idea/
+__pycache__/
+**/migrations/
+**/db.sqlite3
+**/user_images/
+**/migrations/

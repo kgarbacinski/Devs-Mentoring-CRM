@@ -1,0 +1,170 @@
+{% extends 'Account_management/layout.html' %}
+{% load static %}
+{% load auth_extras %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'Account_management/css/index-page.css' %}">
+{% endblock style %}
+
+{% block main_content %}
+    <img class="icon-title" src="{% static 'Account_management/img/icon-wing.svg' %}" alt="">
+    <h2 class="page-title">Hi, <span class="your-name">{% if user.is_authenticated %}{{ user.first_name }}
+        {{ user.last_name }}{% endif %}</span></h2>
+    <hr>
+
+    {% if request.user|has_group:"Mentor" %}
+        <div class="mentor-page">
+            <div class="row m-0">
+                <div class="incoming-meetings col-sm-12 col-md-6 col-lg-4 mb-4">
+                    <div class="mentor-page-block">
+                        <h3>Incoming meetings</h3>
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-8 row m-0">
+
+                    <div class="meetings-held col-sm-12 col-md-12 col-lg-6 px-0 pe-md-0 pe-lg-4 mb-4">
+                        <div class="mentor-page-block">
+                            <h3>Meetings held</h3>
+                            <hr>
+                            <div class="meetings-held-box">
+                                <div class="row">
+                                    <div class="meetings-held-title col-7">
+                                        <p>How many meetings run in overall ➡</p>
+                                    </div>
+                                    <div class="meetings-held-count col-5"><span>{{ user.mentor.count_all_meetings }}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="students col-sm-12 col-md-12 col-lg-6 px-0 pe-md-0 mb-4">
+                        <div class="mentor-page-block">
+                            <h3>You and the students</h3>
+                            <hr>
+                            <div class="students-box">
+                                <div class="row" style="overflow:hidden; background-color: #f7f7f7;">
+                                    <div class="your-students col-6">
+                                        <p>The number of your students</p>
+                                        <span>{{ user.mentor.count_all_students }}</span>
+                                    </div>
+                                    <div class="students-capacity col-6">
+                                        <p>Maximum number of students</p>
+                                        <span>{{ user.mentor.max_students }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="students-cards col-sm-12 px-0 pe-md-0 mb-4">
+                        <div class="mentor-page-block students-cards-block">
+                            <h3>Your students:</h3>
+
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-3 g-2">
+                                {% for student in students %}
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="row">
+                                                <div class="col-4 pe-0">
+                                                    <div class="avatar-box">
+                                                        <img src="{{ student.user_image.url }}" class="card-img-top"
+                                                             alt="...">
+                                                    </div>
+                                                </div>
+                                                <div class="col-8 ps-0 d-flex flex-column justify-content-center">
+                                                    <p class="student-name m-0">
+                                                        {{ student }}
+                                                    </p>
+                                                    <p class="student-mail m-0">
+                                                        <a href="mailto:{{ student.user.email }}">{{ student.user.email }}</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-title path-name">{{ student.path }}</h5>
+                                                <p class="card-text student-sign-up"><span>Student from: </span><span
+                                                        class="student-date">{{ student.enrollmentDate|date:'Y.m.d' }}</span>
+                                                </p>
+                                                <p class="card-text meetings"><span>All meetings: </span><span
+                                                        class="meet-num">{{ student.count_all_meetings }}</span></p>
+                                                <p class="card-text end-of-sub">
+                                                    <span>Subs. ends in: </span>
+                                                    <span><span
+                                                            class="left-meetings">{{ student.get_remaining_meetings }}</span> calls</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="student-page">
+            <div class="row m-0">
+                <div class="col-sm-12 col-md-6 col-lg-8 row m-0">
+
+                    <div class="subscription-details col-sm-12 col-md-12 col-lg-6 px-0 pe-md-0 pe-lg-4 mb-4">
+                        <div class="student-page-block">
+                            <h3>Subscription details</h3>
+                            <hr>
+                            <div class="left-meetings">
+                                <h4 class="path-name text-center">{{ user.student.path }}</h4>
+                                <div class="row">
+                                    <div class="left-meetings-title col-7">
+                                        <p>Meetings left in a current subscription ➡</p>
+                                    </div>
+                                    <div class="left-meetings-count col-5"><span>{{ user.student.get_remaining_meetings }}</span></div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="your-mentor col-3">
+                                        <p>Your mentors:</p>
+                                    </div>
+                                    <div class="mentor-details col-9">
+                                        {% for mentor in students %}
+                                        <p class="mentor-name mb-0 ">{{ mentor.user.first_name}} {{ mentor.user.last_name}}</p>
+                                        <p><a class="mentor-mail" href="mailto:{{ mentor.user.email }}">{{ mentor.user.email }}</a></p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="payment">
+                                <p class="next-payment pt-2">
+                                    <span>Next payment:</span><span class="next-payment-date fw-bold">{{ user.student.get_next_payment }}</span>
+                                </p>
+                                <div class="control-btn">
+                                    <a href="{% url 'payment' %}" class="button button-pay">pay</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="incoming-meetings col-sm-12 col-md-12 col-lg-6 px-0 pe-md-0 mb-4">
+                        <div class="student-page-block">
+                            <h3>Incoming meetings</h3>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="last-meetings col-sm-12 col-md-6 col-lg-4 mb-4">
+                    <div class=" student-page-block">
+                        <h3>Last meetings</h3>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock main_content %}
+
+{% block script %}
+    <script src="{% static 'Account_management/js/index.js' %}"></script>
+{% endblock script %}

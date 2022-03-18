@@ -1,0 +1,29 @@
+{% extends 'Account_management/layout.html' %}
+{% load exercise_tags %}
+{% load static %}
+
+{% block main_content %}
+<h1 id="info"></h1>
+    <h1> {{ exercise_status.exercise.name }}</h1>
+    <p>{{ exercise_status.exercise.description }}</p>
+    <form id="code-form" method="POST" action=''>
+        {% csrf_token %}
+        <textarea id="code"  rows="30" cols="50">{{ exercise_status.code }}</textarea>
+    </form>
+
+
+    <button class="nav-link" id="send-button" data-bs-toggle="tab">SEND
+    </button>
+
+{% endblock %}
+
+
+{% block script %}
+    <script src="{% static 'Exercises_checker/js/test_exercises.js' %}"></script>
+<script>
+
+let language = "{{ exercise_status.exercise.language.name }}"
+let slug_name = "{{ exercise_status.exercise.slug }}"
+let exercise_status_id = {{ exercise_status.id }}
+</script>
+{% endblock %}
