@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-i(#=jo(zczfq4$*fv)iu6cvi!=yxs#mt$2%54y@dei%j=-bq29
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -189,19 +189,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'materials/')
 MEDIA_URL = "/materials/"
 
 PAYMENT_HOST = "przelewy24.source.net.pl"
-PAYMENT_USES_SSL = True
-PAYMENT_MODEL = "Account_management.CoursePayment"
-PAYMENT_VARIANTS = {
-    "przelewy24": (
-        "payments_przelewy24.provider.Przelewy24Provider",
-        {
-            "config": Przelewy24Config(
-                pos_id=config('POS_ID', cast=int),
-                merchant_id=config('MERCHANT_ID', cast=int),
-                crc=config('CRC'),
-                api_key=config('API_KEY'),
-                sandbox=True
-            ),
-        },
-    ),
-}
+# PAYMENT_USES_SSL = True
+# PAYMENT_MODEL = "Account_management.CoursePayment"
+# PAYMENT_VARIANTS = {
+#     "przelewy24": (
+#         "payments_przelewy24.provider.Przelewy24Provider",
+#         {
+#             "config": Przelewy24Config(
+#                 pos_id=config('POS_ID', cast=int),
+#                 merchant_id=config('MERCHANT_ID', cast=int),
+#                 crc=config('CRC'),
+#                 api_key=config('API_KEY'),
+#                 sandbox=True
+#             ),
+#         },
+#     ),
+# }

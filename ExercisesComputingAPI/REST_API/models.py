@@ -21,6 +21,7 @@ class Exercise(models.Model):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+
 class ExerciseTest(models.Model):
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     input = models.TextField()

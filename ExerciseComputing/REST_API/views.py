@@ -7,7 +7,8 @@ class ExerciseView(APIView):
     permission_classes = [TokenVerify] 
 
     def post(self, *args, **kwargs):
-        computing = CodeComputing(header_token= self.request.META.get('HTTP_AUTHORIZATION', None), data=self.request.data)
+        print(self.request.data)
+        computing = CodeComputing(header_token=self.request.META.get('HTTP_AUTHORIZATION', None), data=self.request.data)
         return computing.execute_computing()
             
 

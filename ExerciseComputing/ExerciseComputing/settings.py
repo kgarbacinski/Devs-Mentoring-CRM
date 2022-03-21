@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'REST_API',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'django_prometheus',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -45,6 +46,7 @@ REST_FRAMEWORK = {
 
 }
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,10 +55,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 ROOT_URLCONF = 'ExerciseComputing.urls'
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'computing']
 
 CORS_ORIGIN_WHITELIST = (
 
@@ -133,3 +136,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 API_URL = "http://127.0.0.1:8001/api/exercise"
+
+rabbitmq_url = 'amqp://admin:mypass@rabbit:5672'
+CELERY_BROKER_URL = rabbitmq_url
+# CELERY_RESULT_BACKEND = rabbitmq_url

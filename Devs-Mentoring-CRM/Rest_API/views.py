@@ -343,7 +343,6 @@ class ChangeAvatar(generics.RetrieveUpdateDestroyAPIView):
         return Mentor.objects.all()
 
 
-
 class Patterns:
     whole_name_pattern = r'\w+\s\w+'
 

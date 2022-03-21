@@ -5,6 +5,8 @@ let today = new Date(),
 const footerYear = document.querySelector('.year');
 const myFileBtn = document.getElementById('myFile');
 const fileChosen = document.getElementById('file-chosen');
+const changeAvBtn = document.getElementById('change-avatar')
+const avatar = document.getElementById('avatar')
 
 const months = [
     "January",
@@ -21,6 +23,10 @@ const months = [
     "December"
 ];
 
+changeAvBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    changeAvatar();
+})
 
 myFileBtn.addEventListener('change', function () {
     fileChosen.textContent = this.files[0].name;
@@ -134,23 +140,31 @@ function getMeetings(meetingDates, isMentor, querySelector, showCalendarButton =
 }
 
 function changeAvatar() {
-    let input = document.querySelector('input[type="file"]')
-    let userId = sessionStorage.getItem('mentorId')
-    let data = new FormData()
-    data.append('id', userId)
-    data.append('user_image', input.files[0])
+    let input = document.querySelector('input[type="file"]');
+    let userId = sessionStorage.getItem('mentorId');
+    let data = new FormData();
+    data.append('id', userId);
+    data.append('user_image', input.files[0]);
+    let url = getBaseUrl('/api/change-avatar/' + userId + '/');
+    let userImage = document.getElementById('user-avatar');
 
-    fetch(getBaseUrl('/api/change-avatar/' + userId + '/'),
-        {
-            method: "PATCH",
-            credentials: 'same-origin',
-            headers: {
-                "X-CSRFToken": getCookie("csrftoken"),
-            },
-            body: data,
+    setAvatar(url, data)
+        .then(data =>{
+            userImage.src = data.user_image;
         })
-        .catch(error => {console.log(error)})
-        .then(() => {window.location.reload()})}
+}
+
+async function setAvatar(url = '', data = {}) {
+    const response = await fetch(url, {
+        method: "PATCH",
+        credentials: 'same-origin',
+        headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+        },
+        body: data,
+    });
+    return response.json()
+}
 
 function setOptionsToNull() {
     Array.from(arguments).forEach(argument => {
@@ -166,9 +180,9 @@ function removeAttribute(elem, attr) {
     })
 }
 
-function setOptionToSelected(elem, attr){
+function setOptionToSelected(elem, attr) {
     Array.from(elem.options).forEach(option => {
-        if (option.value === attr){
+        if (option.value === attr) {
             option.setAttribute('selected', 'selected')
         }
     })
@@ -182,11 +196,14 @@ function setAttributes(elem, attrs) {
 
 function cleanSendData(value = null) {
     if (!value) {
-        for (let element in sendData) {sendData[element] = ''}
+        for (let element in sendData) {
+            sendData[element] = ''
+        }
         return
     }
     sendData[value] = '';
 }
+
 function getApiUrl() {
     let url = '?'
     for (let sendDataKey in sendData) {

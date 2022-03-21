@@ -1,0 +1,88 @@
+version: "3.9"
+   
+services:
+  crm:
+    build: 
+      context: ./Devs-Mentoring-CRM/
+    command: python manage.py runserver 0.0.0.0:8000
+    # command: >
+    #   sh -c "python3 manage.py runserver"
+    volumes:
+      - ./Devs-Mentoring-CRM:/crm
+    ports:
+      - "8000:8000"
+  
+  computing_api:
+    build: 
+      context: ./ExercisesComputingAPI/
+    command: python manage.py runserver 0.0.0.0:8001
+    # command: >
+    #   sh -c "python3 manage.py runserver"
+    volumes:
+      - ./ExercisesComputingAPI:/computing_api
+    ports:
+      - "8001:8001"
+  
+  computing:
+    hostname: computing
+    build: 
+      context: ./ExerciseComputing/
+    command: python manage.py runserver 0.0.0.0:8002
+    # command: >
+    #   sh -c "python3 manage.py runserver"
+    volumes:
+      - ./ExerciseComputing:/computing
+    ports:
+      - "8002:8002"
+
+  rabbit:
+    image: rabbitmq:latest
+    hostname: broker
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "5672:5672"
+
+  celery:
+    build: ./ExerciseComputing/
+    restart: "no"
+    command: celery -A ExerciseComputing worker -l info
+    volumes:
+      - ./ExerciseComputing:/computing
+    depends_on:
+      - rabbit
+  
+  prometheus:
+    container_name: prometheus
+    hostname: prometheus
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/datasource.yml:/etc/grafana/datasources/datasource.yaml
+    depends_on:
+      - prometheus
+
+  # celery:
+  #   build: ./ExerciseComputing
+  #   command: celery -A ExerciseComputing worker -l info
+  #   volumes:
+  #     - ./ExerciseComputing:/computing
+  #   environment:
+  #     - DEBUG=1
+  #     - SECRET_KEY=dbaa1_i7%*3r9-=z-+_mz4r-!qeed@(-a_r(g@k8jo8y3r27%m
+  #     - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+  #     - CELERY_BROKER=redis://redis:6379/0
+  #     - CELERY_BACKEND=redis://redis:6379/0
+  #   depends_on:
+  #     - computing
+  #     - redis

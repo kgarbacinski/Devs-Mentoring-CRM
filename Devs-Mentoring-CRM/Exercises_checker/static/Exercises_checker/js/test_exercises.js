@@ -4,10 +4,10 @@ let Selectors = { "code_field" : document.getElementById("code-form").elements['
 }
 
 document.getElementById('send-button').addEventListener('click',  function(){
-     sendToComputing();
-     saveCodeToDB()
+     sendToComputing()
+         .then(() => {console.log()})
+     saveCodeToDB();
 })
-
 
 
 function getCookie(name) {
@@ -29,7 +29,7 @@ async function saveCodeToDB(){
     let data = {}
     data.code = Selectors['code_field'].value
     let url = `${window.location.origin}/api/access/exercises/code/${exercise_status_id}`
-    config = {
+    let config = {
             method: 'PATCH',
             headers: {
             'Accept': 'application/json',
@@ -38,12 +38,8 @@ async function saveCodeToDB(){
             },
             body: JSON.stringify(data)
         }
-    response = await fetch(url, config)
+    let response = await fetch(url, config)
     console.log(response)
-
-
-
-
 }
 
 async function getToken(){
@@ -53,7 +49,7 @@ async function getToken(){
 }
 
 async function sendToComputing() {
-let data = {}
+    let data = {}
     let computing_url = "http://127.0.0.1:8002/"
     let token = await getToken()
     data.code = Selectors['code_field'].value
@@ -61,7 +57,7 @@ let data = {}
     data.name = slug_name
     console.log(data)
     console.log(data.code)
-    config = {
+    let config = {
         method: 'POST',
         headers: {
         'Accept': 'application/json',
