@@ -531,7 +531,7 @@ class ExerciseCodeView(APIView):
 
     def patch(self, request, pk):
         exercise_status = ExerciseStatus.objects.filter(id=pk).first()
-        print(exercise_status)
+        #TODO JEZELI JUZ ZROBIONE NIE AKTUALIZUJ
         if not exercise_status:
             raise Http404
         data = {"code": request.data.get('code')}

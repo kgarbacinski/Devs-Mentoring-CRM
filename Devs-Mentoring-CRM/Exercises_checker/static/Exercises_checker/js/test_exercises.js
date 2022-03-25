@@ -54,7 +54,7 @@ async function getToken(){
 
 async function sendToComputing() {
 let data = {}
-    let computing_url = "http://127.0.0.1:8002/"
+    let computing_url = "http://0.0.0.0:8002/"
     let token = await getToken()
     data.code = Selectors['code_field'].value
     data.language = language

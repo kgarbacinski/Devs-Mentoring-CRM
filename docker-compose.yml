@@ -1,0 +1,54 @@
+version: '3.3'
+
+services:
+  crm:
+    container_name: CRM
+    hostname: crm
+    build: ./Devs-Mentoring-CRM
+    command: python3 manage.py runserver 0.0.0.0:8000
+    restart: always
+    volumes:
+      - ./Devs-Mentoring-CRM:/usr/src/app/
+    ports:
+      - 8000:8000
+    environment:
+      - DJANGO_SECRET=${DJANGO_SECRET}
+    networks:
+      - crmnetwork
+
+  api:
+    build: ./ExercisesAPI
+    container_name: API
+    hostname: api
+    command: python3 manage.py runserver 0.0.0.0:8001
+    restart: always
+    volumes:
+      - ./ExercisesAPI:/usr/src/app
+    ports:
+      - 8001:8001
+    environment:
+      - DJANGO_SECRET=${DJANGO_SECRET}
+    networks:
+      - crmnetwork
+   
+  computing:
+    build: ./ExercisesComputing
+    container_name: Computing
+    hostname: computing
+    command: python3 manage.py runserver 0.0.0.0:8002
+    restart: always
+    volumes:
+      - ./ExercisesComputing:/usr/src/app
+    ports:
+      - 8002:8002
+    environment:
+      - DJANGO_SECRET=${DJANGO_SECRET}
+    networks:
+      - crmnetwork
+
+networks:
+  crmnetwork:
+    external:
+      name: CRM
+    
+
