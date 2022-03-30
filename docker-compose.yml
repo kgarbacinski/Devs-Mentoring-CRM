@@ -46,9 +46,55 @@ services:
     networks:
       - crmnetwork
 
+
+  rabbit:
+    image: rabbitmq:latest
+    hostname: broker
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    volumes:
+        - /var/lib/rabbitmq
+  
+    networks:
+      - crmnetwork
+
+  celery:
+    build: ./ExercisesComputing/
+    restart: "no"
+    command: celery -A ExercisesComputing worker -l info
+    volumes:
+      - ./ExercisesComputing:/computing
+    depends_on:
+      - rabbit
+    networks:
+      - crmnetwork
+  
+  prometheus:
+    container_name: prometheus
+    hostname: prometheus
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+    ports:
+      - "9090:9090"
+    networks:
+      - crmnetwork
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/datasource.yml:/etc/grafana/datasources/datasource.yaml
+    depends_on:
+      - prometheus
+    networks:
+      - crmnetwork
+
 networks:
   crmnetwork:
     external:
       name: CRM
     
-

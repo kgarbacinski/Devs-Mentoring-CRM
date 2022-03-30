@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-i(#=jo(zczfq4$*fv)iu6cvi!=yxs#mt$2%54y@dei%j=-bq29
 DEBUG = True
 
 # Application definition
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -57,7 +57,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'ExercisesComputing.urls'
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['*']
 
 CORS_ORIGIN_WHITELIST = (
 
@@ -134,3 +134,6 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 API_URL = "http://api:8001/api/exercise"
+
+rabbitmq_url = 'amqp://admin:mypass@rabbit:5672'
+CELERY_BROKER_URL = rabbitmq_url
