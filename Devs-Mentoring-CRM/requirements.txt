@@ -18,3 +18,5 @@ pytz==2021.3
 requests==2.26.0
 sqlparse==0.4.2
 urllib3==1.26.7
+python-dotenv
+psycopg2==2.9.3

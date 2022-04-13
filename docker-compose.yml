@@ -1,18 +1,74 @@
-version: '3.3'
+version: "3.9"
+
+networks:
+  crmnetwork:
+    external:
+      name: CRM
+
+volumes:
+  pgdata:
 
 services:
+  crm_db:
+    container_name: DBCRM
+    image: postgres:14.2
+    environment:
+      - POSTGRES_DB=${CRM_POSTGRES_DB}
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/crm_data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 30s
+      retries: 6
+    restart: always
+    networks:
+      - crmnetwork
+
+
+  api_db:
+    container_name: DBAPI
+    image: postgres:14.2
+    environment:
+      - POSTGRES_DB=${API_POSTGRES_DB}
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/api_data
+    ports: ['5433:5432']
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 30s
+      retries: 6
+    restart: always
+    networks:
+      - crmnetwork
+
+
   crm:
+    build: ./Devs-Mentoring-CRM
     container_name: CRM
     hostname: crm
-    build: ./Devs-Mentoring-CRM
-    command: python3 manage.py runserver 0.0.0.0:8000
-    restart: always
+    command: sh -c "sleep 5 && python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+
     volumes:
       - ./Devs-Mentoring-CRM:/usr/src/app/
     ports:
-      - 8000:8000
+      - "8000:8000"
     environment:
-      - DJANGO_SECRET=${DJANGO_SECRET}
+      - POSTGRES_DB=${CRM_POSTGRES_DB}
+      - POSTGRES_USER=${CRM_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${CRM_POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${CRM_POSTGRES_HOST}
+      - SECRET_KEY=${SECRET_KEY}
+    depends_on:
+      crm_db:
+        condition: service_healthy
+    restart: always
     networks:
       - crmnetwork
 
@@ -20,14 +76,23 @@ services:
     build: ./ExercisesAPI
     container_name: API
     hostname: api
-    command: python3 manage.py runserver 0.0.0.0:8001
-    restart: always
+    command: sh -c "sleep 5 && python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8001"
     volumes:
       - ./ExercisesAPI:/usr/src/app
     ports:
       - 8001:8001
     environment:
-      - DJANGO_SECRET=${DJANGO_SECRET}
+      - SECRET_KEY=${SECRET_KEY}
+      - POSTGRES_DB=${API_POSTGRES_DB}
+      - POSTGRES_USER=${API_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${API_POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${API_POSTGRES_HOST}
+    depends_on:
+      api_db:
+        condition: service_healthy
+     
+    restart: always
     networks:
       - crmnetwork
    
@@ -42,59 +107,58 @@ services:
     ports:
       - 8002:8002
     environment:
-      - DJANGO_SECRET=${DJANGO_SECRET}
+      - SECRET_KEY=${SECRET_KEY}
     networks:
       - crmnetwork
-
-
-  rabbit:
-    image: rabbitmq:latest
-    hostname: broker
-    environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=mypass
-    volumes:
-        - /var/lib/rabbitmq
-  
-    networks:
-      - crmnetwork
-
-  celery:
-    build: ./ExercisesComputing/
-    restart: "no"
-    command: celery -A ExercisesComputing worker -l info
-    volumes:
-      - ./ExercisesComputing:/computing
-    depends_on:
-      - rabbit
-    networks:
-      - crmnetwork
-  
-  prometheus:
-    container_name: prometheus
-    hostname: prometheus
-    image: prom/prometheus
-    volumes:
-      - ./prometheus/:/etc/prometheus/
-    ports:
-      - "9090:9090"
-    networks:
-      - crmnetwork
-
-  grafana:
-    image: grafana/grafana
-    ports:
-      - 3000:3000
-    volumes:
-      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
-      - ./grafana/datasource.yml:/etc/grafana/datasources/datasource.yaml
-    depends_on:
-      - prometheus
-    networks:
-      - crmnetwork
-
-networks:
-  crmnetwork:
-    external:
-      name: CRM
     
+
+
+  # rabbit:
+  #   image: rabbitmq:3.9.14
+  #   hostname: broker
+  #   environment:
+  #     - RABBITMQ_DEFAULT_USER=admin
+  #     - RABBITMQ_DEFAULT_PASS=mypass
+  #   volumes:
+  #     - /var/lib/rabbitmq
+  #   networks:
+  #     - crmnetwork
+
+  # celery:
+  #   build: ./ExercisesComputing/
+  #   restart: "no"
+  #   command: celery -A ExercisesComputing worker -l info
+  #   volumes:
+  #     - ./ExercisesComputing:/computing
+  #   depends_on:
+  #     - rabbit
+  #   networks:
+  #     - crmnetwork
+  
+  # prometheus:
+  #   container_name: prometheus
+  #   hostname: prometheus
+  #   image: prom/prometheus
+  #   volumes:
+  #     - ./prometheus/:/etc/prometheus/
+  #   ports:
+  #     - "9090:9090"
+  #   networks:
+  #     - crmnetwork
+
+  # grafana:
+  #   image: grafana/grafana
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+  #     - ./grafana/datasource.yml:/etc/grafana/datasources/datasource.yaml
+  #   depends_on:
+  #     - prometheus
+  #   networks:
+  #     - crmnetwork
+
+
+
+
+
